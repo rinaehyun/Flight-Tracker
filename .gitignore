@@ -1,0 +1,15 @@
+## Project ##
+.idea
+frontend.iml
+Flight-Tracker.iml
+
+## Backend ##
+backend/target
+backend/HELP.md
+backend/.mvn
+backend/mvnw
+backend/mvnw.cmd
+
+
+## Frontend ## 
+frontend/README.md
