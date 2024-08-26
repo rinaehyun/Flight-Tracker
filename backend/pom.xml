@@ -30,7 +30,7 @@
         <sonar.organization>rinaehyun</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <java.version>22</java.version>
-        <sonar.projectName>flight-tracker</sonar.projectName>
+        <sonar.projectName>rinaehyun_Flight-Tracker-backend</sonar.projectName>
     </properties>
     <dependencies>
         <dependency>
