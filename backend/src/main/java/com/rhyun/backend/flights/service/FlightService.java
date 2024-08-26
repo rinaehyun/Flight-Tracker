@@ -1,7 +1,7 @@
 package com.rhyun.backend.flights.service;
 
 import com.rhyun.backend.flights.model.Flight;
-import com.rhyun.backend.flights.repository.FlightRepo;
+import com.rhyun.backend.flights.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.List;
 @Service
 public class FlightService {
 
-    private final FlightRepo flightRepo;
+    private final FlightRepository flightRepository;
 
-    public FlightService(FlightRepo flightRepo) {
-        this.flightRepo = flightRepo;
+    public FlightService(FlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
     }
 
     public List<Flight> getAllFlights() {
-        return flightRepo.findAll();
+        return flightRepository.findAll();
     }
 }
