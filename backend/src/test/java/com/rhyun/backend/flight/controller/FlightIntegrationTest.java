@@ -1,6 +1,8 @@
 package com.rhyun.backend.flight.controller;
 
+import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
+import com.rhyun.backend.flight.model.FlightStatus;
 import com.rhyun.backend.flight.repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,8 +45,8 @@ class FlightIntegrationTest {
     @Test
     void retrieveAllFlightsTest_whenRepoHasData_thenReturnMovieList() throws Exception {
         // GIVEN
-        flightRepository.save(new Flight("123", "KE123", "KAL"));
-        flightRepository.save(new Flight("456", "KLM323", "KLM"));
+        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+        flightRepository.save(new Flight("456", "KLM323", Airline.KL, "AMS", "LAX", "A380", FlightStatus.SCHEDULED));
 
         // WHEN
         mockMvc.perform(get("/api/flight"))
@@ -54,13 +56,21 @@ class FlightIntegrationTest {
                     [
                         {
                           "id": "123",
-                          "airlineCode": "KE123",
-                          "airlineICAO": "KAL"
+                          "flightCode": "KE123",
+                          "airline": "KE",
+                          "origin": "ICN",
+                          "destination": "LAX",
+                          "aircraftType": "B777",
+                          "flightStatus": "ARRIVED"
                         },
                         {
                           "id": "456",
-                          "airlineCode": "KLM323",
-                          "airlineICAO": "KLM"
+                          "flightCode": "KLM323",
+                          "airline": "KL",
+                          "origin": "AMS",
+                          "destination": "LAX",
+                          "aircraftType": "A380",
+                          "flightStatus": "SCHEDULED"
                         }
                     ]
                 """));

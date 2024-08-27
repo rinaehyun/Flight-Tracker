@@ -1,6 +1,8 @@
 package com.rhyun.backend.flight.service;
 
+import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
+import com.rhyun.backend.flight.model.FlightStatus;
 import com.rhyun.backend.flight.repository.FlightRepository;
 import org.junit.jupiter.api.Test;
 
@@ -34,8 +36,8 @@ class FlightServiceTest {
     void getAllFlightsTest_whenDBHasData_thenReturnListOfFlights() {
         // GIVEN
         List<Flight> flights = List.of(
-                new Flight("123", "KE123", "KAL"),
-                new Flight("456", "KLM323", "KLM")
+                new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED),
+                new Flight("456", "KLM323", Airline.KL, "AMS", "LAX", "A380", FlightStatus.SCHEDULED)
         );
         when(flightRepository.findAll()).thenReturn(flights);
 
@@ -44,8 +46,8 @@ class FlightServiceTest {
 
         // THEN
         List<Flight> expected = List.of(
-                new Flight("123", "KE123", "KAL"),
-                new Flight("456", "KLM323", "KLM")
+                new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED),
+                new Flight("456", "KLM323", Airline.KL, "AMS", "LAX", "A380", FlightStatus.SCHEDULED)
         );
 
         verify(flightRepository, times(1)).findAll();
