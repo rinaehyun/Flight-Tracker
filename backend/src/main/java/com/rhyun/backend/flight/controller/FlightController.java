@@ -22,6 +22,11 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
+    @GetMapping("/{id}")
+    public Flight retrieveAFlight (@PathVariable String id) {
+        return flightService.getAFlightById(id);
+    }
+
     @PostMapping
     public Flight createAFlight(@RequestBody NewFlightDto newFlightDto) {
         return flightService.saveAFlight(newFlightDto);

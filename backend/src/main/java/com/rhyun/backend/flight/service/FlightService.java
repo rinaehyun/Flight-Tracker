@@ -1,6 +1,7 @@
 package com.rhyun.backend.flight.service;
 
 import com.rhyun.backend.flight.dto.NewFlightDto;
+import com.rhyun.backend.flight.exception.FlightNotFountException;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.repository.FlightRepository;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,11 @@ public class FlightService {
 
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
+    }
+
+    public Flight getAFlightById(String id) {
+        return flightRepository.findById(id)
+                .orElseThrow(() -> new FlightNotFountException("Flight with id " + id + " not found."));
     }
 
     public Flight saveAFlight(NewFlightDto newFlightDto) {
