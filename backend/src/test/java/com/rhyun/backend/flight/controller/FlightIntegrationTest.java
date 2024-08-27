@@ -81,6 +81,48 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    void retrieveAFlightTest_whenIdExists_thenReturnFlightEntity() throws Exception {
+        // GIVEN
+        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+
+        // WHEN
+        mockMvc.perform(get("/api/flight/123"))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    {
+                      "id": "123",
+                      "flightCode": "KE123",
+                      "airline": "KE",
+                      "origin": "ICN",
+                      "destination": "LAX",
+                      "aircraftType": "B777",
+                      "flightStatus": "ARRIVED"
+                    }
+                """));
+
+
+    }
+
+    @Test
+    @DirtiesContext
+    void retrieveAFlightTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/flight/123"))
+                // THEN
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("""
+                    {
+                        "status": 404,
+                        "message": "Flight with id 123 not found."
+   }
+                 """))
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
     void createAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
         // GIVEN
 

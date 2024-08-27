@@ -1,6 +1,7 @@
 package com.rhyun.backend.flight.service;
 
 import com.rhyun.backend.flight.dto.NewFlightDto;
+import com.rhyun.backend.flight.exception.FlightNotFountException;
 import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.model.FlightStatus;
@@ -9,9 +10,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class FlightServiceTest {
@@ -54,6 +57,34 @@ class FlightServiceTest {
 
         verify(flightRepository, times(1)).findAll();
         assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAFlightByIdTest_whenIdExists_thenReturnFlightEntity() {
+        // GIVEN
+        Flight flight1 = new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
+        when(flightRepository.findById("123")).thenReturn(Optional.of(flight1));
+
+        // WHEN
+        Flight actual = flightService.getAFlightById("123");
+
+        // THEN
+        Flight expected = new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
+
+        verify(flightRepository, times(1)).findById("123");
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void getAFlightByIdTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        when(flightRepository.findById("123")).thenReturn(Optional.empty());
+
+        // WHEN
+
+        // THEN
+        assertThrows(FlightNotFountException.class, () -> flightService.getAFlightById("123"));
+        verify(flightRepository, times(1)).findById("123");
     }
 
     @Test
