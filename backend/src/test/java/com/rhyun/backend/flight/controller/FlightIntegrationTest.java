@@ -9,11 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -74,5 +77,34 @@ class FlightIntegrationTest {
                         }
                     ]
                 """));
+    }
+
+    @Test
+    @DirtiesContext
+    void saveAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
+        // GIVEN
+
+        // WHEN
+        mockMvc.perform(post("/api/flight")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                     {
+                                         "flightCode": "KE123",
+                                         "airline": "KE",
+                                         "origin": "ICN",
+                                         "destination": "LAX",
+                                         "aircraftType": "B777",
+                                         "flightStatus": "ARRIVED"
+                                     }
+                                """))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.flightCode").value("KE123"))
+                .andExpect(jsonPath("$.airline").value("KE"))
+                .andExpect(jsonPath("$.origin").value("ICN"))
+                .andExpect(jsonPath("$.destination").value("LAX"))
+                .andExpect(jsonPath("$.aircraftType").value("B777"))
+                .andExpect(jsonPath("$.flightStatus").value("ARRIVED"));
     }
 }
