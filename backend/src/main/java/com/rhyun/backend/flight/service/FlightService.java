@@ -1,7 +1,7 @@
-package com.rhyun.backend.flights.service;
+package com.rhyun.backend.flight.service;
 
-import com.rhyun.backend.flights.model.Flight;
-import com.rhyun.backend.flights.repository.FlightRepository;
+import com.rhyun.backend.flight.model.Flight;
+import com.rhyun.backend.flight.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

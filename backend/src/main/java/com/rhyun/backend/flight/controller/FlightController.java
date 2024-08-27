@@ -1,7 +1,7 @@
-package com.rhyun.backend.flights.controller;
+package com.rhyun.backend.flight.controller;
 
-import com.rhyun.backend.flights.model.Flight;
-import com.rhyun.backend.flights.service.FlightService;
+import com.rhyun.backend.flight.model.Flight;
+import com.rhyun.backend.flight.service.FlightService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,7 +1,7 @@
-package com.rhyun.backend.flights.controller;
+package com.rhyun.backend.flight.controller;
 
-import com.rhyun.backend.flights.model.Flight;
-import com.rhyun.backend.flights.repository.FlightRepository;
+import com.rhyun.backend.flight.model.Flight;
+import com.rhyun.backend.flight.repository.FlightRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

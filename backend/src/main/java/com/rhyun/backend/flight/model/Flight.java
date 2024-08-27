@@ -1,4 +1,4 @@
-package com.rhyun.backend.flights.model;
+package com.rhyun.backend.flight.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
