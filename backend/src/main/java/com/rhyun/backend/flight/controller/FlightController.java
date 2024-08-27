@@ -26,4 +26,9 @@ public class FlightController {
     public Flight createAFlight(@RequestBody NewFlightDto newFlightDto) {
         return flightService.saveAFlight(newFlightDto);
     }
+
+    @DeleteMapping("/{id}")
+    public void removeAFlight(@PathVariable String id) {
+        flightService.deleteFlightById(id);
+    }
 }

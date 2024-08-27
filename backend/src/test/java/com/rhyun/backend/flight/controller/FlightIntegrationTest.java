@@ -13,8 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -81,7 +81,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
-    void saveAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
+    void createAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
         // GIVEN
 
         // WHEN
@@ -106,5 +106,36 @@ class FlightIntegrationTest {
                 .andExpect(jsonPath("$.destination").value("LAX"))
                 .andExpect(jsonPath("$.aircraftType").value("B777"))
                 .andExpect(jsonPath("$.flightStatus").value("ARRIVED"));
+    }
+
+    @Test
+    @DirtiesContext
+    void removeAFlightTest_whenIdExists_thenDeleteFlight() throws Exception {
+        // GIVEN
+        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+
+        mockMvc.perform(get("/api/flight"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                    [{
+                        "id": "1",
+                        "flightCode": "KE123",
+                        "airline": "KE",
+                        "origin": "ICN",
+                        "destination": "LAX",
+                        "aircraftType": "B777",
+                        "flightStatus": "ARRIVED"
+                    }]
+                """));
+
+        // WHEN
+        mockMvc.perform(delete("/api/flight/1"))
+                // THEN
+                .andDo(print())
+                .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/flight"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
     }
 }

@@ -35,4 +35,8 @@ public class FlightService {
 
         return flightRepository.save(flightToSave);
     }
+
+    public void deleteFlightById(String id) {
+        flightRepository.deleteById(id);
+    }
 }

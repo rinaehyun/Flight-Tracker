@@ -75,4 +75,16 @@ class FlightServiceTest {
         verify(idService, times(1)).randomId();
         assertEquals(expected, actual);
     }
+
+    @Test
+    void deleteFlightByIdTest_whenIdExists_thenDeleteFlight() {
+        // GIVEN
+        doNothing().when(flightRepository).deleteById("1");
+        // WHEN
+
+        // THEN
+        flightService.deleteFlightById("1");
+        verify(flightRepository, times(1)).deleteById("1");
+
+    }
 }
