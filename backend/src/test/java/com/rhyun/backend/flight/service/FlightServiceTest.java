@@ -1,6 +1,6 @@
 package com.rhyun.backend.flight.service;
 
-import com.rhyun.backend.flight.dto.NewFlightDto;
+import com.rhyun.backend.flight.dto.FlightDto;
 import com.rhyun.backend.flight.exception.FlightNotFountException;
 import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
@@ -13,8 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class FlightServiceTest {
@@ -90,17 +89,17 @@ class FlightServiceTest {
     @Test
     void saveAFlightTest_whenPayloadIsCorrect_thenReturnNewFlight() {
         // GIVEN
-        NewFlightDto newFlightDto = new NewFlightDto("KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
+        FlightDto flightDto = new FlightDto("KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
         Flight flightToSave = new Flight("1", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
         when(flightRepository.save(flightToSave)).thenReturn(flightToSave);
         when(idService.randomId()).thenReturn(flightToSave.id());
 
         // WHEN
-        Flight actual = flightService.saveAFlight(newFlightDto);
+        Flight actual = flightService.saveAFlight(flightDto);
 
         // THEN
-        Flight expected = new Flight("1", newFlightDto.flightCode(), newFlightDto.airline(),
-                newFlightDto.origin(), newFlightDto.destination(), newFlightDto.aircraftType(), newFlightDto.flightStatus());
+        Flight expected = new Flight("1", flightDto.flightCode(), flightDto.airline(),
+                flightDto.origin(), flightDto.destination(), flightDto.aircraftType(), flightDto.flightStatus());
 
         verify(flightRepository, times(1)).save(flightToSave);
         verify(idService, times(1)).randomId();
@@ -117,5 +116,43 @@ class FlightServiceTest {
         flightService.deleteFlightById("1");
         verify(flightRepository, times(1)).deleteById("1");
 
+    }
+
+    @Test
+    void updateFlightByIdTest_whenIdExists_thenUpdateFlight() {
+        // GIVEN
+        Flight original = new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED);
+        FlightDto updatedDto = new FlightDto("KE123", Airline.KE, "ICN", "NYC", "A380", FlightStatus.SCHEDULED);
+        Flight updated = new Flight("123", updatedDto.flightCode(), updatedDto.airline(),
+                updatedDto.origin(), updatedDto.destination(), updatedDto.aircraftType(), updatedDto.flightStatus());
+
+        when(flightRepository.findById("123")).thenReturn(Optional.of(original));
+        when(flightRepository.save(updated)).thenReturn(updated);
+
+        // WHEN
+        Flight actual = flightService.updateFlightById("123", updatedDto);
+
+        // THEN
+        verify(flightRepository, times(1)).findById("123");
+        verify(flightRepository, times(1)).save(updated);
+
+        assertNotNull(actual);
+        assertEquals(updated, actual);
+    }
+
+    @Test
+    void updateFlightByIdTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        FlightDto updatedDto = new FlightDto("KE123", Airline.KE, "ICN", "NYC", "A380", FlightStatus.SCHEDULED);
+        Flight updated = new Flight("123", updatedDto.flightCode(), updatedDto.airline(),
+                updatedDto.origin(), updatedDto.destination(), updatedDto.aircraftType(), updatedDto.flightStatus());
+
+        when(flightRepository.findById("123")).thenReturn(Optional.empty());
+        // WHEN
+
+        // THEN
+        assertThrows(FlightNotFountException.class, () -> flightService.updateFlightById("123", updatedDto));
+        verify(flightRepository, times(1)).findById("123");
+        verify(flightRepository, never()).save(updated);
     }
 }

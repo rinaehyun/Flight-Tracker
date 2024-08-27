@@ -1,6 +1,6 @@
 package com.rhyun.backend.flight.controller;
 
-import com.rhyun.backend.flight.dto.NewFlightDto;
+import com.rhyun.backend.flight.dto.FlightDto;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.service.FlightService;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +28,20 @@ public class FlightController {
     }
 
     @PostMapping
-    public Flight createAFlight(@RequestBody NewFlightDto newFlightDto) {
-        return flightService.saveAFlight(newFlightDto);
+    public Flight createAFlight(@RequestBody FlightDto flightDto) {
+        return flightService.saveAFlight(flightDto);
     }
 
     @DeleteMapping("/{id}")
     public void removeAFlight(@PathVariable String id) {
         flightService.deleteFlightById(id);
+    }
+
+    @PutMapping("/{id}")
+    public Flight updateAFlight(
+            @PathVariable String id,
+            @RequestBody FlightDto flightDto
+    ) {
+        return flightService.updateFlightById(id, flightDto);
     }
 }

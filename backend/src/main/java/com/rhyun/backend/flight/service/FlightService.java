@@ -1,6 +1,6 @@
 package com.rhyun.backend.flight.service;
 
-import com.rhyun.backend.flight.dto.NewFlightDto;
+import com.rhyun.backend.flight.dto.FlightDto;
 import com.rhyun.backend.flight.exception.FlightNotFountException;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.repository.FlightRepository;
@@ -28,15 +28,15 @@ public class FlightService {
                 .orElseThrow(() -> new FlightNotFountException("Flight with id " + id + " not found."));
     }
 
-    public Flight saveAFlight(NewFlightDto newFlightDto) {
+    public Flight saveAFlight(FlightDto flightDto) {
         Flight flightToSave = new Flight(
                 idService.randomId(),
-                newFlightDto.flightCode(),
-                newFlightDto.airline(),
-                newFlightDto.origin(),
-                newFlightDto.destination(),
-                newFlightDto.aircraftType(),
-                newFlightDto.flightStatus()
+                flightDto.flightCode(),
+                flightDto.airline(),
+                flightDto.origin(),
+                flightDto.destination(),
+                flightDto.aircraftType(),
+                flightDto.flightStatus()
         );
 
         return flightRepository.save(flightToSave);
@@ -44,5 +44,18 @@ public class FlightService {
 
     public void deleteFlightById(String id) {
         flightRepository.deleteById(id);
+    }
+
+    public Flight updateFlightById(String id, FlightDto flightDto) {
+        Flight flightToUpdate = flightRepository.findById(id)
+                .orElseThrow(() -> new FlightNotFountException("Flight with id " + id + " not found."))
+                .withFlightCode(flightDto.flightCode())
+                .withAirline(flightDto.airline())
+                .withOrigin(flightDto.origin())
+                .withDestination(flightDto.destination())
+                .withAircraftType(flightDto.aircraftType())
+                .withFlightStatus(flightDto.flightStatus());
+
+        return flightRepository.save(flightToUpdate);
     }
 }

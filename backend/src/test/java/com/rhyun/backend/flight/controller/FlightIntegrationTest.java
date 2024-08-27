@@ -116,7 +116,7 @@ class FlightIntegrationTest {
                     {
                         "status": 404,
                         "message": "Flight with id 123 not found."
-   }
+                    }
                  """))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
@@ -179,5 +179,67 @@ class FlightIntegrationTest {
         mockMvc.perform(get("/api/flight"))
                 .andExpect(status().isOk())
                 .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAFlightTest_whenIdExists_thenUpdateFlight() throws Exception {
+        // GIVEN
+        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+
+        // WHEN
+        mockMvc.perform(put("/api/flight/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                             {
+                                 "flightCode": "LH123",
+                                 "airline": "LH",
+                                 "origin": "FRA",
+                                 "destination": "HAM",
+                                 "aircraftType": "A350",
+                                 "flightStatus": "DELAYED"
+                             }
+                        """))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                     {
+                         "id": "1",
+                         "flightCode": "LH123",
+                         "airline": "LH",
+                         "origin": "FRA",
+                         "destination": "HAM",
+                         "aircraftType": "A350",
+                         "flightStatus": "DELAYED"
+                     }
+                 """));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAFlightTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/flight/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                     {
+                         "flightCode": "LH123",
+                         "airline": "LH",
+                         "origin": "FRA",
+                         "destination": "HAM",
+                         "aircraftType": "A350",
+                         "flightStatus": "DELAYED"
+                     }
+                """))
+                // THEN
+                .andExpect(status().isNotFound())
+                .andExpect(content().json("""
+                    {
+                        "status": 404,
+                        "message": "Flight with id 1 not found."
+                    }
+                 """))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 }

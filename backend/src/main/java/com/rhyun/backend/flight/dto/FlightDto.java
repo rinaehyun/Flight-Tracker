@@ -5,7 +5,7 @@ import com.rhyun.backend.flight.model.FlightStatus;
 import lombok.With;
 
 @With
-public record NewFlightDto(
+public record FlightDto(
         String flightCode,
         Airline airline,
         String origin,
