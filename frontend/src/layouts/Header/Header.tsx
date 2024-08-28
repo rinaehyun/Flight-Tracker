@@ -1,9 +1,10 @@
 import './Header.css'
+import {Link} from "react-router-dom";
 
 export default function Header() {
     return(
         <header>
-            <h3 style={{margin: 0, paddingLeft: "20px"}}>Logo</h3>
+            <Link to={"/"}>Logo</Link>
         </header>
     )
 }
