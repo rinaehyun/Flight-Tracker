@@ -7,6 +7,7 @@ import FlightPage from "./pages/FlightPage/FlightPage.tsx";
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
+import AddFlightForm from "./pages/AddFlightForm/AddFlightForm.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -31,6 +32,7 @@ function App() {
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
                     <Route path={"/flight"} element={<FlightPage data={flightData}/>}/>
+                    <Route path={"/flight/add"} element={<AddFlightForm />}/>
                 </Routes>
             </main>
             <Footer />
