@@ -1,43 +1,41 @@
+import FlightForm from "./components/FlightForm.tsx";
+import {NewFlight} from "../../types/model/dataType.ts";
+import {FormEvent, useState} from "react";
+import axios from "axios";
+import {NavigateFunction, useNavigate} from "react-router-dom";
 
+export default function AddFlightPage() {
+    const [newFlight, setNewFlight] = useState<NewFlight>({
+        flightCode: "",
+        airline: "LH",
+        origin: "",
+        destination: "",
+        aircraftType: "",
+        flightStatus: "UNKNOWN"
+    });
 
-export default function AddFlightForm() {
+    const navigate: NavigateFunction = useNavigate();
 
-    const handleSubmit = () => {
-        console.log("Submitted!");
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log("Data submitted!");
+        newFlight.flightCode = newFlight.flightCode[0]
+        newFlight.aircraftType= newFlight.aircraftType[0]
+        axios.post("/api/flight", newFlight)
+            .then(response => console.log(response))
+            .then(error => console.log(error));
+
+        navigate("/flight")
     }
 
     return (
         <>
             <h3>Add A New Flight</h3>
-            <form onSubmit={handleSubmit} className={"book-form"}>
-
-
-                <div className={`book-info`}>
-                    <label className={"book-label align-right"} htmlFor={"title"}>Title</label>
-                    <input
-                        type={"text"}
-                        name={"title"}
-                        value={book.title}
-                        onChange={handleChange}
-                        required={true}
-                        disabled={!editable}
-                    />
-                </div>
-
-
-                <div className={`book-info`}>
-                    <label htmlFor={"publicationDate"} className={"book-label align-right"}>Publication Date</label>
-                    <input
-                        type={"date"}
-                        name={"publicationDate"}
-                        value={book.publicationDate}
-                        onChange={handleChange}
-                        required={true}
-                        disabled={!editable}
-                    />
-                </div>
-                {editable && <button type={"submit"}>{action}</button>}
-            </form>
+            <FlightForm
+                newFlight={newFlight}
+                setNewFlight={setNewFlight}
+                handleSubmit={handleSubmit}
+            />
         </>
     )
 }

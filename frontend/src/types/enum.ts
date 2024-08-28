@@ -1,4 +1,5 @@
 export enum Airline {
+    UNKNOWN = 'Unknown',
     CI = 'CHINA AIR',
     DL = 'DELTA AIR LINES',
     KE = 'KOREAN AIR',
@@ -11,6 +12,11 @@ export enum Airline {
     TK = 'TURKISH AIRLINES'
 }
 
+
+export type FlightStatus = "SCHEDULED" | "BOARDING" | "DELAYED" | "IN_AIR" |
+    "LANDED"| "CANCELLED" | "DIVERTED" | "ARRIVED" | "UNKNOWN";
+
+/*
 export enum FlightStatus {
     SCHEDULED,
     BOARDING,
@@ -21,4 +27,4 @@ export enum FlightStatus {
     DIVERTED,
     ARRIVED,
     UNKNOWN
-}
+}*/
