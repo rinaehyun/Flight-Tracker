@@ -1,9 +1,9 @@
 import './FlightForm.css'
-import {AirlinesAsList, NewFlight} from "../../../types/model/dataType.ts";
+import {NewFlight} from "../../../types/model/dataType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
-import {Autocomplete, TextField} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {FlightStatus} from "../../../types/enum.ts";
+import {FlightStatus, FlightStatusList} from "../../../types/enum.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -13,9 +13,9 @@ type FlightFormProps = {
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit}: FlightFormProps) {
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement>) => {
-        console.log(event.target);
-        setNewFlight({...newFlight, [event.target.name]: [event.target.value]});
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
+        const { name, value } = event.target;
+        setNewFlight({ ...newFlight, [name]: value });
     }
 
     return (
@@ -69,18 +69,23 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 value={newFlight.aircraftType}
                 onChange={handleChange}
             />
-            {/*<TextField
-                id={"outlined-basic"}
-                label={"Flight Status"}
-                variant={"standard"}
-                placeholder={"Unknown"}
-                color={"primary"}
-                sx={{ width: "100%" }}
-                name={"flightStatus"}
-                value={newFlight.flightStatus}
-                onChange={handleChange}
-            />*/}
-            {/*<FormControl fullWidth>
+            <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
+                <InputLabel id="demo-simple-select-standard-label">Flight Status</InputLabel>
+                <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    name={"flightStatus"}
+                    value={newFlight.flightStatus}
+                    onChange={handleChange}
+                    label="Age"
+                >
+                    {FlightStatusList.map((status) => (
+                        <MenuItem key={status} value={status}>{capitalizeFirstLetter(status)}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+                {/*<FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Age</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
@@ -95,7 +100,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                     <MenuItem value={30}>Thirty</MenuItem>
                 </Select>
             </FormControl>*/}
-            <button style={{marginTop: "50px"}}>Create a Flight Data</button>
+            <button style={{ marginTop: "50px" }}>Add a Flight Data</button>
         </form>
-    )
+)
 }

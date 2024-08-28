@@ -16,15 +16,7 @@ export enum Airline {
 export type FlightStatus = "SCHEDULED" | "BOARDING" | "DELAYED" | "IN_AIR" |
     "LANDED"| "CANCELLED" | "DIVERTED" | "ARRIVED" | "UNKNOWN";
 
-/*
-export enum FlightStatus {
-    SCHEDULED,
-    BOARDING,
-    DELAYED,
-    IN_AIR,
-    LANDED,
-    CANCELLED,
-    DIVERTED,
-    ARRIVED,
-    UNKNOWN
-}*/
+export const FlightStatusList : FlightStatus[] = [
+    "SCHEDULED", "BOARDING", "DELAYED", "IN_AIR",
+    "LANDED", "CANCELLED", "DIVERTED", "ARRIVED", "UNKNOWN"
+];

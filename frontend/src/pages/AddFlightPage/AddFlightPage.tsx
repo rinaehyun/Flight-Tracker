@@ -19,8 +19,6 @@ export default function AddFlightPage() {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log("Data submitted!");
-        newFlight.flightCode = newFlight.flightCode[0]
-        newFlight.aircraftType= newFlight.aircraftType[0]
         axios.post("/api/flight", newFlight)
             .then(response => console.log(response))
             .then(error => console.log(error));
