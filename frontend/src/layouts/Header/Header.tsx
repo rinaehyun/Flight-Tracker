@@ -1,10 +1,15 @@
 import './Header.css'
-import {Link} from "react-router-dom";
+import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 
 export default function Header() {
+
     return(
         <header>
-            <Link to={"/"}>Logo</Link>
+            <FlightTakeoffIcon
+                sx={{ fontSize: "25px"}}
+                onClick={() => window.location.href='/'}
+                style={{ marginLeft: "20px", cursor: "pointer"}}
+            />
         </header>
     )
 }
