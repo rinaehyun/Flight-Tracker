@@ -35,6 +35,8 @@ public class FlightService {
                 flightDto.airline(),
                 flightDto.origin(),
                 flightDto.destination(),
+                flightDto.departureTime(),
+                flightDto.arrivalTime(),
                 flightDto.aircraftType(),
                 flightDto.flightStatus()
         );

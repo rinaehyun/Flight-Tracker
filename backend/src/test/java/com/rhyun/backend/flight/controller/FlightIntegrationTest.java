@@ -13,6 +13,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDateTime;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -27,6 +29,9 @@ class FlightIntegrationTest {
 
     @Autowired
     private FlightRepository flightRepository;
+
+    private final LocalDateTime localDateTimeOrigin = LocalDateTime.parse("2023-01-23T15:30:00");
+    private final LocalDateTime localDateTimeDestination = LocalDateTime.parse("2023-01-24T01:15:00");
 
     @BeforeEach
     void setUp() {
@@ -48,8 +53,10 @@ class FlightIntegrationTest {
     @Test
     void retrieveAllFlightsTest_whenRepoHasData_thenReturnMovieList() throws Exception {
         // GIVEN
-        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
-        flightRepository.save(new Flight("456", "KLM323", Airline.KL, "AMS", "LAX", "A380", FlightStatus.SCHEDULED));
+        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX",
+                localDateTimeOrigin, localDateTimeDestination,"B777", FlightStatus.ARRIVED));
+        flightRepository.save(new Flight("456", "KLM323", Airline.KL, "AMS", "LAX",
+                localDateTimeOrigin, localDateTimeDestination,"A380", FlightStatus.SCHEDULED));
 
         // WHEN
         mockMvc.perform(get("/api/flight"))
@@ -58,22 +65,26 @@ class FlightIntegrationTest {
                 .andExpect(content().json("""
                     [
                         {
-                          "id": "123",
-                          "flightCode": "KE123",
-                          "airline": "KE",
-                          "origin": "ICN",
-                          "destination": "LAX",
-                          "aircraftType": "B777",
-                          "flightStatus": "ARRIVED"
+                            "id": "123",
+                            "flightCode": "KE123",
+                            "airline": "KE",
+                            "origin": "ICN",
+                            "destination": "LAX",
+                            "departureTime": "2023-01-23T15:30:00",
+                            "arrivalTime": "2023-01-24T01:15:00",
+                            "aircraftType": "B777",
+                            "flightStatus": "ARRIVED"
                         },
                         {
-                          "id": "456",
-                          "flightCode": "KLM323",
-                          "airline": "KL",
-                          "origin": "AMS",
-                          "destination": "LAX",
-                          "aircraftType": "A380",
-                          "flightStatus": "SCHEDULED"
+                            "id": "456",
+                            "flightCode": "KLM323",
+                            "airline": "KL",
+                            "origin": "AMS",
+                            "destination": "LAX",
+                            "departureTime": "2023-01-23T15:30:00",
+                            "arrivalTime": "2023-01-24T01:15:00",
+                            "aircraftType": "A380",
+                            "flightStatus": "SCHEDULED"
                         }
                     ]
                 """));
@@ -83,7 +94,8 @@ class FlightIntegrationTest {
     @DirtiesContext
     void retrieveAFlightTest_whenIdExists_thenReturnFlightEntity() throws Exception {
         // GIVEN
-        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+        flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX",
+                localDateTimeOrigin, localDateTimeDestination,"B777", FlightStatus.ARRIVED));
 
         // WHEN
         mockMvc.perform(get("/api/flight/123"))
@@ -91,13 +103,15 @@ class FlightIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json("""
                     {
-                      "id": "123",
-                      "flightCode": "KE123",
-                      "airline": "KE",
-                      "origin": "ICN",
-                      "destination": "LAX",
-                      "aircraftType": "B777",
-                      "flightStatus": "ARRIVED"
+                        "id": "123",
+                        "flightCode": "KE123",
+                        "airline": "KE",
+                        "origin": "ICN",
+                        "destination": "LAX",
+                        "departureTime": "2023-01-23T15:30:00",
+                        "arrivalTime": "2023-01-24T01:15:00",
+                        "aircraftType": "B777",
+                        "flightStatus": "ARRIVED"
                     }
                 """));
 
@@ -135,6 +149,8 @@ class FlightIntegrationTest {
                                          "airline": "KE",
                                          "origin": "ICN",
                                          "destination": "LAX",
+                                         "departureTime": "2023-01-23T15:30:00",
+                                         "arrivalTime": "2023-01-24T01:15:00",
                                          "aircraftType": "B777",
                                          "flightStatus": "ARRIVED"
                                      }
@@ -146,6 +162,8 @@ class FlightIntegrationTest {
                 .andExpect(jsonPath("$.airline").value("KE"))
                 .andExpect(jsonPath("$.origin").value("ICN"))
                 .andExpect(jsonPath("$.destination").value("LAX"))
+                .andExpect(jsonPath("$.departureTime").value("2023-01-23T15:30:00"))
+                .andExpect(jsonPath("$.arrivalTime").value("2023-01-24T01:15:00"))
                 .andExpect(jsonPath("$.aircraftType").value("B777"))
                 .andExpect(jsonPath("$.flightStatus").value("ARRIVED"));
     }
@@ -154,7 +172,8 @@ class FlightIntegrationTest {
     @DirtiesContext
     void removeAFlightTest_whenIdExists_thenDeleteFlight() throws Exception {
         // GIVEN
-        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
+                localDateTimeOrigin, localDateTimeDestination,"B777", FlightStatus.ARRIVED));
 
         mockMvc.perform(get("/api/flight"))
                 .andExpect(status().isOk())
@@ -165,6 +184,8 @@ class FlightIntegrationTest {
                         "airline": "KE",
                         "origin": "ICN",
                         "destination": "LAX",
+                        "departureTime": "2023-01-23T15:30:00",
+                        "arrivalTime": "2023-01-24T01:15:00",
                         "aircraftType": "B777",
                         "flightStatus": "ARRIVED"
                     }]
@@ -185,7 +206,8 @@ class FlightIntegrationTest {
     @DirtiesContext
     void updateAFlightTest_whenIdExists_thenUpdateFlight() throws Exception {
         // GIVEN
-        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX", "B777", FlightStatus.ARRIVED));
+        flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
+                localDateTimeOrigin, localDateTimeDestination,"B777", FlightStatus.ARRIVED));
 
         // WHEN
         mockMvc.perform(put("/api/flight/1")
@@ -196,6 +218,8 @@ class FlightIntegrationTest {
                                  "airline": "LH",
                                  "origin": "FRA",
                                  "destination": "HAM",
+                                 "departureTime": "2023-01-23T15:30:00",
+                                 "arrivalTime": "2023-01-24T01:15:00",
                                  "aircraftType": "A350",
                                  "flightStatus": "DELAYED"
                              }
@@ -209,6 +233,8 @@ class FlightIntegrationTest {
                          "airline": "LH",
                          "origin": "FRA",
                          "destination": "HAM",
+                         "departureTime": "2023-01-23T15:30:00",
+                         "arrivalTime": "2023-01-24T01:15:00",
                          "aircraftType": "A350",
                          "flightStatus": "DELAYED"
                      }
@@ -228,6 +254,8 @@ class FlightIntegrationTest {
                          "airline": "LH",
                          "origin": "FRA",
                          "destination": "HAM",
+                         "departureTime": "2023-01-23T15:30:00",
+                         "arrivalTime": "2023-01-24T01:15:00",
                          "aircraftType": "A350",
                          "flightStatus": "DELAYED"
                      }
