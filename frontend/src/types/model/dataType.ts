@@ -6,6 +6,8 @@ export type Flight = {
     airline: Airline,
     origin: string,
     destination: string,
+    departureTime: string,
+    arrivalTime: string,
     aircraftType: string,
     flightStatus: FlightStatus
 }
