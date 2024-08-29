@@ -59,6 +59,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 onInputChange={handleAirlineChange}
                 renderInput={(params) =>
                     <TextField
+                        required
                         {...params}
                         label={"Airline"}
                         variant={"standard"}
@@ -69,6 +70,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 }
             />
             <TextField
+                required
                 id={"outlined-basic"}
                 label={"Flight Code"}
                 variant={"standard"}
@@ -87,6 +89,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 onInputChange={handleOriginChange}
                 renderInput={(params) =>
                     <TextField
+                        required
                         {...params}
                         label={"Origin"}
                         variant={"standard"}
@@ -104,6 +107,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 onInputChange={handleDestinationChange}
                 renderInput={(params) =>
                     <TextField
+                        required
                         {...params}
                         label={"Destination"}
                         variant={"standard"}
@@ -114,6 +118,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 }
             />
             <TextField
+                required
                 id={"outlined-basic"}
                 label={"Aircraft Type"}
                 variant={"standard"}
@@ -132,7 +137,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                     name={"flightStatus"}
                     value={newFlight.flightStatus}
                     onChange={handleChange}
-                    label="Age"
+                    label="Flight Status"
+                    style={{ textAlign: "left" }}
                 >
                     {FlightStatusList.map((status) => (
                         <MenuItem key={status} value={status}>{capitalizeFirstLetter(status)}</MenuItem>

@@ -4,7 +4,11 @@ import {FormEvent, useState} from "react";
 import axios from "axios";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
-export default function AddFlightPage() {
+type AddFlightPageProps = {
+    fetchAllFlights: () => void
+}
+
+export default function AddFlightPage({ fetchAllFlights }: AddFlightPageProps) {
     const [newFlight, setNewFlight] = useState<NewFlight>({
         flightCode: "",
         airline: "",
@@ -21,6 +25,7 @@ export default function AddFlightPage() {
         console.log("Data submitted!");
         axios.post("/api/flight", newFlight)
             .then(response => console.log(response))
+            .then(() => fetchAllFlights())
             .then(error => console.log(error));
 
         navigate("/flight")
