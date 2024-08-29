@@ -1,9 +1,17 @@
 import './FlightForm.css'
 import {NewFlight} from "../../../types/model/dataType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
-import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {
+    Autocomplete,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField
+} from "@mui/material";
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {Airline, AirlinesAsList, FlightStatus, FlightStatusList} from "../../../types/enum.ts";
+import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../../types/enum.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -20,29 +28,29 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
         setNewFlight({ ...newFlight, [name]: value });
     }
 
-    const handleAirlineChange = (event: SyntheticEvent<Element, Event>, value: string) => {
+    const handleAirlineChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            console.log(event.target);
-            console.log(value);
-            console.log(AirlinesAsList.filter(airline => value.includes(airline.code))[0].code);
             const airlineToSave= AirlinesAsList.filter(airline => value.includes(airline.code))[0].code;
             setNewFlight({ ...newFlight, airline: airlineToSave as Airline });
         }
     };
 
+    const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
+        if (value) {
+            const originToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
+            setNewFlight({ ...newFlight, origin: originToSave as Airport });
+        }
+    };
+
+    const handleDestinationChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
+        if (value) {
+            const destinationToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
+            setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
+        }
+    };
+
     return (
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
-            <TextField
-                id={"outlined-basic"}
-                label={"Flight Code"}
-                variant={"standard"}
-                placeholder={"KE123"}
-                color={"primary"}
-                sx={{width: "100%"}}
-                name={"flightCode"}
-                value={newFlight.flightCode}
-                onChange={handleChange}
-            />
             <Autocomplete
                 disablePortal
                 options={AirlinesAsList}
@@ -57,6 +65,51 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                         placeholder={"Korean Air"}
                         name={"airline"}
                         value={newFlight.airline}
+                    />
+                }
+            />
+            <TextField
+                id={"outlined-basic"}
+                label={"Flight Code"}
+                variant={"standard"}
+                placeholder={"KE123"}
+                color={"primary"}
+                sx={{width: "100%"}}
+                name={"flightCode"}
+                value={newFlight.flightCode}
+                onChange={handleChange}
+            />
+            <Autocomplete
+                disablePortal
+                options={AirportsAsList}
+                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                sx={{margin: "auto", fontSize: "12px"}}
+                onInputChange={handleOriginChange}
+                renderInput={(params) =>
+                    <TextField
+                        {...params}
+                        label={"Origin"}
+                        variant={"standard"}
+                        placeholder={"SFO - San Francisco, USA"}
+                        name={"origin"}
+                        value={newFlight.origin}
+                    />
+                }
+            />
+            <Autocomplete
+                disablePortal
+                options={AirportsAsList}
+                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                sx={{margin: "auto", fontSize: "12px"}}
+                onInputChange={handleDestinationChange}
+                renderInput={(params) =>
+                    <TextField
+                        {...params}
+                        label={"Destination"}
+                        variant={"standard"}
+                        placeholder={"FRA - Frankfurt, Germany"}
+                        name={"destination"}
+                        value={newFlight.destination}
                     />
                 }
             />
@@ -86,22 +139,6 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                     ))}
                 </Select>
             </FormControl>
-
-                {/*<FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Age</InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={newFlight.flightStatus}
-                    label={"Flight Status"}
-                    onChange={handleChange}
-                >
-                    {FlightStatus}
-                    <MenuItem value={10}>Flight</MenuItem>
-                    <MenuItem value={20}>Twenty</MenuItem>
-                    <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-            </FormControl>*/}
             <button style={{ marginTop: "50px" }}>Add a Flight Data</button>
         </form>
 )
