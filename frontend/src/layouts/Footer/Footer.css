@@ -1,7 +1,7 @@
 footer {
     min-height: 80px;
     background-color: #213547;
-    position:absolute;
+    position:sticky;
     left:0;
     bottom:0;
     right:0;
