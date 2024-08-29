@@ -8,7 +8,7 @@ type FlightListProps = {
     data: Flight[]
 }
 
-export default function FlightList({ data }: FlightListProps) {
+export default function FlightList({ data }: Readonly<FlightListProps>) {
 
     return(
         <div>

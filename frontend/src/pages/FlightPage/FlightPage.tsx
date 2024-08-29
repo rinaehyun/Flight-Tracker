@@ -6,7 +6,7 @@ type FlightPageProps = {
     data: Flight[]
 }
 
-export default function FlightPage({ data }: FlightPageProps) {
+export default function FlightPage({ data }: Readonly<FlightPageProps>) {
 
     return (
         <div>
