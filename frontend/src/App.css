@@ -11,9 +11,9 @@
   height: 100vh;
 }
 
-
 main {
   flex-grow: 1; /* Main content takes up remaining space */
   padding: 20px;
-  /* Add any other styling you need for your main content */
+  height: auto;
+  overflow: scroll;
 }
