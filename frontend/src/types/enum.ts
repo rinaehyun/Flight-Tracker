@@ -12,6 +12,10 @@ export enum Airline {
     TK = 'TURKISH AIRLINES'
 }
 
+export const AirlinesAsList = Object.entries(Airline).map(([key, value]) => ({
+    code: key,
+    name: value
+}));
 
 export type FlightStatus = "SCHEDULED" | "BOARDING" | "DELAYED" | "IN_AIR" |
     "LANDED"| "CANCELLED" | "DIVERTED" | "ARRIVED" | "UNKNOWN";

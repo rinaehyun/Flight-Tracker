@@ -10,11 +10,6 @@ export type Flight = {
     flightStatus: FlightStatus
 }
 
-export const AirlinesAsList = Object.entries(Airline).map(([key, value]) => ({
-    code: key,
-    name: value
-}));
-
 export type NewFlight = {
     flightCode: string,
     airline: string,

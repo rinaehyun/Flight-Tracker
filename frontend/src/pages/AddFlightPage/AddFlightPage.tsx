@@ -7,7 +7,7 @@ import {NavigateFunction, useNavigate} from "react-router-dom";
 export default function AddFlightPage() {
     const [newFlight, setNewFlight] = useState<NewFlight>({
         flightCode: "",
-        airline: "LH",
+        airline: "",
         origin: "",
         destination: "",
         aircraftType: "",

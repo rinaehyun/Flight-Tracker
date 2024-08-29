@@ -1,9 +1,9 @@
 import './FlightForm.css'
 import {NewFlight} from "../../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
-import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
+import {Autocomplete, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {FlightStatus, FlightStatusList} from "../../../types/enum.ts";
+import {Airline, AirlinesAsList, FlightStatus, FlightStatusList} from "../../../types/enum.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -15,8 +15,20 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
+        console.log(name);
+        console.log(value);
         setNewFlight({ ...newFlight, [name]: value });
     }
+
+    const handleAirlineChange = (event: SyntheticEvent<Element, Event>, value: string) => {
+        if (value) {
+            console.log(event.target);
+            console.log(value);
+            console.log(AirlinesAsList.filter(airline => value.includes(airline.code))[0].code);
+            const airlineToSave= AirlinesAsList.filter(airline => value.includes(airline.code))[0].code;
+            setNewFlight({ ...newFlight, airline: airlineToSave as Airline });
+        }
+    };
 
     return (
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
@@ -28,23 +40,15 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 color={"primary"}
                 sx={{width: "100%"}}
                 name={"flightCode"}
-                value={newFlight.flightCode.toString()}
+                value={newFlight.flightCode}
                 onChange={handleChange}
             />
-            {/*<Autocomplete
+            <Autocomplete
                 disablePortal
                 options={AirlinesAsList}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
-                renderOption={(props, option) => {
-                    return (
-                        <span {...props} style={{
-                            textAlign: "left",
-                            fontSize: "14px",
-                            flex: 1
-                        }}>{option.code + ' - ' + capitalizeFirstLetter(option.name)}</span>
-                    );
-                }}
+                onInputChange={handleAirlineChange}
                 renderInput={(params) =>
                     <TextField
                         {...params}
@@ -53,11 +57,9 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                         placeholder={"Korean Air"}
                         name={"airline"}
                         value={newFlight.airline}
-                        onChange={() => console.log(newFlight.airline)}
                     />
                 }
-            />*/}
-
+            />
             <TextField
                 id={"outlined-basic"}
                 label={"Aircraft Type"}
