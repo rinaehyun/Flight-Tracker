@@ -13,6 +13,6 @@ main {
   flex-grow: 1; /* Main content takes up remaining space */
   padding: 20px;
   height: auto;
-  overflow: scroll;
   background-color: #ebd0cd;
+  overflow-y: auto;
 }
