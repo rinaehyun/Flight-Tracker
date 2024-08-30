@@ -1,3 +1,4 @@
+import './FlightPage.css';
 import {Flight} from "../../types/model/dataType.ts";
 import FlightList from "./components/FlightList.tsx";
 import FlightFilter from "./components/FlightFilter.tsx";
@@ -18,7 +19,7 @@ export default function FlightPage({ data }: Readonly<FlightPageProps>) {
     }
 
     return (
-        <div>
+        <div className={"flight-page"}>
             <Box
                 sx={{
                     display: 'flex',
