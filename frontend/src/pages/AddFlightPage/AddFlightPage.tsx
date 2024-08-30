@@ -11,7 +11,7 @@ type AddFlightPageProps = {
     fetchAllFlights: () => void
 }
 
-export default function AddFlightPage({ fetchAllFlights }: AddFlightPageProps) {
+export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPageProps>) {
     const [newFlight, setNewFlight] = useState<NewFlight>({
         flightCode: "",
         airline: "",

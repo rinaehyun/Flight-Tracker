@@ -19,7 +19,7 @@ type FlightFormProps = {
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
-export default function FlightForm({newFlight, setNewFlight, handleSubmit}: FlightFormProps) {
+export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Readonly<FlightFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
