@@ -80,6 +80,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 name={"flightCode"}
                 value={newFlight.flightCode}
                 onChange={handleChange}
+                autoComplete={"off"}
             />
             <Autocomplete
                 disablePortal
@@ -148,6 +149,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                 name={"aircraftType"}
                 value={newFlight.aircraftType}
                 onChange={handleChange}
+                autoComplete={"off"}
             />
             <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                 <InputLabel id="demo-simple-select-standard-label">Flight Status</InputLabel>
