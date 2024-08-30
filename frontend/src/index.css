@@ -75,6 +75,10 @@
   font-style: italic;
 }
 
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
 
 h2 {
   color: #223030;
@@ -130,29 +134,30 @@ body {
   min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
 
 button {
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 0.9em;
+  font-weight: 700;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #223030;
+  color: antiquewhite;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 250ms;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: antiquewhite;
+  color: #223030;
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 1px auto #223030;
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {
