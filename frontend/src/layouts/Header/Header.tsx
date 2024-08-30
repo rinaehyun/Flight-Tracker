@@ -12,11 +12,11 @@ export default function Header() {
                 style={{marginLeft: "20px", cursor: "pointer"}}
             />
             <nav>
-                <ul>
-                    <li>
+                <ul className={"nav-ul"}>
+                    <li className={"nav-li"}>
                         <Link to={"/"}>Home</Link>
                     </li>
-                    <li>
+                    <li className={"nav-li"}>
                         <Link to={"/flight"}>Flight</Link>
                     </li>
                 </ul>
