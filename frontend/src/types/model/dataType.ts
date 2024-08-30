@@ -11,3 +11,14 @@ export type Flight = {
     aircraftType: string,
     flightStatus: FlightStatus
 }
+
+export type NewFlight = {
+    flightCode: string,
+    airline: string,
+    origin: string,
+    destination: string,
+    departureTime: string,
+    arrivalTime: string,
+    aircraftType: string,
+    flightStatus: FlightStatus
+}
