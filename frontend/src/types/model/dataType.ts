@@ -17,6 +17,8 @@ export type NewFlight = {
     airline: string,
     origin: string,
     destination: string,
+    departureTime: string,
+    arrivalTime: string,
     aircraftType: string,
     flightStatus: FlightStatus
 }

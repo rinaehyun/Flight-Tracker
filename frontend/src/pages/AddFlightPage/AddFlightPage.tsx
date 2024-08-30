@@ -14,6 +14,8 @@ export default function AddFlightPage({ fetchAllFlights }: AddFlightPageProps) {
         airline: "",
         origin: "",
         destination: "",
+        departureTime: "",
+        arrivalTime: "",
         aircraftType: "",
         flightStatus: "UNKNOWN"
     });
