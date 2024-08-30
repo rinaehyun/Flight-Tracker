@@ -99,6 +99,16 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                     />
                 }
             />
+            <div className={'time-input-container'}>
+                <label className={'time-label'}>Departure Time</label>
+                <input
+                    type={"datetime-local"}
+                    name={"departureTime"}
+                    value={newFlight.departureTime}
+                    onChange={handleChange}
+                    required={true}
+                />
+            </div>
             <Autocomplete
                 disablePortal
                 options={AirportsAsList}
@@ -117,18 +127,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Flig
                     />
                 }
             />
-            <div>
-                <label>Departure Time</label>
-                <input
-                    type={"datetime-local"}
-                    name={"departureTime"}
-                    value={newFlight.departureTime}
-                    onChange={handleChange}
-                    required={true}
-                />
-            </div>
-            <div>
-                <label>Arrival Time</label>
+            <div className={'time-input-container'}>
+                <label className={'time-label'}>Arrival Time</label>
                 <input
                     type={"datetime-local"}
                     name={"arrivalTime"}

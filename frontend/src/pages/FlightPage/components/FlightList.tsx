@@ -17,20 +17,20 @@ export default function FlightList({ data }: Readonly<FlightListProps>) {
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-airline"}>
                         <FlightTakeoffIcon sx={{ fontSize: "25px"}}/>
-                        <p>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</p>
-                        <p>{flight.flightCode}</p>
+                        <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
+                        <h4>{flight.flightCode}</h4>
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
-                            <p style={{fontSize: "20px"}}>{flight.origin}</p>
-                            <p style={{fontSize: "15px"}}>{formatDate(flight.departureTime)}</p>
-                            <p style={{fontSize: "15px"}}>{formatTime(flight.departureTime)}</p>
+                            <h3>{flight.origin}</h3>
+                            <h5>{formatDate(flight.departureTime)}</h5>
+                            <h5>{formatTime(flight.departureTime)}</h5>
                         </div>
                         <p style={{fontSize: "16px"}}>{calculateDuration(flight.departureTime, flight.arrivalTime)}</p>
                         <div className={"flight-destination"}>
-                            <p style={{fontSize: "20px"}}>{flight.destination}</p>
-                            <p style={{fontSize: "15px"}}>{formatDate(flight.arrivalTime)}</p>
-                            <p style={{fontSize: "15px"}}>{formatTime(flight.arrivalTime)}</p>
+                            <h3>{flight.destination}</h3>
+                            <h5>{formatDate(flight.arrivalTime)}</h5>
+                            <h5>{formatTime(flight.arrivalTime)}</h5>
                         </div>
                     </div>
                 </div>
