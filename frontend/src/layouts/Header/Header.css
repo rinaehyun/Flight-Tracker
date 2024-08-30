@@ -24,7 +24,7 @@ header {
         gap: 100px;
     }
 
-    ul {
+    .nav-ul {
         gap: 20px;
     }
 }

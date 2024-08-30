@@ -2,6 +2,6 @@
 
 export default function FlightFilter() {
     return (
-        <section style={{ backgroundColor: "orange", borderRadius: "3px", height: "70px"}}>Filter Area</section>
+        <section style={{ border: "1px solid #523d35", borderRadius: "2px", height: "30px", alignContent: "center" }}>Filter Area</section>
     )
 }
