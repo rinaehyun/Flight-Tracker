@@ -3,12 +3,14 @@ import {Flight} from "../../../types/model/dataType.ts";
 import {Airline} from "../../../types/enum.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
+import {calculateDuration, formatDate, formatTime} from "../../../utils/functionsForTime.ts";
 
 type FlightListProps = {
     data: Flight[]
 }
 
-export default function FlightList({ data }: FlightListProps) {
+export default function FlightList({ data }: Readonly<FlightListProps>) {
+
     return(
         <div>
             {data.map(flight => (
@@ -19,9 +21,17 @@ export default function FlightList({ data }: FlightListProps) {
                         <p>{flight.flightCode}</p>
                     </div>
                     <div className={"flight-card-detail"}>
-                        <p style={{fontSize: "20px"}}>{flight.origin}</p>
-                        <p style={{fontSize: "16px"}}>13 hours</p>
-                        <p style={{fontSize: "20px"}}>{flight.destination}</p>
+                        <div className={"flight-origin"}>
+                            <p style={{fontSize: "20px"}}>{flight.origin}</p>
+                            <p style={{fontSize: "15px"}}>{formatDate(flight.departureTime)}</p>
+                            <p style={{fontSize: "15px"}}>{formatTime(flight.departureTime)}</p>
+                        </div>
+                        <p style={{fontSize: "16px"}}>{calculateDuration(flight.departureTime, flight.arrivalTime)}</p>
+                        <div className={"flight-destination"}>
+                            <p style={{fontSize: "20px"}}>{flight.destination}</p>
+                            <p style={{fontSize: "15px"}}>{formatDate(flight.arrivalTime)}</p>
+                            <p style={{fontSize: "15px"}}>{formatTime(flight.arrivalTime)}</p>
+                        </div>
                     </div>
                 </div>
             ))}

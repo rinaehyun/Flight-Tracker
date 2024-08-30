@@ -15,7 +15,7 @@
 }
 
 .flight-card-detail {
-    margin: 0 10px;
+    margin: 0 20px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
