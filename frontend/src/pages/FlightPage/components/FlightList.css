@@ -1,0 +1,23 @@
+.flight-card {
+    border: 1px solid;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+.flight-card-airline {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin: 3px 10px 0 10px;
+    align-items: center;
+}
+
+.flight-card-detail {
+    margin: 0 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

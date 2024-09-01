@@ -1,11 +1,13 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+/* COLOR PALETTE (WILL BE USED)
+    #223030
+    #523d35
+    #959d90
+    #bba5bf
+    #ebd0cd
+*/
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+:root {
+  background-color: #ebd0cd;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,21 +15,64 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+.lato-thin {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: normal;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.lato-light {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: normal;
+}
+
+.lato-regular {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.lato-bold {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.lato-black {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+}
+
+.lato-thin-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 100;
+  font-style: italic;
+}
+
+.lato-light-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 300;
+  font-style: italic;
+}
+
+.lato-regular-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.lato-bold-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.lato-black-italic {
+  font-family: "Lato", sans-serif;
+  font-weight: 900;
+  font-style: italic;
 }
 
 h1 {
@@ -35,24 +80,84 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  color: #223030;
+  font-size: 30px;
+  padding: 0;
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+}
+
+h3 {
+  color: #223030;
+  padding: 0;
+  font-family: "Lato", sans-serif;
+  font-size: 24px;
+}
+
+h4 {
+  color: #223030;
+  font-family: "Lato", sans-serif;
+  font-size: 20px;
+}
+
+h5 {
+  color: #223030;
+  font-family: "Lato", sans-serif;
+  font-size: 16px;
+}
+
+h6 {
+  color: #223030;
+  font-family: "Lato", sans-serif;
+  font-size: 12px;
+}
+
+p {
+  color: #223030;
+  font-family: "Lato", sans-serif;
+}
+
+
+a {
+  color: #223030;
+  font-weight: 700;
+  text-decoration: inherit;
+}
+a:focus {
+  color: #223030;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+
 button {
-  border-radius: 8px;
+  border-radius: 5px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
+  font-size: 0.9em;
+  font-weight: 700;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #223030;
+  color: antiquewhite;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: background-color 250ms;
 }
+
 button:hover {
-  border-color: #646cff;
+  background-color: antiquewhite;
+  color: #223030;
 }
+
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 1px auto #223030;
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {

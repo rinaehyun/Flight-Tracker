@@ -1,0 +1,30 @@
+header {
+    min-height: 50px;
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+}
+
+.nav-ul {
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.nav-li {
+    padding: 0;
+    list-style-type: none;
+    display: inline-block;
+}
+
+@media (min-width: 961px) {
+    header {
+        gap: 100px;
+    }
+
+    .nav-ul {
+        gap: 20px;
+    }
+}

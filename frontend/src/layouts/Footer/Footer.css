@@ -1,0 +1,8 @@
+footer {
+    min-height: 80px;
+    background-color: #959d90;
+    position:sticky;
+    left:0;
+    bottom:0;
+    right:0;
+}
