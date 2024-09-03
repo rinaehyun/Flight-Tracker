@@ -7,11 +7,11 @@ import {Box} from "@mui/material";
 import {NavigateFunction, useNavigate} from "react-router-dom";
 
 type FlightPageProps = {
-    data: Flight[]
+    data: Flight[],
+    fetchAllFlights: () => void
 }
 
-export default function FlightPage({ data }: Readonly<FlightPageProps>) {
-
+export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
     const navigate: NavigateFunction = useNavigate();
 
     const handleClick = () => {
@@ -35,7 +35,7 @@ export default function FlightPage({ data }: Readonly<FlightPageProps>) {
                 />
             </Box>
             <FlightFilter />
-            <FlightList data={data}/>
+            <FlightList data={data} fetchAllFlights={fetchAllFlights} />
         </div>
     )
 }
