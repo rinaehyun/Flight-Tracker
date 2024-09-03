@@ -32,7 +32,7 @@ function App() {
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
                     <Route path={"/flight"} element={<FlightPage data={flightData}/>}/>
-                    <Route path={"/flight/:id"} element={<FlightDetailPage />}/>
+                    <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights}/>}/>
                     <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights}/>}/>
                 </Routes>
             </main>

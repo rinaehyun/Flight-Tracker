@@ -37,7 +37,7 @@ export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPag
     }
 
     return (
-        <div className={"add-flight-form-container"}>
+        <article className={"add-flight-form-container"}>
             <Box
                 sx={{
                     display: 'flex',
@@ -54,7 +54,8 @@ export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPag
                 newFlight={newFlight}
                 setNewFlight={setNewFlight}
                 handleSubmit={handleSubmit}
+                buttonLabel="Add a new Flight"
             />
-        </div>
+        </article>
     )
 }

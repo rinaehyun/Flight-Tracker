@@ -16,10 +16,11 @@ import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightSt
 type FlightFormProps = {
     newFlight: NewFlight,
     setNewFlight: Dispatch<SetStateAction<NewFlight>>,
-    handleSubmit: (event: FormEvent<HTMLFormElement>) => void
+    handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
+    buttonLabel: string
 }
 
-export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Readonly<FlightFormProps>) {
+export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel}: Readonly<FlightFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
@@ -48,7 +49,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
             setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
         }
     };
-
+console.log(newFlight.origin);
     return (
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
             <Autocomplete
@@ -167,7 +168,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                     ))}
                 </Select>
             </FormControl>
-            <button style={{marginTop: "50px"}}>Add a Flight Data</button>
+            <button style={{marginTop: "50px"}}>{buttonLabel}</button>
         </form>
     )
 }
