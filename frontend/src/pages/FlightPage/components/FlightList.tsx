@@ -4,6 +4,7 @@ import {Airline} from "../../../types/enum.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
 import {calculateDuration, formatDate, formatTime} from "../../../utils/functionsForTime.ts";
+import {Link} from "react-router-dom";
 
 type FlightListProps = {
     data: Flight[]
@@ -21,7 +22,7 @@ export default function FlightList({ data }: Readonly<FlightListProps>) {
                             <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
                             <h4>{flight.flightCode}</h4>
                         </div>
-                        <button className={"go-to-detail-button"}>Go to detail</button>
+                        <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
