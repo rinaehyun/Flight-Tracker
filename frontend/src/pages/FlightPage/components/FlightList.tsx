@@ -6,6 +6,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
 import {calculateDuration, formatDate, formatTime} from "../../../utils/functionsForTime.ts";
 import axios from "axios";
+import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal.tsx";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 type FlightListProps = {
     data: Flight[],
@@ -13,8 +16,21 @@ type FlightListProps = {
 }
 
 export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
-    const handleDeleteFlight = (id: string): void => {
-        axios.delete('/api/flight/' + id)
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const navigate = useNavigate();
+
+    const handleClose = (): void => {
+        setShowDeleteModal(false);
+    }
+
+    const handleDeleteFlight = (): void => {
+        setShowDeleteModal(true);
+
+    }
+
+    const handleDeleteConfirm = (id: string): void => {
+        if (id) {
+            axios.delete('/api/flight/' + id)
             .then(response => {
                 if (response.status === 200) {
                     fetchAllFlights();
@@ -22,6 +38,9 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                 }
             })
             .catch(error => console.log(error.message));
+            navigate("/flight");
+            setShowDeleteModal(false);
+        }
     }
 
     return(
@@ -34,7 +53,7 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                             <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
                             <h4>{flight.flightCode}</h4>
                         </div>
-                        <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight(flight.id)} />
+                        <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight()} />
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
@@ -49,6 +68,13 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                             <h5>{formatTime(flight.arrivalTime)}</h5>
                         </div>
                     </div>
+                    {showDeleteModal &&
+                        <ConfirmationModal
+                            handleClose={handleClose}
+                            handleDeleteConfirm={() => handleDeleteConfirm(flight.id)}
+                            flightToBeDeleted={flight}
+                        />
+                    }
                 </div>
             ))}
         </div>
