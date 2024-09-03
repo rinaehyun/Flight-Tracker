@@ -15,10 +15,13 @@ export default function FlightList({ data }: Readonly<FlightListProps>) {
         <div>
             {data.map(flight => (
                 <div key={flight.id} className={"flight-card"}>
-                    <div className={"flight-card-airline"}>
-                        <FlightTakeoffIcon sx={{ fontSize: "25px"}}/>
-                        <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
-                        <h4>{flight.flightCode}</h4>
+                    <div className={"flight-card-headline"}>
+                        <div className={"flight-card-airline"}>
+                            <FlightTakeoffIcon sx={{ fontSize: "25px"}}/>
+                            <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
+                            <h4>{flight.flightCode}</h4>
+                        </div>
+                        <button className={"go-to-detail-button"}>Go to detail</button>
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>

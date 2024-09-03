@@ -6,12 +6,22 @@
     margin: 20px 0;
 }
 
+.flight-card-headline {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .flight-card-airline {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin: 3px 10px 0 10px;
+    margin: 3px 10px 0 15px;
     align-items: center;
+}
+
+.go-to-detail-button {
+    margin: 25px 15px 25px 0;
 }
 
 .flight-card-detail {
