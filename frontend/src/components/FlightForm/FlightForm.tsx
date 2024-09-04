@@ -1,5 +1,5 @@
 import './FlightForm.css'
-import {NewFlight} from "../../../types/model/dataType.ts";
+import {NewFlight} from "../../types/model/dataType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
 import {
     Autocomplete,
@@ -10,8 +10,8 @@ import {
     SelectChangeEvent,
     TextField
 } from "@mui/material";
-import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../../types/enum.ts";
+import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
+import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../types/enum.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,

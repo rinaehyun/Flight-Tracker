@@ -4,7 +4,7 @@ import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {FormEvent, useEffect, useState} from "react";
 import {Alert, Box, IconButton, Stack} from "@mui/material";
 import {NewFlight} from "../../types/model/dataType.ts";
-import FlightForm from "../AddFlightPage/components/FlightForm.tsx";
+import FlightForm from "../../components/FlightForm/FlightForm.tsx";
 import axios from "axios";
 import CloseIcon from '@mui/icons-material/Close';
 
