@@ -2,11 +2,11 @@ import './FlightDetailPage.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {FormEvent, useEffect, useState} from "react";
-import {Alert, Box, IconButton, Stack} from "@mui/material";
+import {Box} from "@mui/material";
 import {NewFlight} from "../../types/model/dataType.ts";
 import FlightForm from "../../components/FlightForm/FlightForm.tsx";
 import axios from "axios";
-import CloseIcon from '@mui/icons-material/Close';
+import Notification from "../../components/Notification/Notification.tsx";
 
 type FlightDetailPageProps = {
     fetchAllFlights: () => void,
@@ -91,26 +91,8 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
     }, [showNotification]);
 
     return (
-        <article className={"flight-details"}>
-            {showNotification &&
-                <Stack className={"stack-alert"}>
-                   <Alert
-                        severity="success"
-                        action={
-                            <IconButton
-                                aria-label="close"
-                                color="inherit"
-                                size="small"
-                                onClick={() => {
-                                    setShowNotification(false);
-                                }}
-                            >
-                                <CloseIcon fontSize="inherit" />
-                            </IconButton>
-                        }
-                    >Flight Data has been updated.</Alert>
-                </Stack>
-            }
+        <article className={"flight-details-container"}>
+            {showNotification && <Notification setShowNotification={setShowNotification} message={"Flight data has been updated."}/>}
             <div className={"top-buttons"}>
                 <Box
                     sx={{
@@ -130,7 +112,7 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
                 newFlight={newFlight}
                 setNewFlight={setNewFlight}
                 handleSubmit={handleSubmit}
-                buttonLabel="Edit Flight"
+                buttonLabel={"Edit Flight"}
                 editable={editable}
             />
         </article>

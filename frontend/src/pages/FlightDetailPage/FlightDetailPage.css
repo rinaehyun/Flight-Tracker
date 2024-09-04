@@ -1,10 +1,6 @@
-.stack-alert {
-    width: 100%;
-    position: absolute;
+.flight-details-container {
+    max-width: 350px;
     margin: auto;
-    top: 0;
-    left: 0;
-    right: 0
 }
 
 .top-buttons {
