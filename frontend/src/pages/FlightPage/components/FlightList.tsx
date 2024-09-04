@@ -17,18 +17,20 @@ type FlightListProps = {
 
 export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
+
     const navigate = useNavigate();
 
     const handleClose = (): void => {
         setShowDeleteModal(false);
     }
 
-    const handleDeleteFlight = (): void => {
+    const handleDeleteFlight = (flight: Flight): void => {
+        setFlightToDelete(flight);
         setShowDeleteModal(true);
-
     }
 
-    const handleDeleteConfirm = (id: string): void => {
+    const handleDeleteConfirm = (id: string | undefined): void => {
         if (id) {
             axios.delete('/api/flight/' + id)
             .then(response => {
@@ -55,7 +57,10 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                         </div>
                         <div className={"flight-card-icons"}>
                             <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
-                            <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight()} />
+                            <DeleteIcon
+                                sx={{ marginRight: '15px', cursor: "pointer" }}
+                                onClick={() => handleDeleteFlight(flight)}
+                            />
                         </div>
                     </div>
                     <div className={"flight-card-detail"}>
@@ -74,8 +79,8 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                     {showDeleteModal &&
                         <ConfirmationModal
                             handleClose={handleClose}
-                            handleDeleteConfirm={() => handleDeleteConfirm(flight.id)}
-                            flightToBeDeleted={flight}
+                            handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
+                            flightToBeDeleted={flightToDelete}
                         />
                     }
                 </div>
