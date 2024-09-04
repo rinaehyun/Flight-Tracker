@@ -24,3 +24,15 @@ div > input {
     padding: 5px;
     background-color: #ebd0cd;
 }
+
+.flight-form-submit {
+    margin-top: 50px;
+}
+
+.flight-form-submit:disabled,
+.flight-form-submit[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: inherit;
+}

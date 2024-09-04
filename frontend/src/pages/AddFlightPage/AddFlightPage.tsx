@@ -55,6 +55,7 @@ export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPag
                 setNewFlight={setNewFlight}
                 handleSubmit={handleSubmit}
                 buttonLabel="Add a new Flight"
+                editable={true}
             />
         </article>
     )

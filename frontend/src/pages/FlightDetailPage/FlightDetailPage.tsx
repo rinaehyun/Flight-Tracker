@@ -117,6 +117,7 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
                 setNewFlight={setNewFlight}
                 handleSubmit={handleSubmit}
                 buttonLabel="Edit Flight"
+                editable={editable}
             />
         </article>
     )

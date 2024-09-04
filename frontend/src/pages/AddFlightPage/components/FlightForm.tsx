@@ -17,10 +17,11 @@ type FlightFormProps = {
     newFlight: NewFlight,
     setNewFlight: Dispatch<SetStateAction<NewFlight>>,
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
-    buttonLabel: string
+    buttonLabel: string,
+    editable: boolean,
 }
 
-export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel}: Readonly<FlightFormProps>) {
+export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
@@ -58,6 +59,7 @@ console.log(newFlight.origin);
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleAirlineChange}
+                disabled={!editable}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -82,6 +84,7 @@ console.log(newFlight.origin);
                 value={newFlight.flightCode}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <Autocomplete
                 disablePortal
@@ -89,6 +92,7 @@ console.log(newFlight.origin);
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
+                disabled={!editable}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -109,6 +113,7 @@ console.log(newFlight.origin);
                     value={newFlight.departureTime}
                     onChange={handleChange}
                     required={true}
+                    disabled={!editable}
                 />
             </div>
             <Autocomplete
@@ -117,6 +122,7 @@ console.log(newFlight.origin);
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
+                disabled={!editable}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -137,6 +143,7 @@ console.log(newFlight.origin);
                     value={newFlight.arrivalTime}
                     onChange={handleChange}
                     required={true}
+                    disabled={!editable}
                 />
             </div>
             <TextField
@@ -151,6 +158,7 @@ console.log(newFlight.origin);
                 value={newFlight.aircraftType}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                 <InputLabel id="demo-simple-select-standard-label">Flight Status</InputLabel>
@@ -162,13 +170,18 @@ console.log(newFlight.origin);
                     onChange={handleChange}
                     label="Flight Status"
                     style={{textAlign: "left"}}
+                    disabled={!editable}
                 >
                     {FlightStatusList.map((status) => (
                         <MenuItem key={status} value={status}>{capitalizeFirstLetter(status)}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <button style={{marginTop: "50px"}}>{buttonLabel}</button>
+            <button
+                type={"submit"}
+                className={"flight-form-submit"}
+                disabled={!editable}
+            >{buttonLabel}</button>
         </form>
     )
 }
