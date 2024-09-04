@@ -1,5 +1,5 @@
 import './FlightForm.css'
-import {NewFlight} from "../../../types/model/dataType.ts";
+import {NewFlight} from "../../types/model/dataType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
 import {
     Autocomplete,
@@ -10,21 +10,21 @@ import {
     SelectChangeEvent,
     TextField
 } from "@mui/material";
-import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../../types/enum.ts";
+import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
+import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../types/enum.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
     setNewFlight: Dispatch<SetStateAction<NewFlight>>,
-    handleSubmit: (event: FormEvent<HTMLFormElement>) => void
+    handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
+    buttonLabel: string,
+    editable: boolean,
 }
 
-export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Readonly<FlightFormProps>) {
+export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
-        console.log(name);
-        console.log(value);
         setNewFlight({ ...newFlight, [name]: value });
     }
 
@@ -57,6 +57,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleAirlineChange}
+                disabled={!editable}
+                value={AirlinesAsList.find(option => option.code === newFlight.airline) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -65,7 +67,6 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                         variant={"standard"}
                         placeholder={"Korean Air"}
                         name={"airline"}
-                        value={newFlight.airline}
                     />
                 }
             />
@@ -81,6 +82,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                 value={newFlight.flightCode}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <Autocomplete
                 disablePortal
@@ -88,6 +90,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
+                disabled={!editable}
+                value={AirportsAsList.find(option =>  option.code === newFlight.origin) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -96,7 +100,6 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                         variant={"standard"}
                         placeholder={"SFO - San Francisco, USA"}
                         name={"origin"}
-                        value={newFlight.origin}
                     />
                 }
             />
@@ -108,6 +111,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                     value={newFlight.departureTime}
                     onChange={handleChange}
                     required={true}
+                    disabled={!editable}
                 />
             </div>
             <Autocomplete
@@ -116,6 +120,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
+                disabled={!editable}
+                value={AirportsAsList.find(option =>  option.code === newFlight.destination) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -124,7 +130,6 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                         variant={"standard"}
                         placeholder={"FRA - Frankfurt, Germany"}
                         name={"destination"}
-                        value={newFlight.destination}
                     />
                 }
             />
@@ -136,6 +141,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                     value={newFlight.arrivalTime}
                     onChange={handleChange}
                     required={true}
+                    disabled={!editable}
                 />
             </div>
             <TextField
@@ -150,6 +156,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                 value={newFlight.aircraftType}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                 <InputLabel id="demo-simple-select-standard-label">Flight Status</InputLabel>
@@ -161,13 +168,18 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit}: Read
                     onChange={handleChange}
                     label="Flight Status"
                     style={{textAlign: "left"}}
+                    disabled={!editable}
                 >
                     {FlightStatusList.map((status) => (
                         <MenuItem key={status} value={status}>{capitalizeFirstLetter(status)}</MenuItem>
                     ))}
                 </Select>
             </FormControl>
-            <button style={{marginTop: "50px"}}>Add a Flight Data</button>
+            <button
+                type={"submit"}
+                className={"flight-form-submit"}
+                disabled={!editable}
+            >{buttonLabel}</button>
         </form>
     )
 }

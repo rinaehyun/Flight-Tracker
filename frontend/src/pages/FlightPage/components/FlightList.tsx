@@ -2,13 +2,14 @@ import './FlightList.css'
 import {Flight} from "../../../types/model/dataType.ts";
 import {Airline} from "../../../types/enum.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import DeleteIcon from '@mui/icons-material/Delete';
 import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
 import {calculateDuration, formatDate, formatTime} from "../../../utils/functionsForTime.ts";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal.tsx";
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Notification from "../../../components/Notification/Notification.tsx";
 
 type FlightListProps = {
     data: Flight[],
@@ -17,23 +18,27 @@ type FlightListProps = {
 
 export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
+    const [showNotification, setShowNotification] = useState<boolean>(false);
+
     const navigate = useNavigate();
 
     const handleClose = (): void => {
         setShowDeleteModal(false);
     }
 
-    const handleDeleteFlight = (): void => {
+    const handleDeleteFlight = (flight: Flight): void => {
+        setFlightToDelete(flight);
         setShowDeleteModal(true);
-
     }
 
-    const handleDeleteConfirm = (id: string): void => {
+    const handleDeleteConfirm = (id: string | undefined): void => {
         if (id) {
             axios.delete('/api/flight/' + id)
             .then(response => {
                 if (response.status === 200) {
                     fetchAllFlights();
+                    setShowNotification(true);
                     console.log('Flight deleted successfully');
                 }
             })
@@ -43,17 +48,34 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
         }
     }
 
+    useEffect(() => {
+        if (showNotification) {
+            const timer = setTimeout(() => {
+                setShowNotification(false);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showNotification]);
+
     return(
         <div>
+            {showNotification && <Notification setShowNotification={setShowNotification} message={`${flightToDelete?.flightCode} has been deleted.`}/>}
             {data.map(flight => (
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>
                         <div className={"flight-card-airline"}>
-                            <FlightTakeoffIcon sx={{ fontSize: "25px" }}/>
+                            <FlightTakeoffIcon sx={{ fontSize: "25px"}}/>
                             <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
                             <h4>{flight.flightCode}</h4>
                         </div>
-                        <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight()} />
+                        <div className={"flight-card-icons"}>
+                            <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
+                            <DeleteIcon
+                                sx={{ marginRight: '15px', cursor: "pointer" }}
+                                onClick={() => handleDeleteFlight(flight)}
+                            />
+                        </div>
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
@@ -71,8 +93,8 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                     {showDeleteModal &&
                         <ConfirmationModal
                             handleClose={handleClose}
-                            handleDeleteConfirm={() => handleDeleteConfirm(flight.id)}
-                            flightToBeDeleted={flight}
+                            handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
+                            flightToBeDeleted={flightToDelete}
                         />
                     }
                 </div>

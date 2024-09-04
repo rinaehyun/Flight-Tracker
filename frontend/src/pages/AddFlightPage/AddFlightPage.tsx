@@ -1,5 +1,5 @@
 import './AddFlightPage.css';
-import FlightForm from "./components/FlightForm.tsx";
+import FlightForm from "../../components/FlightForm/FlightForm.tsx";
 import {NewFlight} from "../../types/model/dataType.ts";
 import {FormEvent, useState} from "react";
 import axios from "axios";
@@ -37,7 +37,7 @@ export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPag
     }
 
     return (
-        <div className={"add-flight-form-container"}>
+        <article className={"add-flight-form-container"}>
             <Box
                 sx={{
                     display: 'flex',
@@ -54,7 +54,9 @@ export default function AddFlightPage({ fetchAllFlights }: Readonly<AddFlightPag
                 newFlight={newFlight}
                 setNewFlight={setNewFlight}
                 handleSubmit={handleSubmit}
+                buttonLabel="Add a new Flight"
+                editable={true}
             />
-        </div>
+        </article>
     )
 }
