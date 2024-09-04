@@ -7,8 +7,9 @@ import {calculateDuration, formatDate, formatTime} from "../../../utils/function
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import Notification from "../../../components/Notification/Notification.tsx";
 
 type FlightListProps = {
     data: Flight[],
@@ -18,6 +19,7 @@ type FlightListProps = {
 export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
+    const [showNotification, setShowNotification] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -36,6 +38,7 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
             .then(response => {
                 if (response.status === 200) {
                     fetchAllFlights();
+                    setShowNotification(true);
                     console.log('Flight deleted successfully');
                 }
             })
@@ -45,8 +48,19 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
         }
     }
 
+    useEffect(() => {
+        if (showNotification) {
+            const timer = setTimeout(() => {
+                setShowNotification(false);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showNotification]);
+
     return(
         <div>
+            {showNotification && <Notification setShowNotification={setShowNotification} message={`${flightToDelete?.flightCode} has been deleted.`}/>}
             {data.map(flight => (
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>
