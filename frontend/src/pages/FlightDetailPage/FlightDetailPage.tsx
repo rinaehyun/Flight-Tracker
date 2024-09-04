@@ -27,6 +27,17 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
         flightStatus: "UNKNOWN"
     });
 
+    const [originalFlight, setOriginalFlight] = useState<NewFlight>({
+        flightCode: "",
+        airline: "",
+        origin: "",
+        destination: "",
+        departureTime: "",
+        arrivalTime: "",
+        aircraftType: "",
+        flightStatus: "UNKNOWN"
+    });
+
     const navigate: NavigateFunction = useNavigate();
     const params = useParams();
     const id: string | undefined = params.id;
@@ -34,35 +45,39 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
     const fetchFlight = () => {
         axios.get(`/api/flight/${id}`)
             .then(response => {
-                console.log(response.data)
-                setNewFlight(response.data)
+                setNewFlight(response.data);
+                setOriginalFlight(response.data);
             })
             .catch(error => console.log(error.response.data))
     }
 
     useEffect(() => {
         fetchFlight();
-    }, [])
+    }, [id])
+
 
     const onEdit = () => {
+        if (editable) {
+            setNewFlight(originalFlight);
+        }
         setEditable(!editable)
     }
 
     const updateFlight = (id: string, flight: NewFlight) => {
-        console.log(flight)
         axios.put(`/api/flight/${id}`, flight)
             .then(response => {
-                // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-                response.status === 200 && fetchAllFlights();
-                setShowNotification(true);
+                if (response.status === 200) {
+                    fetchAllFlights();
+                    setShowNotification(true);
+                }
             })
             .catch(error => console.log(error.response.data))
     }
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        if (id) updateFlight(id, newFlight)
-        setEditable(false)
+        if (id) updateFlight(id, newFlight);
+        setEditable(false);
     }
 
     useEffect(() => {
@@ -96,7 +111,6 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
                     >Flight Data has been updated.</Alert>
                 </Stack>
             }
-
             <div className={"top-buttons"}>
                 <Box
                     sx={{
@@ -105,7 +119,7 @@ export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPagePr
                     }}
                 >
                     <ArrowBackIcon
-                        sx={{cursor: "pointer"}}
+                        sx={{ cursor: "pointer" }}
                         onClick={() => navigate(-1)}
                     />
                 </Box>
