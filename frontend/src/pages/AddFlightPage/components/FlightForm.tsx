@@ -25,8 +25,6 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
-        console.log(name);
-        console.log(value);
         setNewFlight({ ...newFlight, [name]: value });
     }
 
@@ -50,7 +48,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
         }
     };
-console.log(newFlight.origin);
+
     return (
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
             <Autocomplete
@@ -60,6 +58,7 @@ console.log(newFlight.origin);
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleAirlineChange}
                 disabled={!editable}
+                value={AirlinesAsList.find(option => option.code === newFlight.airline) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -68,7 +67,6 @@ console.log(newFlight.origin);
                         variant={"standard"}
                         placeholder={"Korean Air"}
                         name={"airline"}
-                        value={newFlight.airline}
                     />
                 }
             />
@@ -93,6 +91,7 @@ console.log(newFlight.origin);
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
                 disabled={!editable}
+                value={AirportsAsList.find(option =>  option.code === newFlight.origin) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -101,7 +100,6 @@ console.log(newFlight.origin);
                         variant={"standard"}
                         placeholder={"SFO - San Francisco, USA"}
                         name={"origin"}
-                        value={newFlight.origin}
                     />
                 }
             />
@@ -123,6 +121,7 @@ console.log(newFlight.origin);
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
                 disabled={!editable}
+                value={AirportsAsList.find(option =>  option.code === newFlight.destination) || null}
                 renderInput={(params) =>
                     <TextField
                         required
@@ -131,7 +130,6 @@ console.log(newFlight.origin);
                         variant={"standard"}
                         placeholder={"FRA - Frankfurt, Germany"}
                         name={"destination"}
-                        value={newFlight.destination}
                     />
                 }
             />
