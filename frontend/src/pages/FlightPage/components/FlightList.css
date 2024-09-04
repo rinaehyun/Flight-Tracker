@@ -42,10 +42,6 @@
 @media (max-width: 600px) {
     .flight-card-headline {
         display: inline;
-        #flex-direction: column;
-        #justify-content: space-between;
-        #align-items: flex-start;
-        #flex-wrap: wrap;
     }
 
     .flight-card-airline {
@@ -62,11 +58,6 @@
     }
 
     .flight-card-icons {
-        #display: flex;
-        #flex-direction: row;
-        #gap: 5px;
-        #flex-wrap: wrap;
-        #align-items: center;
         float: right;
         margin: 3px 0 0 10px;
     }

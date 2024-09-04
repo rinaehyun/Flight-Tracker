@@ -12,7 +12,7 @@ type FlightDetailPageProps = {
     fetchAllFlights: () => void,
 }
 
-export default function FlightDetailPage({ fetchAllFlights }: FlightDetailPageProps) {
+export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDetailPageProps>) {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
 
