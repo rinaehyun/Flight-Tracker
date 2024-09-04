@@ -22,7 +22,8 @@ public class SecurityConfig {
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(o -> o.defaultSuccessUrl(appUrl))
                 .authorizeHttpRequests(a -> a
-                        .requestMatchers(HttpMethod.GET, "/api/flight").permitAll());
+                        .requestMatchers(HttpMethod.GET, "/api/flight").permitAll()
+                        .anyRequest().permitAll());
 
         return httpSecurity.build();
     }

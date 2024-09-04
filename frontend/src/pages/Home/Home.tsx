@@ -1,4 +1,5 @@
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export default function WelcomePage() {
 
@@ -8,10 +9,16 @@ export default function WelcomePage() {
         window.open(host + '/oauth2/authorization/github', '_self');
     }
 
+    const loadUser = () => {
+        axios.get("/api/auth/user")
+            .then(response => console.log(response.data))
+    }
+
     return(
         <>
             <h2>Welcome to Flight App!</h2>
-            <Link to={"/flight"} onClick={login}>Login with Github</Link>
+            <Link to={"/"} onClick={login}>Login with Github</Link>
+            <button onClick={loadUser}>User Info</button>
         </>
     )
 }
