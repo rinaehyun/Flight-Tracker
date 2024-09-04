@@ -21,7 +21,11 @@
     align-items: center;
 }
 
-.go-to-detail-link {
+.flight-card-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
     margin: 25px 15px 25px 0;
 }
 
@@ -31,4 +35,39 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+
+
+@media (max-width: 600px) {
+    .flight-card-headline {
+        display: inline;
+        #flex-direction: column;
+        #justify-content: space-between;
+        #align-items: flex-start;
+        #flex-wrap: wrap;
+    }
+
+    .flight-card-airline {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin: 3px 10px 0 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .flight-card-airline > h4 {
+        margin: 10px 0;
+    }
+
+    .flight-card-icons {
+        #display: flex;
+        #flex-direction: row;
+        #gap: 5px;
+        #flex-wrap: wrap;
+        #align-items: center;
+        float: right;
+        margin: 3px 0 0 10px;
+    }
 }

@@ -53,8 +53,10 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                             <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
                             <h4>{flight.flightCode}</h4>
                         </div>
-                        <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
-                        <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight()} />
+                        <div className={"flight-card-icons"}>
+                            <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
+                            <DeleteIcon sx={{ marginRight: '15px', cursor: "pointer" }} onClick={() => handleDeleteFlight()} />
+                        </div>
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
