@@ -9,7 +9,11 @@ type FlightFilterProps = {
 }
 
 export default function FlightFilter({ selectedFilter, setSelectedFilter }: FlightFilterProps) {
-    const [filter, setFilter] = useState<Filter>({airline: undefined, origin: undefined});
+    const [filter, setFilter] = useState<Filter>({
+        airline: undefined,
+        origin: undefined,
+        destination: undefined
+    });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -19,18 +23,18 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Flig
     }
 
     useEffect(() => {
-        setFilter({airline: selectedFilter.airline, origin: selectedFilter.origin})
+        setFilter({airline: selectedFilter.airline, origin: selectedFilter.origin, destination: selectedFilter.destination})
         console.log('Updated filter:', filter);
     }, []);
 
     const handleReset = () => {
-        setSelectedFilter({airline: undefined, origin: undefined})
+        setSelectedFilter({airline: undefined, origin: undefined, destination: undefined})
         setIsDisabled(true);
     }
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setSelectedFilter({airline: filter.airline, origin: filter.origin})
+        setSelectedFilter({airline: filter.airline, origin: filter.origin, destination: filter.destination})
     }
 
     return (
@@ -57,6 +61,21 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Flig
                         name={"origin"}
                         onChange={handleChange}
                         className={"origin-dropdown"}
+                    >
+                        <option>All</option>
+                        {AirportsAsList.map((airport) => (
+                            <option key={airport.code} value={airport.code}>
+                                {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className={"dropdown-filter"}>
+                    <label className={"dropdown-label"}>Arrival</label>
+                    <select
+                        name={"destination"}
+                        onChange={handleChange}
+                        className={"destination-dropdown"}
                     >
                         <option>All</option>
                         {AirportsAsList.map((airport) => (

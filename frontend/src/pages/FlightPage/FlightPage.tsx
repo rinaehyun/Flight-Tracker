@@ -14,7 +14,11 @@ type FlightPageProps = {
 }
 
 export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
-    const [selectedFilter, setSelectedFilter] = useState<Filter>({airline: undefined, origin: undefined});
+    const [selectedFilter, setSelectedFilter] = useState<Filter>({
+        airline: undefined,
+        origin: undefined,
+        destination: undefined
+    });
 
     const navigate: NavigateFunction = useNavigate();
 
@@ -24,7 +28,8 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
 
     const filteredFlightData = data
         .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight)
-        .filter(flight => selectedFilter.origin ? flight.origin === selectedFilter.origin : flight);
+        .filter(flight => selectedFilter.origin ? flight.origin === selectedFilter.origin : flight)
+        .filter(flight => selectedFilter.destination ? flight.destination === selectedFilter.destination : flight);
 
     return (
         <div className={"flight-page"}>
@@ -44,6 +49,7 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
             </Box>
             <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights} />
+            {filteredFlightData.length == 0 && <h5>No Flights found</h5>}
         </div>
     )
 }

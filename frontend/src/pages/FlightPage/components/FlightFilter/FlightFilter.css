@@ -12,7 +12,7 @@
     justify-content: space-between;
 }
 
-.airline-dropdown, .origin-dropdown {
+.airline-dropdown, .origin-dropdown, .destination-dropdown {
     width: 70%;
 }
 
