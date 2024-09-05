@@ -8,7 +8,7 @@ type FlightFilterProps = {
     setSelectedFilter: Dispatch<SetStateAction<Filter>>,
 }
 
-export default function FlightFilter({ selectedFilter, setSelectedFilter }: FlightFilterProps) {
+export default function FlightFilter({ selectedFilter, setSelectedFilter }: Readonly<FlightFilterProps>) {
     const [filter, setFilter] = useState<Filter>({
         airline: undefined,
         origin: undefined,
