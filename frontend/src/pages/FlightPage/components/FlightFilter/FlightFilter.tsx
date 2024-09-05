@@ -1,5 +1,5 @@
 import './FlightFilter.css';
-import {AirlinesAsList, Filter} from "../../../../types/enum.ts";
+import {AirlinesAsList, AirportsAsList, Filter} from "../../../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
 
@@ -9,7 +9,7 @@ type FlightFilterProps = {
 }
 
 export default function FlightFilter({ selectedFilter, setSelectedFilter }: FlightFilterProps) {
-    const [filter, setFilter] = useState<Filter>({airline: undefined});
+    const [filter, setFilter] = useState<Filter>({airline: undefined, origin: undefined});
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -19,25 +19,25 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Flig
     }
 
     useEffect(() => {
-        setFilter({airline: selectedFilter.airline})
+        setFilter({airline: selectedFilter.airline, origin: selectedFilter.origin})
         console.log('Updated filter:', filter);
     }, []);
 
     const handleReset = () => {
-        setSelectedFilter({airline: undefined})
+        setSelectedFilter({airline: undefined, origin: undefined})
         setIsDisabled(true);
     }
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setSelectedFilter({airline: filter.airline})
+        setSelectedFilter({airline: filter.airline, origin: filter.origin})
     }
 
     return (
         <section style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
             <form onSubmit={handleSubmit}>
-                <div className={"airline-filter"}>
-                    <label className={"airline-label"}>Airline</label>
+                <div className={"dropdown-filter"}>
+                    <label className={"dropdown-label"}>Airline</label>
                     <select
                         name={"airline"}
                         onChange={handleChange}
@@ -47,6 +47,21 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Flig
                         {AirlinesAsList.map((airline) => (
                             <option key={airline.code} value={airline.code}>
                                 {airline.code + ' - ' + capitalizeFirstLetter(airline.name)}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <div className={"dropdown-filter"}>
+                    <label className={"dropdown-label"}>Departure</label>
+                    <select
+                        name={"origin"}
+                        onChange={handleChange}
+                        className={"origin-dropdown"}
+                    >
+                        <option>All</option>
+                        {AirportsAsList.map((airport) => (
+                            <option key={airport.code} value={airport.code}>
+                                {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
                             </option>
                         ))}
                     </select>

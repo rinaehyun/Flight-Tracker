@@ -5,15 +5,15 @@
     margin: 10px 10px 10px 0;
 }
 
-.airline-filter {
+.dropdown-filter {
     margin: 15px 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.airline-dropdown {
-    width: 80%;
+.airline-dropdown, .origin-dropdown {
+    width: 70%;
 }
 
 .apply-btn:disabled,

@@ -14,7 +14,7 @@ type FlightPageProps = {
 }
 
 export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
-    const [selectedFilter, setSelectedFilter] = useState<Filter>({airline: undefined});
+    const [selectedFilter, setSelectedFilter] = useState<Filter>({airline: undefined, origin: undefined});
 
     const navigate: NavigateFunction = useNavigate();
 
@@ -23,7 +23,8 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
     }
 
     const filteredFlightData = data
-        .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight);
+        .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight)
+        .filter(flight => selectedFilter.origin ? flight.origin === selectedFilter.origin : flight);
 
     return (
         <div className={"flight-page"}>
