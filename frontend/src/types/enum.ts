@@ -43,3 +43,8 @@ export const AirportsAsList = Object.entries(Airport).map(([key, value]) => ({
     code: key,
     name: value
 }));
+
+
+export type Filter = {
+    airline: string | undefined,
+}

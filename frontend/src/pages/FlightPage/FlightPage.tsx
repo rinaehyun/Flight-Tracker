@@ -5,6 +5,8 @@ import FlightFilter from "./components/FlightFilter.tsx";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {Box} from "@mui/material";
 import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {Filter} from "../../types/enum.ts";
 
 type FlightPageProps = {
     data: Flight[],
@@ -12,11 +14,16 @@ type FlightPageProps = {
 }
 
 export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
+    const [selectedFilter, setSelectedFilter] = useState<Filter>({airline: undefined});
+
     const navigate: NavigateFunction = useNavigate();
 
     const handleClick = () => {
         navigate('/flight/add');
     }
+
+    const filteredFlightData = data
+        .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight);
 
     return (
         <div className={"flight-page"}>
@@ -34,8 +41,8 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
                     onClick={handleClick}
                 />
             </Box>
-            <FlightFilter />
-            <FlightList data={data} fetchAllFlights={fetchAllFlights} />
+            <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
+            <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights} />
         </div>
     )
 }

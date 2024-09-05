@@ -1,0 +1,25 @@
+.filter-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 10px 10px 10px 0;
+}
+
+.airline-filter {
+    margin: 15px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.airline-dropdown {
+    width: 80%;
+}
+
+.apply-btn:disabled,
+.apply-btn[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: inherit;
+}
