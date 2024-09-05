@@ -1,15 +1,15 @@
 import './FlightList.css'
-import {Flight} from "../../../types/model/dataType.ts";
-import {Airline} from "../../../types/enum.ts";
+import {Flight} from "../../../../types/model/dataType.ts";
+import {Airline} from "../../../../types/enum.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
-import {calculateDuration, formatDate, formatTime} from "../../../utils/functionsForTime.ts";
+import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
+import {calculateDuration, formatDate, formatTime} from "../../../../utils/functionsForTime.ts";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal.tsx";
+import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal.tsx";
 import {useEffect, useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
-import Notification from "../../../components/Notification/Notification.tsx";
+import Notification from "../../../../components/Notification/Notification.tsx";
 
 type FlightListProps = {
     data: Flight[],

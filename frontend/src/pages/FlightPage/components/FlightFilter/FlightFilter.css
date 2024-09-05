@@ -1,0 +1,49 @@
+.show-filter-btn {
+    font-size: 0.7em;
+    float: right;
+    margin: 15px 10px 15px 0;
+    background-color: inherit;
+    color: #1a1a1a;
+    outline: none;
+}
+
+.show-filter-btn:focus, .show-filter-btn:active, .show-filter-btn:hover {
+    outline: inherit;
+    background-color: inherit;
+    color: #1a1a1a;
+}
+
+.filter-form {
+    margin-top: 60px;
+}
+
+.dropdown-filter {
+    margin: 15px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.airline-dropdown, .origin-dropdown, .destination-dropdown {
+    width: 70%;
+}
+
+.filter-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin: 10px 10px 10px 0;
+    gap: 5px;
+}
+
+.filter-buttons > button {
+    font-size: 0.7em;
+}
+
+.apply-btn:disabled,
+.apply-btn[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: inherit;
+}
