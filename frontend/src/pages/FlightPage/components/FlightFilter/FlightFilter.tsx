@@ -18,7 +18,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
-        setFilter({ ...filter, [name]: value === 'All' ? undefined : value })
+        setFilter({ ...filter, [name]: value })
         setIsDisabled(false);
     }
 
