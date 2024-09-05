@@ -1,7 +1,7 @@
 import './FlightPage.css';
 import {Flight} from "../../types/model/dataType.ts";
-import FlightList from "./components/FlightList.tsx";
-import FlightFilter from "./components/FlightFilter.tsx";
+import FlightList from "./components/FlightList/FlightList.tsx";
+import FlightFilter from "./components/FlightFilter/FlightFilter.tsx";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {Box} from "@mui/material";
 import {NavigateFunction, useNavigate} from "react-router-dom";

@@ -1,6 +1,6 @@
 import './FlightFilter.css';
-import {AirlinesAsList, Filter} from "../../../types/enum.ts";
-import {capitalizeFirstLetter} from "../../../utils/funtioncs.ts";
+import {AirlinesAsList, Filter} from "../../../../types/enum.ts";
+import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
 
 type FlightFilterProps = {
