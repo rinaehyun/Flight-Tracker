@@ -14,6 +14,7 @@ type FlightPageProps = {
 }
 
 export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
+    const [showFilter, setShowFilter] = useState<boolean>(false);
     const [selectedFilter, setSelectedFilter] = useState<Filter>({
         airline: undefined,
         origin: undefined,
@@ -43,13 +44,16 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
                 }}
             >
                 <AddCircleIcon
-                    sx={{ fontSize: "35px", cursor: "pointer" }}
+                    sx={{fontSize: "35px", cursor: "pointer"}}
                     onClick={handleClick}
                 />
             </Box>
-            <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
-            <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights} />
+            <section style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
+                <button onClick={() => setShowFilter(!showFilter)} className={"show-filter-btn"}>{!showFilter ? 'Show Filters' : 'Close Filters'}</button>
+                {showFilter && <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>}
+            </section>
+            <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights}/>
             {filteredFlightData.length == 0 && <h5>No Flights found</h5>}
         </div>
-    )
+)
 }

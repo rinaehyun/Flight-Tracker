@@ -1,3 +1,22 @@
+.show-filter-btn {
+    font-size: 0.7em;
+    float: right;
+    margin: 15px 10px 15px 0;
+    background-color: inherit;
+    color: #1a1a1a;
+    outline: none;
+}
+
+.show-filter-btn:focus, .show-filter-btn:active, .show-filter-btn:hover {
+    outline: inherit;
+    background-color: inherit;
+    color: #1a1a1a;
+}
+
+.filter-form {
+    margin-top: 60px;
+}
+
 .dropdown-filter {
     margin: 15px 10px;
     display: flex;
