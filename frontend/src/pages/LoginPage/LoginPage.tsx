@@ -1,11 +1,6 @@
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 
-type LoginPageProps = {
-    setCurrentUser: (data: string) => void,
-}
-
-export default function LoginPage({ setCurrentUser }: LoginPageProps) {
+export default function LoginPage() {
     const navigate = useNavigate();
 
     const handleLogin = () => {
@@ -13,11 +8,6 @@ export default function LoginPage({ setCurrentUser }: LoginPageProps) {
 
         window.open(host + '/oauth2/authorization/github', '_self');
 
-        axios.get("/api/auth/user")
-            .then(response => {
-                setCurrentUser(response.data);
-                console.log(response.data);
-            })
         navigate("/flight");
     }
 

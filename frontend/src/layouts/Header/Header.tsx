@@ -1,11 +1,12 @@
 import './Header.css'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 type HeaderProps = {
     currentUser: string | undefined,
 }
 export default function Header({ currentUser }: HeaderProps) {
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin;
@@ -30,8 +31,11 @@ export default function Header({ currentUser }: HeaderProps) {
                 </ul>
             </nav>
             <div style={{ float: "right", marginLeft: "auto" }}>
-                {currentUser ? <button onClick={handleLogout}>Log out</button> : <Link to={"/login"}>Login</Link>}
-                {/*<button onClick={handleLogout} style={{ fontSize: "0.8rem" }}>Log out</button>*/}
+                {
+                    currentUser
+                        ? <button onClick={handleLogout}>Log out</button>
+                        : <button onClick={() => navigate('/login')}>Log in</button>
+                }
             </div>
         </header>
     )

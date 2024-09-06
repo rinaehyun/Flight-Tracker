@@ -27,16 +27,21 @@ function App() {
         fetchAllFlights();
     },[])
 
+    useEffect(() => {
+        axios.get("/api/auth/user")
+            .then(response => setCurrentUser(response.data))
+    },[])
+
     return (
         <div className={"app"}>
             <Header currentUser={currentUser}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
-                    <Route path={"/login"} element={<LoginPage setCurrentUser={setCurrentUser}/>}/>
-                    <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights}/>} />
-                    <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights}/>}/>
-                    <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights}/>}/>
+                    <Route path={"/login"} element={<LoginPage />}/>
+                    <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
+                    <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
+                    <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
                 </Routes>
             </main>
             <Footer />
