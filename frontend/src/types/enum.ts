@@ -25,7 +25,6 @@ export const FlightStatusList : FlightStatus[] = [
     "LANDED", "CANCELLED", "DIVERTED", "ARRIVED", "UNKNOWN"
 ];
 
-
 export enum Airport {
     AMS = 'Amsterdam, Netherlands',
     FRA = 'Frankfurt, Germany',
@@ -44,6 +43,10 @@ export const AirportsAsList = Object.entries(Airport).map(([key, value]) => ({
     name: value
 }));
 
+export type AirportsAsInput = {
+    code: string,
+    name: string,
+}
 
 export type Filter = {
     airline: string | undefined,

@@ -11,7 +11,14 @@ import {
     TextField
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
-import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../types/enum.ts";
+import {
+    Airline,
+    AirlinesAsList,
+    Airport,
+    AirportsAsInput,
+    FlightStatus,
+    FlightStatusList
+} from "../../types/enum.ts";
 import axios from "axios";
 
 type FlightFormProps = {
@@ -23,18 +30,19 @@ type FlightFormProps = {
 }
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
-    const [airports, setAirports] = useState([]);
-console.log(airports)
+    const [airports, setAirports] = useState<AirportsAsInput[]>([{
+        code: '',
+        name: ''
+    }]);
+
     useEffect(() => {
-        axios.get("/api/airport")
+        axios.get("/api/airport/options-for-input")
             .then(response => {
                 setAirports(response.data);
-                console.log(response)
             })
             .catch(error => alert(error));
     }, [])
 
-    //console.log(airports);
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
         setNewFlight({ ...newFlight, [name]: value });
@@ -49,14 +57,14 @@ console.log(airports)
 
     const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const originToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
+            const originToSave= airports.filter(airport => value.includes(airport.code))[0].code;
             setNewFlight({ ...newFlight, origin: originToSave as Airport });
         }
     };
 
     const handleDestinationChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const destinationToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
+            const destinationToSave= airports.filter(airport => value.includes(airport.code))[0].code;
             setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
         }
     };
@@ -98,19 +106,19 @@ console.log(airports)
             />
             <Autocomplete
                 disablePortal
-                options={AirportsAsList}
+                options={airports}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
                 disabled={!editable}
-                value={AirportsAsList.find(option =>  option.code === newFlight.origin) || null}
+                value={airports.find(option =>  option.code === newFlight.origin) || null}
                 renderInput={(params) =>
                     <TextField
                         required
                         {...params}
                         label={"Origin"}
                         variant={"standard"}
-                        placeholder={"SFO - San Francisco, USA"}
+                        placeholder={"BKK - Bangkok, Thailand"}
                         name={"origin"}
                     />
                 }
@@ -128,12 +136,12 @@ console.log(airports)
             </div>
             <Autocomplete
                 disablePortal
-                options={AirportsAsList}
+                options={airports}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
                 disabled={!editable}
-                value={AirportsAsList.find(option =>  option.code === newFlight.destination) || null}
+                value={airports.find(option =>  option.code === newFlight.destination) || null}
                 renderInput={(params) =>
                     <TextField
                         required
