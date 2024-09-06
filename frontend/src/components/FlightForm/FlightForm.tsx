@@ -1,6 +1,6 @@
 import './FlightForm.css'
 import {NewFlight} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useEffect, useState} from "react";
 import {
     Autocomplete,
     FormControl,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../types/enum.ts";
+import axios from "axios";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -22,7 +23,18 @@ type FlightFormProps = {
 }
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
+    const [airports, setAirports] = useState([]);
+console.log(airports)
+    useEffect(() => {
+        axios.get("/api/airport")
+            .then(response => {
+                setAirports(response.data);
+                console.log(response)
+            })
+            .catch(error => alert(error));
+    }, [])
 
+    //console.log(airports);
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
         setNewFlight({ ...newFlight, [name]: value });

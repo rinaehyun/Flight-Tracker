@@ -23,4 +23,8 @@ public class AirportController {
         return airportService.getAllAirports();
     }
 
+    @GetMapping("/options-for-input")
+    public List<String> getAirportOptions() {
+        return airportService.getAirportOptions();
+    }
 }
