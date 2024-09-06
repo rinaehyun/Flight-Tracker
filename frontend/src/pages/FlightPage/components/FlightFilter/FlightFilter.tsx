@@ -1,7 +1,8 @@
 import './FlightFilter.css';
-import {AirlinesAsList, AirportsAsList, Filter} from "../../../../types/enum.ts";
+import {AirlinesAsList, AirportsAsInput, Filter} from "../../../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
+import axios from "axios";
 
 type FlightFilterProps = {
     selectedFilter: Filter,
@@ -15,6 +16,19 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
         destination: undefined
     });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
+
+    const [airports, setAirports] = useState<AirportsAsInput[]>([{
+        code: '',
+        name: ''
+    }]);
+
+    useEffect(() => {
+        axios.get("/api/airport/options-for-input")
+            .then(response => {
+                setAirports(response.data);
+            })
+            .catch(error => alert(error));
+    }, [])
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -62,9 +76,9 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"origin-dropdown"}
                 >
                     <option>All</option>
-                    {AirportsAsList.map((airport) => (
+                    {airports.map((airport) => (
                         <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
+                            {airport.code + ' - ' + airport.name}
                         </option>
                     ))}
                 </select>
@@ -77,9 +91,9 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"destination-dropdown"}
                 >
                     <option>All</option>
-                    {AirportsAsList.map((airport) => (
+                    {airports.map((airport) => (
                         <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
+                            {airport.code + ' - ' + airport.name}
                         </option>
                     ))}
                 </select>

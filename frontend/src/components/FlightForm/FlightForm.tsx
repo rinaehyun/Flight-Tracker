@@ -14,7 +14,6 @@ import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {
     Airline,
     AirlinesAsList,
-    Airport,
     AirportsAsInput,
     FlightStatus,
     FlightStatusList
@@ -58,14 +57,14 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
     const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
             const originToSave= airports.filter(airport => value.includes(airport.code))[0].code;
-            setNewFlight({ ...newFlight, origin: originToSave as Airport });
+            setNewFlight({ ...newFlight, origin: originToSave });
         }
     };
 
     const handleDestinationChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
             const destinationToSave= airports.filter(airport => value.includes(airport.code))[0].code;
-            setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
+            setNewFlight({ ...newFlight, destination: destinationToSave });
         }
     };
 
@@ -107,7 +106,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             <Autocomplete
                 disablePortal
                 options={airports}
-                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                getOptionLabel={(option) => option.code + ' - ' + option.name}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
                 disabled={!editable}
@@ -137,7 +136,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             <Autocomplete
                 disablePortal
                 options={airports}
-                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                getOptionLabel={(option) => option.code + ' - ' + option.name}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
                 disabled={!editable}
