@@ -1,5 +1,6 @@
 package com.rhyun.backend.airport.controller;
 
+import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.service.AirportService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public class AirportController {
     }
 
     @GetMapping("/options-for-input")
-    public List<String> getAirportOptions() {
+    public List<GetAirportDto> getAirportOptions() {
         return airportService.getAirportOptions();
     }
 }
