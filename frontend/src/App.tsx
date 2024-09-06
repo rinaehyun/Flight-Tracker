@@ -9,9 +9,11 @@ import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
 import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
+    const [currentUser, setCurrentUser] = useState<string | undefined>('');
 
     const fetchAllFlights = () => {
         axios.get("/api/flight")
@@ -27,10 +29,11 @@ function App() {
 
     return (
         <div className={"app"}>
-            <Header />
+            <Header currentUser={currentUser}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
+                    <Route path={"/login"} element={<LoginPage setCurrentUser={setCurrentUser}/>}/>
                     <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights}/>} />
                     <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights}/>}/>
                     <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights}/>}/>
