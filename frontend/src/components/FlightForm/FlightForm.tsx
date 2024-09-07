@@ -1,6 +1,6 @@
 import './FlightForm.css'
 import {NewFlight} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useEffect, useState} from "react";
 import {
     Autocomplete,
     FormControl,
@@ -11,7 +11,14 @@ import {
     TextField
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
-import {Airline, AirlinesAsList, Airport, AirportsAsList, FlightStatus, FlightStatusList} from "../../types/enum.ts";
+import {
+    Airline,
+    AirlinesAsList,
+    AirportsAsInput,
+    FlightStatus,
+    FlightStatusList
+} from "../../types/enum.ts";
+import axios from "axios";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -22,6 +29,18 @@ type FlightFormProps = {
 }
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
+    const [airports, setAirports] = useState<AirportsAsInput[]>([{
+        code: '',
+        name: ''
+    }]);
+
+    useEffect(() => {
+        axios.get("/api/airport/options-for-input")
+            .then(response => {
+                setAirports(response.data);
+            })
+            .catch(error => alert(error));
+    }, [])
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
@@ -37,15 +56,15 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
 
     const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const originToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
-            setNewFlight({ ...newFlight, origin: originToSave as Airport });
+            const originToSave= airports.filter(airport => value.includes(airport.code))[0].code;
+            setNewFlight({ ...newFlight, origin: originToSave });
         }
     };
 
     const handleDestinationChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const destinationToSave= AirportsAsList.filter(airport => value.includes(airport.code))[0].code;
-            setNewFlight({ ...newFlight, destination: destinationToSave as Airport });
+            const destinationToSave= airports.filter(airport => value.includes(airport.code))[0].code;
+            setNewFlight({ ...newFlight, destination: destinationToSave });
         }
     };
 
@@ -86,19 +105,19 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             />
             <Autocomplete
                 disablePortal
-                options={AirportsAsList}
-                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                options={airports}
+                getOptionLabel={(option) => option.code + ' - ' + option.name}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleOriginChange}
                 disabled={!editable}
-                value={AirportsAsList.find(option =>  option.code === newFlight.origin) || null}
+                value={airports.find(option =>  option.code === newFlight.origin) || null}
                 renderInput={(params) =>
                     <TextField
                         required
                         {...params}
                         label={"Origin"}
                         variant={"standard"}
-                        placeholder={"SFO - San Francisco, USA"}
+                        placeholder={"BKK - Bangkok, Thailand"}
                         name={"origin"}
                     />
                 }
@@ -116,12 +135,12 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             </div>
             <Autocomplete
                 disablePortal
-                options={AirportsAsList}
-                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                options={airports}
+                getOptionLabel={(option) => option.code + ' - ' + option.name}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleDestinationChange}
                 disabled={!editable}
-                value={AirportsAsList.find(option =>  option.code === newFlight.destination) || null}
+                value={airports.find(option =>  option.code === newFlight.destination) || null}
                 renderInput={(params) =>
                     <TextField
                         required
