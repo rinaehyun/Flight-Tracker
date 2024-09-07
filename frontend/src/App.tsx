@@ -8,6 +8,7 @@ import axios from 'axios';
 import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
+import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -30,7 +31,8 @@ function App() {
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
-                    <Route path={"/flight"} element={<FlightPage data={flightData}/>}/>
+                    <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights}/>} />
+                    <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights}/>}/>
                     <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights}/>}/>
                 </Routes>
             </main>

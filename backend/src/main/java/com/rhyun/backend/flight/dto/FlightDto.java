@@ -5,7 +5,6 @@ import com.rhyun.backend.flight.model.FlightStatus;
 import lombok.With;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 
 @With
 public record FlightDto(
