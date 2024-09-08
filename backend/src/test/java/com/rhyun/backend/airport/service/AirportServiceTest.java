@@ -118,4 +118,16 @@ class AirportServiceTest {
         assertThrows(AirportNotFoundException.class, () -> airportService.getAirportById(id));
         verify(airportRepository, times(1)).findById(id);
     }
+
+    @Test
+    void deleteAirportByIdTest_whenIdExists_thenDeleteFlightEntity() {
+        // GIVEN
+        String id = "123";
+        doNothing().when(airportRepository).deleteById(id);
+
+        // WHEN
+        // THEN
+        airportService.deleteAirportById(id);
+        verify(airportRepository, times(1)).deleteById(id);
+    }
 }

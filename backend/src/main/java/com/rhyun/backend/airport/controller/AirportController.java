@@ -3,10 +3,7 @@ package com.rhyun.backend.airport.controller;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.service.AirportService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,5 +30,10 @@ public class AirportController {
     @GetMapping("/{id}")
     public Airport getAirportById(@PathVariable String id) {
         return airportService.getAirportById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAirportById(@PathVariable String id) {
+        airportService.deleteAirportById(id);
     }
 }

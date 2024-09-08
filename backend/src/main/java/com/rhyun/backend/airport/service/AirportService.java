@@ -40,4 +40,9 @@ public class AirportService {
         return airportRepository.findById(id)
                 .orElseThrow(() -> new AirportNotFoundException("The Airport with id " + id + " cannot be found."));
     }
+
+    public void deleteAirportById(String id) {
+        airportRepository.deleteById(id);
+        System.out.println("The Airport with id "+ id + " has been deleted.");
+    }
 }
