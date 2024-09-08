@@ -67,4 +67,40 @@ class AirlineIntegrationTest {
                     }]
                 """));
     }
+
+    @Test
+    @DirtiesContext
+    void getAirlineOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airline/options-for-input"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirlineOptionsTest_whenDBHasData_thenReturnListOfAirlines() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+        airlineRepository.save(airline2);
+
+        // WHEN
+        mockMvc.perform(get("/api/airline/options-for-input"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                [
+                    {
+                        "code": "SQ",
+                        "name": "Singapore Airlines"
+                    },
+                    {
+                        "code": "KE",
+                        "name": "Korean Air"
+                    }
+                ]
+            """));
+    }
 }

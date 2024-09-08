@@ -1,5 +1,6 @@
 package com.rhyun.backend.airline.controller;
 
+import com.rhyun.backend.airline.dto.GetAirlineDto;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.service.AirlineService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,4 +24,8 @@ public class AirlineController {
         return airlineService.getAllAirlines();
     }
 
+    @GetMapping("/options-for-input")
+    public List<GetAirlineDto> getAirlineOptions() {
+        return airlineService.getAirlineOptions();
+    }
 }
