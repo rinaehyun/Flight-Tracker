@@ -1,6 +1,7 @@
 package com.rhyun.backend.airport.service;
 
 import com.rhyun.backend.airport.dto.GetAirportDto;
+import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.model.AirportAddress;
 import com.rhyun.backend.airport.model.AirportTimeZone;
@@ -10,9 +11,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class AirportServiceTest {
@@ -85,5 +88,34 @@ class AirportServiceTest {
 
         assertEquals(expected, actual);
         verify(airportRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getAirportByIdTest_whenIdExists_thenReturnAnAirline() {
+        // GIVEN
+        String id = "123";
+        when(airportRepository.findById(id)).thenReturn(Optional.of(airport1));
+
+        // WHEN
+        Airport actual = airportService.getAirportById(id);
+
+        // THEN
+        Airport expected = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+
+        assertEquals(expected, actual);
+        verify(airportRepository, times(1)).findById(id);
+    }
+
+    @Test
+    void getAirportByIdTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        String id = "135";
+        when(airportRepository.findById(id)).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(AirportNotFoundException.class, () -> airportService.getAirportById(id));
+        verify(airportRepository, times(1)).findById(id);
     }
 }
