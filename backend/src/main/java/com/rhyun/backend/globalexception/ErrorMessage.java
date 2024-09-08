@@ -1,4 +1,4 @@
-package com.rhyun.backend.flight.exception;
+package com.rhyun.backend.globalexception;
 
 import java.util.Date;
 

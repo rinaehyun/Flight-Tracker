@@ -4,6 +4,7 @@ import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.service.AirportService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +28,10 @@ public class AirportController {
     @GetMapping("/options-for-input")
     public List<GetAirportDto> getAirportOptions() {
         return airportService.getAirportOptions();
+    }
+
+    @GetMapping("/{id}")
+    public Airport getAirportById(@PathVariable String id) {
+        return airportService.getAirportById(id);
     }
 }

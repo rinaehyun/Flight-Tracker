@@ -13,8 +13,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -126,5 +125,52 @@ class AirportIntegrationTest {
                     }
                 ]
             """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirportByIdTest_whenIdExists_thenReturnAirportEntity() throws Exception {
+        // GIVEN
+        airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
+            new AirportAddress("POLAND"), new AirportTimeZone("+02:00"))
+        );
+
+        // WHEN
+        mockMvc.perform(get("/api/airport/123"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "123",
+                    "name": "GDANSK",
+                    "iataCode": "GDN",
+                    "geoCode": {
+                    "latitude": 54,
+                        "longitude": 18
+                    },
+                    "address": {
+                        "countryName": "POLAND"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirportByIdTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airport/123"))
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "The Airport with id 123 cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
     }
 }
