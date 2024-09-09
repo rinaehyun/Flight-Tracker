@@ -1,5 +1,6 @@
 package com.rhyun.backend.airport.controller;
 
+import com.rhyun.backend.airport.dto.AirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.model.AirportAddress;
 import com.rhyun.backend.airport.model.AirportTimeZone;
@@ -9,11 +10,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -190,7 +191,7 @@ class AirportIntegrationTest {
                     "name": "GDANSK",
                     "iataCode": "GDN",
                     "geoCode": {
-                    "latitude": 54,
+                        "latitude": 54,
                         "longitude": 18
                     },
                     "address": {
@@ -210,5 +211,39 @@ class AirportIntegrationTest {
         mockMvc.perform(get("/api/airport"))
             .andExpect(status().isOk())
             .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    void createAirportTest_whenPayloadIsCorrect_thenSaveAirportEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(post("/api/airport")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "name": "GDANSK",
+                    "iataCode": "GDN",
+                    "geoCode": {
+                        "latitude": 54,
+                        "longitude": 18
+                    },
+                    "address": {
+                        "countryName": "POLAND"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.name").value("GDANSK"))
+            .andExpect(jsonPath("$.iataCode").value("GDN"))
+            .andExpect(jsonPath("$.geoCode.latitude").value(54))
+            .andExpect(jsonPath("$.geoCode.longitude").value(18))
+            .andExpect(jsonPath("$.address.countryName").value("POLAND"))
+            .andExpect(jsonPath("$.timeZone.offSet").value("+02:00"));
     }
 }

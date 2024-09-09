@@ -1,5 +1,6 @@
 package com.rhyun.backend.airport.controller;
 
+import com.rhyun.backend.airport.dto.AirportDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.service.AirportService;
@@ -35,5 +36,10 @@ public class AirportController {
     @DeleteMapping("/{id}")
     public void deleteAirportById(@PathVariable String id) {
         airportService.deleteAirportById(id);
+    }
+
+    @PostMapping
+    public Airport createAirport(@RequestBody AirportDto airportDto) {
+        return airportService.createAirport(airportDto);
     }
 }
