@@ -1,22 +1,3 @@
-export enum Airline {
-    UNKNOWN = 'Unknown',
-    CI = 'CHINA AIR',
-    DL = 'DELTA AIR LINES',
-    KE = 'KOREAN AIR',
-    KL = 'KLM ROYAL DUTCH AIRLINES',
-    LH = 'LUFTHANSA',
-    NH = 'ALL NIPPON AIRWAYS',
-    NQ = 'AIR JAPAN COMPANY LTD',
-    QF = 'QANTAS AIRWAYS',
-    SQ = 'SINGAPORE AIRLINES',
-    TK = 'TURKISH AIRLINES'
-}
-
-export const AirlinesAsList = Object.entries(Airline).map(([key, value]) => ({
-    code: key,
-    name: value
-}));
-
 export type FlightStatus = "SCHEDULED" | "BOARDING" | "DELAYED" | "IN_AIR" |
     "LANDED"| "CANCELLED" | "DIVERTED" | "ARRIVED" | "UNKNOWN";
 
@@ -26,6 +7,11 @@ export const FlightStatusList : FlightStatus[] = [
 ];
 
 export type AirportsAsInput = {
+    code: string,
+    name: string,
+}
+
+export type AirlinesAsInput = {
     code: string,
     name: string,
 }
