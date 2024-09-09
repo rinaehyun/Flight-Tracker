@@ -1,8 +1,6 @@
 import './FlightList.css'
 import {Flight} from "../../../../types/model/dataType.ts";
-import {Airline} from "../../../../types/enum.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {calculateDuration, formatDate, formatTime} from "../../../../utils/functionsForTime.ts";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
@@ -10,6 +8,7 @@ import ConfirmationModal from "../../../../components/ConfirmationModal/Confirma
 import {useEffect, useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notification from "../../../../components/Notification/Notification.tsx";
+import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 
 type FlightListProps = {
     data: Flight[],
@@ -20,6 +19,7 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const { airlines } = useFetchOptions();
 
     const navigate = useNavigate();
 
@@ -65,8 +65,13 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>
                         <div className={"flight-card-airline"}>
-                            <FlightTakeoffIcon sx={{ fontSize: "25px"}}/>
-                            <h4>{capitalizeFirstLetter(Airline[flight.airline as unknown as keyof typeof Airline])}</h4>
+                            <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                            <h4>
+                                {airlines
+                                    .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
+                                    .map(filteredAirline => filteredAirline.name)
+                                }
+                            </h4>
                             <h4>{flight.flightCode}</h4>
                         </div>
                         <div className={"flight-card-icons"}>
