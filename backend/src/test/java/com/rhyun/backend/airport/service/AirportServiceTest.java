@@ -1,5 +1,6 @@
 package com.rhyun.backend.airport.service;
 
+import com.rhyun.backend.airport.dto.AirportDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
@@ -7,6 +8,7 @@ import com.rhyun.backend.airport.model.AirportAddress;
 import com.rhyun.backend.airport.model.AirportTimeZone;
 import com.rhyun.backend.airport.model.GeoCode;
 import com.rhyun.backend.airport.repository.AirportRepository;
+import com.rhyun.backend.globalservice.IdService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -21,7 +23,8 @@ import static org.mockito.Mockito.*;
 class AirportServiceTest {
 
     private final AirportRepository airportRepository = mock(AirportRepository.class);
-    private final AirportService airportService = new AirportService(airportRepository);
+    private final IdService idService = mock(IdService.class);
+    private final AirportService airportService = new AirportService(airportRepository, idService);
 
     Airport airport1 = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
             new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
@@ -129,5 +132,27 @@ class AirportServiceTest {
         // THEN
         airportService.deleteAirportById(id);
         verify(airportRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void createAirportTest_whenPayloadIsCorrect_thenReturnAirportEntity() {
+        // GIVEN
+        AirportDto airportDto = new AirportDto( "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+        Airport airportToSave = new Airport("1", airportDto.name(), airportDto.iataCode(), airportDto.geoCode(),
+                airportDto.address(), airportDto.timeZone());
+        when(airportRepository.save(airportToSave)).thenReturn(airportToSave);
+        when(idService.randomId()).thenReturn(airportToSave.id());
+
+        // WHEN
+        Airport actual = airportService.createAirport(airportDto);
+
+        // THEN
+        Airport expected = new Airport("1", airportDto.name(), airportDto.iataCode(), airportDto.geoCode(),
+                airportDto.address(), airportDto.timeZone());
+
+        assertEquals(expected, actual);
+        verify(airportRepository, times(1)).save(airportToSave);
+        verify(idService, times(1)).randomId();
     }
 }
