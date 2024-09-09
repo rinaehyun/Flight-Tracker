@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AirportServiceTest {
@@ -154,5 +153,30 @@ class AirportServiceTest {
         assertEquals(expected, actual);
         verify(airportRepository, times(1)).save(airportToSave);
         verify(idService, times(1)).randomId();
+    }
+
+    @Test
+    void updateAirportTest_whenIdExistsAndPayloadIsCorrect_thenUpdateAirportEntity() {
+        // GIVEN
+        Airport original = new Airport("1", "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+
+        AirportDto updateDto = new AirportDto( "GOTEBORG", "GOT", new GeoCode(57, 12),
+                new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+
+        Airport updated = new Airport("1", updateDto.name(), updateDto.iataCode(), updateDto.geoCode(),
+                updateDto.address(), updateDto.timeZone());
+
+        when(airportRepository.findById("1")).thenReturn(Optional.of(original));
+        when(airportRepository.save(updated)).thenReturn(updated);
+
+        // WHEN
+        Airport actual = airportService.updateAirport("1", updateDto);
+
+        // THEN
+        assertNotNull(actual);
+        assertEquals(updated, actual);
+        verify(airportRepository, times(1)).findById("1");
+        verify(airportRepository, times(1)).save(updated);
     }
 }

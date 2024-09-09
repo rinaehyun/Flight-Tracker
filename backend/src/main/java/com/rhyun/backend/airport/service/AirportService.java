@@ -61,4 +61,16 @@ public class AirportService {
         );
         return airportRepository.save(airportToSave);
     }
+
+    public Airport updateAirport(String id, AirportDto airportDto) {
+        Airport airportToUpdate = airportRepository.findById(id)
+                .orElseThrow()
+                .withName(airportDto.name())
+                .withIataCode(airportDto.iataCode())
+                .withGeoCode(airportDto.geoCode())
+                .withAddress(airportDto.address())
+                .withTimeZone(airportDto.timeZone());
+
+        return airportRepository.save(airportToUpdate);
+    }
 }
