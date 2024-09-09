@@ -1,8 +1,8 @@
 import './FlightFilter.css';
-import {AirlinesAsList, AirportsAsInput, Filter} from "../../../../types/enum.ts";
+import {Filter} from "../../../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
-import axios from "axios";
+import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 
 type FlightFilterProps = {
     selectedFilter: Filter,
@@ -10,25 +10,13 @@ type FlightFilterProps = {
 }
 
 export default function FlightFilter({ selectedFilter, setSelectedFilter }: Readonly<FlightFilterProps>) {
+    const { airports, airlines } = useFetchOptions();
     const [filter, setFilter] = useState<Filter>({
         airline: undefined,
         origin: undefined,
         destination: undefined
     });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
-    const [airports, setAirports] = useState<AirportsAsInput[]>([{
-        code: '',
-        name: ''
-    }]);
-
-    useEffect(() => {
-        axios.get("/api/airport/options-for-input")
-            .then(response => {
-                setAirports(response.data);
-            })
-            .catch(error => alert(error));
-    }, [])
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -61,7 +49,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"airline-dropdown"}
                 >
                     <option>All</option>
-                    {AirlinesAsList.map((airline) => (
+                    {airlines.map((airline) => (
                         <option key={airline.code} value={airline.code}>
                             {airline.code + ' - ' + capitalizeFirstLetter(airline.name)}
                         </option>

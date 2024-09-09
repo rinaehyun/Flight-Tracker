@@ -1,6 +1,6 @@
 import './FlightForm.css'
 import {NewFlight} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
 import {
     Autocomplete,
     FormControl,
@@ -12,12 +12,10 @@ import {
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {
-    AirlineAsInput,
-    AirportsAsInput,
     FlightStatus,
     FlightStatusList
 } from "../../types/enum.ts";
-import axios from "axios";
+import {useFetchOptions} from "../../hooks/useFetchOptions.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -28,29 +26,7 @@ type FlightFormProps = {
 }
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
-    const [airports, setAirports] = useState<AirportsAsInput[]>([{
-        code: '',
-        name: ''
-    }]);
-
-    const [airlines, setAirlines] = useState<AirlineAsInput[]>([{
-        code: '',
-        name: ''
-    }]);
-
-    useEffect(() => {
-        axios.get("/api/airport/options-for-input")
-            .then(response => {
-                setAirports(response.data);
-            })
-            .catch(error => alert(error));
-
-        axios.get("/api/airline/options-for-input")
-            .then(response => {
-                setAirlines(response.data);
-            })
-            .catch(error => alert(error));
-    }, [])
+    const { airports, airlines } = useFetchOptions();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
