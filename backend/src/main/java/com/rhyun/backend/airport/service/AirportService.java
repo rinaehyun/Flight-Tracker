@@ -17,6 +17,7 @@ public class AirportService {
 
     private final AirportRepository airportRepository;
     private final IdService idService;
+    private String airportWithId = "The airport with id ";
 
     public AirportService(AirportRepository airportRepository, IdService idService) {
         this.airportRepository = airportRepository;
@@ -42,12 +43,12 @@ public class AirportService {
 
     public Airport getAirportById(String id) {
         return airportRepository.findById(id)
-                .orElseThrow(() -> new AirportNotFoundException("The Airport with id " + id + " cannot be found."));
+                .orElseThrow(() -> new AirportNotFoundException(airportWithId + id + " cannot be found."));
     }
 
     public void deleteAirportById(String id) {
         airportRepository.deleteById(id);
-        System.out.println("The Airport with id "+ id + " has been deleted.");
+        System.out.println(airportWithId + id + " has been deleted.");
     }
     
     public Airport createAirport(AirportDto airportDto) {
@@ -64,7 +65,7 @@ public class AirportService {
 
     public Airport updateAirport(String id, AirportDto airportDto) {
         Airport airportToUpdate = airportRepository.findById(id)
-                .orElseThrow()
+                .orElseThrow(() -> new AirportNotFoundException(airportWithId + id + " cannot be found."))
                 .withName(airportDto.name())
                 .withIataCode(airportDto.iataCode())
                 .withGeoCode(airportDto.geoCode())

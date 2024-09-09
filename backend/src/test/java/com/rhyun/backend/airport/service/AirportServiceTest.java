@@ -179,4 +179,21 @@ class AirportServiceTest {
         verify(airportRepository, times(1)).findById("1");
         verify(airportRepository, times(1)).save(updated);
     }
+
+    @Test
+    void updateAirportTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        AirportDto updateDto = new AirportDto( "GOTEBORG", "GOT", new GeoCode(57, 12),
+                new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+        Airport updated = new Airport("1", updateDto.name(), updateDto.iataCode(), updateDto.geoCode(),
+                updateDto.address(), updateDto.timeZone());
+
+        when(airportRepository.findById("1")).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(AirportNotFoundException.class, () -> airportService.updateAirport("1", updateDto));
+        verify(airportRepository, times(1)).findById("1");
+        verify(airportRepository, never()).save(updated);
+    }
 }
