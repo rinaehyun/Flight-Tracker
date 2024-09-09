@@ -1,9 +1,9 @@
-import {Airline, FlightStatus} from "../enum.ts";
+import {FlightStatus} from "../enum.ts";
 
 export type Flight = {
     id: string,
     flightCode: string,
-    airline: Airline,
+    airline: string,
     origin: string,
     destination: string,
     departureTime: string,

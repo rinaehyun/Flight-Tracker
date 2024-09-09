@@ -1,6 +1,6 @@
 import './FlightForm.css'
 import {NewFlight} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useEffect, useState} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
 import {
     Autocomplete,
     FormControl,
@@ -12,13 +12,10 @@ import {
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {
-    Airline,
-    AirlinesAsList,
-    AirportsAsInput,
     FlightStatus,
     FlightStatusList
 } from "../../types/enum.ts";
-import axios from "axios";
+import {useFetchOptions} from "../../hooks/useFetchOptions.ts";
 
 type FlightFormProps = {
     newFlight: NewFlight,
@@ -29,18 +26,7 @@ type FlightFormProps = {
 }
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
-    const [airports, setAirports] = useState<AirportsAsInput[]>([{
-        code: '',
-        name: ''
-    }]);
-
-    useEffect(() => {
-        axios.get("/api/airport/options-for-input")
-            .then(response => {
-                setAirports(response.data);
-            })
-            .catch(error => alert(error));
-    }, [])
+    const { airports, airlines } = useFetchOptions();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
@@ -49,8 +35,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
 
     const handleAirlineChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const airlineToSave= AirlinesAsList.filter(airline => value.includes(airline.code))[0].code;
-            setNewFlight({ ...newFlight, airline: airlineToSave as Airline });
+            const airlineToSave= airlines.filter(airline => value.includes(airline.code))[0].code;
+            setNewFlight({ ...newFlight, airline: airlineToSave });
         }
     };
 
@@ -72,12 +58,12 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
             <Autocomplete
                 disablePortal
-                options={AirlinesAsList}
+                options={airlines}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleAirlineChange}
                 disabled={!editable}
-                value={AirlinesAsList.find(option => option.code === newFlight.airline) || null}
+                value={airlines.find(option => option.code === newFlight.airline) || null}
                 renderInput={(params) =>
                     <TextField
                         required
