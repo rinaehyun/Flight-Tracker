@@ -30,6 +30,11 @@ export type AirportsAsInput = {
     name: string,
 }
 
+export type AirlineAsInput = {
+    code: string,
+    name: string,
+}
+
 export type Filter = {
     airline: string | undefined,
     origin: string | undefined,

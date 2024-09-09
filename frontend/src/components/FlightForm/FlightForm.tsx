@@ -12,8 +12,7 @@ import {
 } from "@mui/material";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {
-    Airline,
-    AirlinesAsList,
+    AirlineAsInput,
     AirportsAsInput,
     FlightStatus,
     FlightStatusList
@@ -34,10 +33,21 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
         name: ''
     }]);
 
+    const [airlines, setAirlines] = useState<AirlineAsInput[]>([{
+        code: '',
+        name: ''
+    }]);
+
     useEffect(() => {
         axios.get("/api/airport/options-for-input")
             .then(response => {
                 setAirports(response.data);
+            })
+            .catch(error => alert(error));
+
+        axios.get("/api/airline/options-for-input")
+            .then(response => {
+                setAirlines(response.data);
             })
             .catch(error => alert(error));
     }, [])
@@ -49,8 +59,8 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
 
     const handleAirlineChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const airlineToSave= AirlinesAsList.filter(airline => value.includes(airline.code))[0].code;
-            setNewFlight({ ...newFlight, airline: airlineToSave as Airline });
+            const airlineToSave= airlines.filter(airline => value.includes(airline.code))[0].code;
+            setNewFlight({ ...newFlight, airline: airlineToSave });
         }
     };
 
@@ -72,12 +82,12 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
         <form className={"add-flight-form"} onSubmit={handleSubmit}>
             <Autocomplete
                 disablePortal
-                options={AirlinesAsList}
+                options={airlines}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onInputChange={handleAirlineChange}
                 disabled={!editable}
-                value={AirlinesAsList.find(option => option.code === newFlight.airline) || null}
+                value={airlines.find(option => option.code === newFlight.airline) || null}
                 renderInput={(params) =>
                     <TextField
                         required
