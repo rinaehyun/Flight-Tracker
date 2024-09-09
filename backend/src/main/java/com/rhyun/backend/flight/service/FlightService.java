@@ -4,6 +4,7 @@ import com.rhyun.backend.flight.dto.FlightDto;
 import com.rhyun.backend.flight.exception.FlightNotFountException;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.repository.FlightRepository;
+import com.rhyun.backend.globalservice.IdService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
