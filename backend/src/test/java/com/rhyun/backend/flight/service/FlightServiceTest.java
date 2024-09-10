@@ -6,6 +6,7 @@ import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.model.FlightStatus;
 import com.rhyun.backend.flight.repository.FlightRepository;
+import com.rhyun.backend.globalservice.IdService;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
