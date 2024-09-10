@@ -26,7 +26,8 @@ public class UserService {
     public User saveUser(UserDto userDto) {
         User userToSave = new User(
                 idService.randomId(),
-                userDto.githubId()
+                userDto.githubId(),
+                userDto.role()
         );
         return userRepository.save(userToSave);
     }

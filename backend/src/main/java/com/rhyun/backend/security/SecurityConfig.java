@@ -42,7 +42,10 @@ public class SecurityConfig {
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .oauth2Login(o -> o.defaultSuccessUrl(appUrl))
-                .logout(l -> l.logoutSuccessUrl(appUrl));
+                .logout(l -> l.logoutSuccessUrl(appUrl))
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().authenticated()
+                );
                 //.authorizeHttpRequests(a -> a
                         //.requestMatchers(HttpMethod.GET, "/api/flight").authenticated()
                   //      .anyRequest().authenticated());
@@ -52,22 +55,23 @@ public class SecurityConfig {
 
     @Bean
     public OAuth2UserService<OAuth2UserRequest, OAuth2User> oAuth2UserService() {
-        DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
+        DefaultOAuth2UserService defaultOAuth2UserService = new DefaultOAuth2UserService();
 
-        return request -> {
-            OAuth2User user = delegate.loadUser(request);
+        return userRequest -> {
+            OAuth2User oAuth2User = defaultOAuth2UserService.loadUser(userRequest);
+
             User gitHubUser;
             try {
-                gitHubUser = userService.getUserByGithubId(user.getName());
+                gitHubUser = userService.getUserByGithubId(oAuth2User.getName());
             } catch (UserNotFoundException e) {
                 gitHubUser = userService.saveUser(new UserDto(
-                        user.getAttributes().get("login").toString()
+                        oAuth2User.getAttributes().get("login").toString(),
+                        "USER"
                 ));
             }
-
-            return new DefaultOAuth2User(List.of(
-                    new SimpleGrantedAuthority(gitHubUser.githubId())),
-                    user.getAttributes(),
+            return new DefaultOAuth2User(
+                    List.of(new SimpleGrantedAuthority(gitHubUser.role())),
+                    oAuth2User.getAttributes(),
                     "id"
             );
         };

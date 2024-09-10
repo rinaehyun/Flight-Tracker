@@ -17,7 +17,8 @@ function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
     const [currentUser, setCurrentUser] = useState<User>({
         id: '',
-        githubId: ''
+        githubId: '',
+        role: 'USER'
     });
 
     const fetchAllFlights = () => {
