@@ -48,7 +48,6 @@ public class AirportService {
 
     public void deleteAirportById(String id) {
         airportRepository.deleteById(id);
-        System.out.println(airportWithId + id + " has been deleted.");
     }
     
     public Airport createAirport(AirportDto airportDto) {

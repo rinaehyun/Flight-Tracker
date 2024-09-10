@@ -3,7 +3,6 @@ package com.rhyun.backend.airport.controller;
 import com.rhyun.backend.airport.dto.AirportDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
-import com.rhyun.backend.airport.repository.AirportRepository;
 import com.rhyun.backend.airport.service.AirportService;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,11 +13,9 @@ import java.util.List;
 public class AirportController {
 
     private final AirportService airportService;
-    private final AirportRepository airportRepository;
 
-    public AirportController (AirportService airportService, AirportRepository airportRepository) {
+    public AirportController (AirportService airportService) {
         this.airportService = airportService;
-        this.airportRepository = airportRepository;
     }
 
     @GetMapping
