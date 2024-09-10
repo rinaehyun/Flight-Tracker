@@ -10,10 +10,14 @@ import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
 import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
+import {User} from "./types/auth/userType.ts";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
-    const [currentUser, setCurrentUser] = useState<string | undefined>('');
+    const [currentUser, setCurrentUser] = useState<User>({
+        id: '',
+        githubId: ''
+    });
 
     const fetchAllFlights = () => {
         axios.get("/api/flight")
@@ -34,7 +38,7 @@ function App() {
 
     return (
         <div className={"app"}>
-            <Header currentUser={currentUser}/>
+            <Header currentUser={currentUser.githubId}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
