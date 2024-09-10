@@ -1,17 +1,15 @@
 import {Link} from "react-router-dom";
-import axios from "axios";
 
-export default function WelcomePage() {
-    const loadUser = () => {
-        axios.get("/api/auth/user")
-            .then(response => console.log(response.data))
-    }
+
+export default function Home() {
 
     return(
         <>
             <h2>Welcome to Flight App!</h2>
-            <Link to={"/login"}>Login with Github</Link>
-            <button onClick={loadUser}>User Info</button>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <p>Already have an <Link to={"/login"} style={{color: "blue"}}>account</Link></p>
+                <p>I need to create a new account <Link to={"/signup"} style={{color: "blue"}} >sign up</Link></p>
+            </div>
         </>
     )
 }

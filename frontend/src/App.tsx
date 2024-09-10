@@ -9,8 +9,9 @@ import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
 import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
-import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import {User} from "./types/auth/userType.ts";
+import LoginPage from "./pages/LoginPage/LoginPage.tsx";
+import SignupPage from "./pages/LoginPage/SignupPage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -42,7 +43,8 @@ function App() {
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home />}/>
-                    <Route path={"/login"} element={<LoginPage />}/>
+                    <Route path={"/login"} element={<LoginPage />} />
+                    <Route path={"/signup"} element={<SignupPage />} />
                     <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
                     <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                     <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
