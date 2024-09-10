@@ -1,7 +1,8 @@
 import './FlightFilter.css';
-import {AirlinesAsList, AirportsAsList, Filter} from "../../../../types/enum.ts";
+import {Filter} from "../../../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
+import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 
 type FlightFilterProps = {
     selectedFilter: Filter,
@@ -9,6 +10,7 @@ type FlightFilterProps = {
 }
 
 export default function FlightFilter({ selectedFilter, setSelectedFilter }: Readonly<FlightFilterProps>) {
+    const { airports, airlines } = useFetchOptions();
     const [filter, setFilter] = useState<Filter>({
         airline: undefined,
         origin: undefined,
@@ -47,7 +49,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"airline-dropdown"}
                 >
                     <option>All</option>
-                    {AirlinesAsList.map((airline) => (
+                    {airlines.map((airline) => (
                         <option key={airline.code} value={airline.code}>
                             {airline.code + ' - ' + capitalizeFirstLetter(airline.name)}
                         </option>
@@ -62,9 +64,9 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"origin-dropdown"}
                 >
                     <option>All</option>
-                    {AirportsAsList.map((airport) => (
+                    {airports.map((airport) => (
                         <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
+                            {airport.code + ' - ' + airport.name}
                         </option>
                     ))}
                 </select>
@@ -77,9 +79,9 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     className={"destination-dropdown"}
                 >
                     <option>All</option>
-                    {AirportsAsList.map((airport) => (
+                    {airports.map((airport) => (
                         <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + capitalizeFirstLetter(airport.name)}
+                            {airport.code + ' - ' + airport.name}
                         </option>
                     ))}
                 </select>

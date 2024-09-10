@@ -1,4 +1,4 @@
-package com.rhyun.backend.flight.service;
+package com.rhyun.backend.globalservice;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
