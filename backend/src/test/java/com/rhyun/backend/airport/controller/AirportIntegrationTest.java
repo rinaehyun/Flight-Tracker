@@ -1,6 +1,5 @@
 package com.rhyun.backend.airport.controller;
 
-import com.rhyun.backend.airport.dto.AirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.model.AirportAddress;
 import com.rhyun.backend.airport.model.AirportTimeZone;
@@ -170,7 +169,7 @@ class AirportIntegrationTest {
             .andExpect(content().json("""
                 {
                     "status": 404,
-                    "message": "The Airport with id 123 cannot be found."
+                    "message": "The airport with id 123 cannot be found."
                 }
             """))
             .andExpect(jsonPath("$.timestamp").exists());
@@ -245,5 +244,86 @@ class AirportIntegrationTest {
             .andExpect(jsonPath("$.geoCode.longitude").value(18))
             .andExpect(jsonPath("$.address.countryName").value("POLAND"))
             .andExpect(jsonPath("$.timeZone.offSet").value("+02:00"));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAirportTest_whenIdExists_thenUpdateAirportEntity() throws Exception {
+        // GIVEN
+        airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"))
+        );
+
+        // WHEN
+        mockMvc.perform(put("/api/airport/123")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "name": "GOTEBORG",
+                    "iataCode": "GOT",
+                    "geoCode": {
+                    "latitude": 57,
+                        "longitude": 12
+                    },
+                    "address": {
+                        "countryName": "SWEDEN"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "123",
+                    "name": "GOTEBORG",
+                    "iataCode": "GOT",
+                    "geoCode": {
+                    "latitude": 57,
+                        "longitude": 12
+                    },
+                    "address": {
+                        "countryName": "SWEDEN"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    void updateAirportTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/airport/123")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "name": "GOTEBORG",
+                    "iataCode": "GOT",
+                    "geoCode": {
+                    "latitude": 57,
+                        "longitude": 12
+                    },
+                    "address": {
+                        "countryName": "SWEDEN"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "The airport with id 123 cannot be found."
+                }
+            """));
     }
 }
