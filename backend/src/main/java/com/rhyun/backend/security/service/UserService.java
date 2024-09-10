@@ -1,5 +1,6 @@
 package com.rhyun.backend.security.service;
 
+import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.UserDto;
 import com.rhyun.backend.security.exception.UserNotFoundException;
 import com.rhyun.backend.security.model.User;
@@ -10,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final IdService idService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, IdService idService) {
         this.userRepository = userRepository;
+        this.idService = idService;
     }
 
     public User getUserByGithubId(String githubId) {
@@ -22,7 +25,7 @@ public class UserService {
 
     public User saveUser(UserDto userDto) {
         User userToSave = new User(
-                "357",
+                idService.randomId(),
                 userDto.githubId()
         );
         return userRepository.save(userToSave);
