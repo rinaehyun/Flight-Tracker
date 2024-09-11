@@ -5,7 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "users")
 public record User(
     String id,
-    String githubId,
+    String username,
+    String password,
+    String passwordConfirmation,
     String role
 ) {
 }

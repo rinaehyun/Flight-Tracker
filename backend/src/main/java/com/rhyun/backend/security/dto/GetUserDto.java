@@ -1,9 +1,7 @@
 package com.rhyun.backend.security.dto;
 
-public record UserDto(
+public record GetUserDto(
     String username,
-    String password,
-    String passwordConfirmation,
     String role
 ) {
 }

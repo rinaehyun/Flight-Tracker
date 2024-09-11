@@ -10,15 +10,4 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
-
-    public AuthController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @GetMapping("/user")
-    public User getLoggedInUser(@AuthenticationPrincipal OAuth2User user) {
-        if (user != null)  return userService.getUserByGithubId(user.getAttributes().get("login").toString());
-        return null;
-    }
 }
