@@ -17,7 +17,7 @@ export default function Header({ currentUser }: HeaderProps) {
     return(
         <header>
             <FlightTakeoffIcon
-                sx={{fontSize: "35px", marginLeft: "20px", cursor: "pointer"}}
+                sx={{fontSize: "25px", marginLeft: "20px", cursor: "pointer"}}
                 onClick={() => window.location.href = '/'}
             />
             <nav>
@@ -28,13 +28,19 @@ export default function Header({ currentUser }: HeaderProps) {
                     <li className={"nav-li"}>
                         <Link to={"/flight"}>Flight</Link>
                     </li>
+                    <li className={"nav-li"}>
+                        <Link to={"/airport"}>Airport</Link>
+                    </li>
+                    <li className={"nav-li"}>
+                        <Link to={"/airline"}>Airline</Link>
+                    </li>
                 </ul>
             </nav>
-            <div style={{ float: "right", marginLeft: "auto" }}>
+            <div style={{float: "right", marginLeft: "auto"}}>
                 {
                     currentUser
-                        ? <button onClick={handleLogout}>Log out</button>
-                        : <button onClick={() => navigate('/login')}>Log in</button>
+                        ? <button className={"login-button"} onClick={handleLogout}>Log out</button>
+                        : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
                 }
             </div>
         </header>

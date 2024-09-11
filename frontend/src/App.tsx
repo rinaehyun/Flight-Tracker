@@ -12,6 +12,8 @@ import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
 import {User} from "./types/auth/userType.ts";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignupPage from "./pages/LoginPage/SignupPage.tsx";
+import AirportPage from "./pages/AirportPage/AirportPage.tsx";
+import AirlinePage from "./pages/AirlinePage/AirlinePage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -43,12 +45,14 @@ function App() {
             <Header currentUser={currentUser.githubId}/>
             <main>
                 <Routes>
-                    <Route path={"/"} element={<Home />}/>
+                    <Route path={"/"} element={<Home currentUser={currentUser.githubId} />}/>
                     <Route path={"/login"} element={<LoginPage />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
                     <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                     <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
+                    <Route path={"/airport"} element={<AirportPage />} />
+                    <Route path={"/airline"} element={<AirlinePage />} />
                 </Routes>
             </main>
             <Footer />
