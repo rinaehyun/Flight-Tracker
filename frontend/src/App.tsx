@@ -1,5 +1,5 @@
 import './App.css'
-import {Route, Routes} from "react-router-dom";
+import {Route, Routes, useNavigate} from "react-router-dom";
 import Home from "./pages/Home/Home.tsx";
 import Header from "./layouts/Header/Header.tsx";
 import Footer from "./layouts/Footer/Footer.tsx";
@@ -9,7 +9,7 @@ import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
 import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
-import {BasicUser} from "./types/auth/userType.ts";
+import {BasicUser, UserForLogin} from "./types/auth/userType.ts";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignupPage from "./pages/LoginPage/SignupPage.tsx";
 import AirportPage from "./pages/AirportPage/AirportPage.tsx";
@@ -22,9 +22,13 @@ function App() {
         id: '',
         username: '',
         password: '',
-        passwordConfirmation: '',
         role: ''
     });
+    const [loggedInUser, setLoggedInUser] = useState<UserForLogin | null | undefined>({
+        username: '',
+        password: '',
+    })
+    const navigate = useNavigate();
 
     const fetchAllFlights = () => {
         if (currentUser?.id) {
@@ -40,8 +44,7 @@ function App() {
         fetchAllFlights();
     },[])
 
-
-    const fetchUser = () => {
+/*    const fetchUser = () => {
         if (currentUser?.id) {
             axios.get("/api/auth/me")
                 .then(response => setCurrentUser(response.data))
@@ -50,17 +53,35 @@ function App() {
 
     useEffect(() => {
         fetchUser();
-    },[])
+    },[])*/
 
+    const login = (user: UserForLogin) => {
+        axios.post("/api/auth/login", {}, {
+            auth: {
+                username: user.username,
+                password: user.password
+            }
+        })
+            .then(() => {
+                    axios.get("/api/auth/me")
+                        .then(response => setLoggedInUser(response.data))
+                        .then(() => navigate("/"));
+            })
+            .catch(error => {
+                setLoggedInUser(null);
+                console.error(error.response.data)
+            })
+    }
+console.log(loggedInUser)
     return (
         <div className={"app"}>
             <Header currentUser={currentUser?.username}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home currentUser={currentUser?.username} />}/>
-                    <Route path={"/login"} element={<LoginPage />} />
+                    <Route path={"/login"} element={<LoginPage login={login}/>} />
                     <Route path={"/signup"} element={<SignupPage />} />
-                    <Route element={<ProtectedRoutes user={currentUser}/>}>
+                    <Route element={<ProtectedRoutes user={loggedInUser}/>}>
                         <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
                         <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>

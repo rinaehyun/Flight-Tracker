@@ -1,33 +1,53 @@
 import './LoginPage.css';
 import {TextField} from "@mui/material";
 import {Link} from "react-router-dom";
+import {UserForLogin} from "../../types/auth/userType.ts";
+import {ChangeEvent, FormEvent, useState} from "react";
 
-export default function LoginPage() {
+type LoginPageProps = {
+    login: (user : UserForLogin) => void;
+}
+
+export default function LoginPage({ login }: LoginPageProps) {
+
+    const [user, setUser] = useState<UserForLogin>({
+        username: '',
+        password: ''
+    })
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setUser({ ...user, [name]: value });
+    }
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setUser({username: '', password: ''})
+        login(user);
+    }
 
     return (
         <>
             <h3>Log in</h3>
-            <form className={"login-form"} onSubmit={() => {}}>
+            <form className={"login-form"} onSubmit={handleSubmit}>
                 <TextField
                     required
-                    id={"outlined-basic"}
+                    name={"username"}
                     label={"Username"}
                     variant={"standard"}
                     color={"primary"}
                     sx={{width: "100%"}}
-                    onChange={() => {
-                    }}
+                    onChange={handleChange}
                     autoComplete={"off"}
                 />
                 <TextField
                     required
-                    id={"outlined-basic"}
+                    name={"password"}
                     label={"Password"}
                     variant={"standard"}
                     color={"primary"}
                     sx={{width: "100%"}}
-                    onChange={() => {
-                    }}
+                    onChange={handleChange}
                     autoComplete={"off"}
                     type={"password"}
                 />

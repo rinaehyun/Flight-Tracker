@@ -1,10 +1,10 @@
 import {Navigate, Outlet} from "react-router-dom";
-import {BasicUser} from "../types/auth/userType.ts";
+import {UserForLogin} from "../types/auth/userType.ts";
 
 type ProtectedRoutes = {
-    user: BasicUser | null | undefined;
+    user: UserForLogin | null | undefined;
 }
 
 export default function ProtectedRoutes({ user }: ProtectedRoutes) {
-    return user?.id ? <Outlet /> : <Navigate to={"/login"} />
+    return user?.username ? <Outlet /> : <Navigate to={"/login"} />
 }

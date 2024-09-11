@@ -9,8 +9,12 @@ export type BasicUser = {
     id: string,
     username: string,
     password: string,
-    passwordConfirmation: string,
     role: string
+}
+
+export type UserForLogin = {
+    username: string,
+    password: string,
 }
 
 export type User = {
