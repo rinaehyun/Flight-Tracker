@@ -58,10 +58,17 @@ function App() {
                 console.error(error.response.data)
             })
     }
-console.log(loggedInUser)
+
+    const logout = () => {
+        axios.post("/api/auth/logout")
+            .then(() => navigate("/login"))
+            .catch(error => console.error(error))
+            .finally(() => setLoggedInUser(null));
+    }
+
     return (
         <div className={"app"}>
-            <Header userId={loggedInUser?.id}/>
+            <Header userId={loggedInUser?.id} logout={logout}/>
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home userId={loggedInUser?.id} />}/>

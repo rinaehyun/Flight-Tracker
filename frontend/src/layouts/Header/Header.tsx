@@ -4,15 +4,10 @@ import {Link, useNavigate} from "react-router-dom";
 
 type HeaderProps = {
     userId: string | undefined,
+    logout: () => void,
 }
-export default function Header({ userId }: HeaderProps) {
+export default function Header({ userId, logout }: HeaderProps) {
     const navigate = useNavigate();
-
-    const handleLogout = () => {
-        const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin;
-
-        window.open(host + '/logout', '_self')
-    }
 
     return(
         <header>
@@ -39,7 +34,7 @@ export default function Header({ userId }: HeaderProps) {
             <div style={{float: "right", marginLeft: "auto"}}>
                 {
                     userId
-                        ? <button className={"login-button"} onClick={handleLogout}>Log out</button>
+                        ? <button className={"login-button"} onClick={logout}>Log out</button>
                         : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
                 }
             </div>
