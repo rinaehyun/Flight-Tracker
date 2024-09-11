@@ -14,7 +14,7 @@ export default function SignupPage() {
     });
     const [showNotification, setShowNotification] = useState<boolean>(false);
 
-    const navitate = useNavigate();
+    const navigate = useNavigate();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = event.target;
@@ -23,15 +23,16 @@ export default function SignupPage() {
 
     const handleRegister = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(event)
         if (newUser.password !== newUser.passwordConfirmation) {
             setShowNotification(true);
             return;
         }
 
-        axios.post("/api/user/register", newUser)
+        axios.post("/api/auth/register", newUser)
             .then(response => {
                 console.log(response)
-                navitate("/login");
+                navigate("/login");
             })
             .then(error => console.log(error));
     }
