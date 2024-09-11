@@ -92,7 +92,13 @@ export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDet
 
     return (
         <article className={"flight-details-container"}>
-            {showNotification && <Notification setShowNotification={setShowNotification} message={"Flight data has been updated."}/>}
+            {showNotification &&
+                <Notification
+                    setShowNotification={setShowNotification}
+                    message={"Flight data has been updated."}
+                    messageType={"success"}
+                />
+            }
             <div className={"top-buttons"}>
                 <Box
                     sx={{

@@ -60,7 +60,11 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
 
     return(
         <div>
-            {showNotification && <Notification setShowNotification={setShowNotification} message={`${flightToDelete?.flightCode} has been deleted.`}/>}
+            {showNotification && <Notification
+                setShowNotification={setShowNotification}
+                message={`${flightToDelete?.flightCode} has been deleted.`}
+                messageType={"success"}
+            />}
             {data.map(flight => (
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>

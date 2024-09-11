@@ -6,13 +6,14 @@ import CloseIcon from '@mui/icons-material/Close';
 type NotificationProps = {
     setShowNotification: Dispatch<SetStateAction<boolean>>,
     message: string,
+    messageType: "success" | "error"
 }
 
-export default function Notification({ setShowNotification, message }: Readonly<NotificationProps>) {
+export default function Notification({ setShowNotification, message, messageType }: Readonly<NotificationProps>) {
     return (
         <Stack className={"stack-alert"}>
             <Alert
-                severity="success"
+                severity={messageType}
                 action={
                     <IconButton
                         aria-label="close"
