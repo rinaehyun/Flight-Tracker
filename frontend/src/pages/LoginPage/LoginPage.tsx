@@ -4,14 +4,6 @@ import {Link} from "react-router-dom";
 
 export default function LoginPage() {
 
-    const handleLogin = () => {
-        const host = window.location.host === 'localhost:5173' ? 'http://localhost:8080' : window.location.origin;
-
-        window.open(host + '/oauth2/authorization/github', '_self');
-
-        //navigate("/flight");
-    }
-
     return (
         <>
             <h3>Log in</h3>
@@ -44,12 +36,11 @@ export default function LoginPage() {
                     className={"login-form-submit"}
                 >Log in
                 </button>
-                <p style={{fontSize: "12px", marginTop: "30px"}}>Log in with a github account?
+                <p style={{fontSize: "12px", marginTop: "30px"}}>If you don't have account?
                     <Link
-                        to={"/flight"}
+                        to={"/signup"}
                         style={{fontSize: "12px", color: "blue"}}
-                        onClick={handleLogin}
-                    > Github</Link>
+                    > Sign up</Link>
                 </p>
             </form>
         </>
