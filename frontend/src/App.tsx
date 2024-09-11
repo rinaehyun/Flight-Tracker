@@ -18,20 +18,15 @@ import ProtectedRoutes from "./auth/ProtectedRoutes.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
-    const [currentUser, setCurrentUser] = useState<BasicUser | null | undefined>({
+    const [loggedInUser, setLoggedInUser] = useState<BasicUser | null | undefined>({
         id: '',
         username: '',
-        password: '',
         role: ''
-    });
-    const [loggedInUser, setLoggedInUser] = useState<UserForLogin | null | undefined>({
-        username: '',
-        password: '',
     })
     const navigate = useNavigate();
 
     const fetchAllFlights = () => {
-        if (currentUser?.id) {
+        if (loggedInUser?.username) {
             axios.get("/api/flight")
                 .then(response=> {
                     setFlightData(response.data)
@@ -44,17 +39,6 @@ function App() {
         fetchAllFlights();
     },[])
 
-/*    const fetchUser = () => {
-        if (currentUser?.id) {
-            axios.get("/api/auth/me")
-                .then(response => setCurrentUser(response.data))
-        }
-    }
-
-    useEffect(() => {
-        fetchUser();
-    },[])*/
-
     const login = (user: UserForLogin) => {
         axios.post("/api/auth/login", {}, {
             auth: {
@@ -64,7 +48,9 @@ function App() {
         })
             .then(() => {
                     axios.get("/api/auth/me")
-                        .then(response => setLoggedInUser(response.data))
+                        .then(response => {
+                            console.log(response.data)
+                            setLoggedInUser(response.data)})
                         .then(() => navigate("/"));
             })
             .catch(error => {
@@ -75,13 +61,13 @@ function App() {
 console.log(loggedInUser)
     return (
         <div className={"app"}>
-            <Header currentUser={currentUser?.username}/>
+            <Header userId={loggedInUser?.id}/>
             <main>
                 <Routes>
-                    <Route path={"/"} element={<Home currentUser={currentUser?.username} />}/>
+                    <Route path={"/"} element={<Home userId={loggedInUser?.id} />}/>
                     <Route path={"/login"} element={<LoginPage login={login}/>} />
                     <Route path={"/signup"} element={<SignupPage />} />
-                    <Route element={<ProtectedRoutes user={loggedInUser}/>}>
+                    <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
                         <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
                         <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>

@@ -56,6 +56,6 @@ public class UserService {
     public GetUserDto getLoggedInUser() {
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = findUserByUsername(principal.getUsername());
-        return new GetUserDto(appUser.username(), appUser.role());
+        return new GetUserDto(appUser.id(), appUser.username(), appUser.role());
     }
 }

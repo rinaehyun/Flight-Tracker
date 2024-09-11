@@ -3,9 +3,9 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {Link, useNavigate} from "react-router-dom";
 
 type HeaderProps = {
-    currentUser: string | undefined,
+    userId: string | undefined,
 }
-export default function Header({ currentUser }: HeaderProps) {
+export default function Header({ userId }: HeaderProps) {
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -38,7 +38,7 @@ export default function Header({ currentUser }: HeaderProps) {
             </nav>
             <div style={{float: "right", marginLeft: "auto"}}>
                 {
-                    currentUser
+                    userId
                         ? <button className={"login-button"} onClick={handleLogout}>Log out</button>
                         : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
                 }

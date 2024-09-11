@@ -8,7 +8,6 @@ export type NewBasicUser = {
 export type BasicUser = {
     id: string,
     username: string,
-    password: string,
     role: string
 }
 
