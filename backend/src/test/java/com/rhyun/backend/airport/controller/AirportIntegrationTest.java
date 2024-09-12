@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -34,6 +35,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllAirportsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
 
@@ -46,6 +48,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllAirportsTest_whenDBHasData_thenReturnListOfAirports() throws Exception {
         // GIVEN
         airportRepository.save(airport1);
@@ -93,6 +96,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirportOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
 
@@ -105,6 +109,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports() throws Exception {
         // GIVEN
         airportRepository.save(airport1);
@@ -130,6 +135,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirportByIdTest_whenIdExists_thenReturnAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -161,6 +167,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirportByIdTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
@@ -177,6 +184,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void deleteAirportByIdTest_whenIdExists_thenDeleteAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -214,6 +222,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void createAirportTest_whenPayloadIsCorrect_thenSaveAirportEntity() throws Exception {
         // GIVEN
         // WHEN
@@ -248,6 +257,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateAirportTest_whenIdExists_thenUpdateAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -296,6 +306,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateAirportTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
