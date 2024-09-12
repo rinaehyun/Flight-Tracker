@@ -8,7 +8,7 @@ type LoginPageProps = {
     showLoginNotification: boolean;
 }
 
-export default function LoginPage({ login, setShowLoginNotification, showLoginNotification }: LoginPageProps) {
+export default function LoginPage({ login, setShowLoginNotification, showLoginNotification }: Readonly<LoginPageProps>) {
     const [user, setUser] = useState<UserForLogin>({
         username: '',
         password: ''

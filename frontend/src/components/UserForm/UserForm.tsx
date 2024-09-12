@@ -21,7 +21,7 @@ type UserFormProps = {
 
 export default function UserForm({ showNotification, setShowNotification, notificationMessage,
                                      pageName, formType, handleSubmit, handleChange,
-                                     buttonLabel, linkMessage, linkTo, linkLabel }: UserFormProps) {
+                                     buttonLabel, linkMessage, linkTo, linkLabel }: Readonly<UserFormProps>) {
 
     useNotificationTimer(showNotification, setShowNotification);
 

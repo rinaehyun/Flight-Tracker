@@ -6,7 +6,7 @@ type HeaderProps = {
     userId: string | undefined,
     logout: () => void,
 }
-export default function Header({ userId, logout }: HeaderProps) {
+export default function Header({ userId, logout }: Readonly<HeaderProps>) {
     const navigate = useNavigate();
 
     return(

@@ -4,7 +4,7 @@ type HomeProps = {
     userId: string | undefined,
 }
 
-export default function Home({ userId }: HomeProps) {
+export default function Home({ userId }: Readonly<HomeProps>) {
 
     return(
         <>
