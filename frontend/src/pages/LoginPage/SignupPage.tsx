@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {ChangeEvent, FormEvent, useEffect, useState} from "react";
+import {ChangeEvent, FormEvent, useState} from "react";
 import {NewBasicUser} from "../../types/auth/userType.ts";
 import axios from "axios";
 import UserForm from "../../components/UserForm/UserForm.tsx";
@@ -36,21 +36,12 @@ export default function SignupPage() {
             .then(error => console.log(error));
     }
 
-    useEffect(() => {
-        if (showNotification) {
-            const timer = setTimeout(() => {
-                setShowNotification(false);
-            }, 5000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [showNotification]);
-
     return(
         <article className={"signup-page"}>
             <UserForm
                 showNotification={showNotification}
                 setShowNotification={setShowNotification}
+                notificationMessage={"The passwords do not match."}
                 pageName={"Create an Account"}
                 formType={"signup"}
                 handleSubmit={handleRegister}

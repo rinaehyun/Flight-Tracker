@@ -1,11 +1,14 @@
+import './UserForm.css';
 import Notification from "../Notification/Notification.tsx";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
 import {TextField} from "@mui/material";
 import {Link} from "react-router-dom";
+import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
 
 type UserFormProps = {
     showNotification: boolean,
     setShowNotification: Dispatch<SetStateAction<boolean>>,
+    notificationMessage: string,
     pageName: string,
     formType: "login" | "signup",
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
@@ -16,20 +19,23 @@ type UserFormProps = {
     linkLabel: string,
 }
 
-export default function UserForm({ showNotification, setShowNotification, pageName, formType,
-                                     handleSubmit, handleChange,
+export default function UserForm({ showNotification, setShowNotification, notificationMessage,
+                                     pageName, formType, handleSubmit, handleChange,
                                      buttonLabel, linkMessage, linkTo, linkLabel }: UserFormProps) {
+
+    useNotificationTimer(showNotification, setShowNotification);
+
     return(
         <>
             {showNotification &&
                 <Notification
                     setShowNotification={setShowNotification}
-                    message={"The passwords do not match."}
+                    message={notificationMessage}
                     messageType={"error"}
                 />
             }
             <h3>{pageName}</h3>
-            <form className={"login-form"} onSubmit={handleSubmit}>
+            <form className={"user-form"} onSubmit={handleSubmit}>
                 <TextField
                     required
                     name={"username"}
@@ -78,7 +84,7 @@ export default function UserForm({ showNotification, setShowNotification, pageNa
                 }
                 <button
                     type={"submit"}
-                    className={"login-form-submit"}
+                    className={"user-form-submit"}
                 >{buttonLabel}
                 </button>
                 <p style={{fontSize: "12px", marginTop: "30px"}}>{linkMessage}
