@@ -5,15 +5,11 @@ import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.UserDto;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.repository.UserRepository;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -41,16 +37,6 @@ public class UserService {
     public AppUser findUserByUsername(String username) {
         return userRepository.findUserByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with " + username + " cannot be found."));
-    }
-
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser = findUserByUsername(username);
-
-        return new User(
-                appUser.username(),
-                appUser.password(),
-                List.of(new SimpleGrantedAuthority(appUser.role()))
-        );
     }
 
     public GetUserDto getLoggedInUser() {
