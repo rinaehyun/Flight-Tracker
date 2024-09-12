@@ -2,14 +2,16 @@ import './LoginPage.css';
 import {TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 import {UserForLogin} from "../../types/auth/userType.ts";
-import {ChangeEvent, FormEvent, useState} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
+import Notification from "../../components/Notification/Notification.tsx";
 
 type LoginPageProps = {
     login: (user : UserForLogin) => void;
+    setShowLoginNotification: Dispatch<SetStateAction<boolean>>;
+    showLoginNotification: boolean;
 }
 
-export default function LoginPage({ login }: LoginPageProps) {
-
+export default function LoginPage({ login, setShowLoginNotification, showLoginNotification }: LoginPageProps) {
     const [user, setUser] = useState<UserForLogin>({
         username: '',
         password: ''
@@ -26,8 +28,23 @@ export default function LoginPage({ login }: LoginPageProps) {
         login(user);
     }
 
+    useEffect(() => {
+        if (showLoginNotification) {
+            const timer = setTimeout(() => {
+                setShowLoginNotification(false);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [showLoginNotification]);
+
     return (
         <>
+            {showLoginNotification && <Notification
+                setShowNotification={setShowLoginNotification}
+                message={"Login failed. Please confirm your username and password again."}
+                messageType={"error"}
+            />}
             <h3>Log in</h3>
             <form className={"login-form"} onSubmit={handleSubmit}>
                 <TextField

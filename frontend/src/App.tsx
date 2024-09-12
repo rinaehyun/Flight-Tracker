@@ -23,6 +23,7 @@ function App() {
         username: '',
         role: ''
     })
+    const [showLoginNotification, setShowLoginNotification] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const fetchAllFlights = () => {
@@ -49,12 +50,14 @@ function App() {
             .then(() => {
                     axios.get("/api/auth/me")
                         .then(response => {
-                            console.log(response.data)
-                            setLoggedInUser(response.data)})
+                            console.log(response.data);
+                            setLoggedInUser(response.data);
+                        })
                         .then(() => navigate("/"));
             })
             .catch(error => {
                 setLoggedInUser(null);
+                setShowLoginNotification(true);
                 console.error(error.response.data)
             })
     }
@@ -72,7 +75,7 @@ function App() {
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home userId={loggedInUser?.id} />}/>
-                    <Route path={"/login"} element={<LoginPage login={login}/>} />
+                    <Route path={"/login"} element={<LoginPage login={login} setShowLoginNotification={setShowLoginNotification} showLoginNotification={showLoginNotification} />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
                         <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
