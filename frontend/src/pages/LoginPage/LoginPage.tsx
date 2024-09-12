@@ -1,9 +1,7 @@
 import './LoginPage.css';
-import {TextField} from "@mui/material";
-import {Link} from "react-router-dom";
 import {UserForLogin} from "../../types/auth/userType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
-import Notification from "../../components/Notification/Notification.tsx";
+import UserForm from "../../components/UserForm/UserForm.tsx";
 
 type LoginPageProps = {
     login: (user : UserForLogin) => void;
@@ -22,7 +20,7 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
         setUser({ ...user, [name]: value });
     }
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleLogin = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setUser({username: '', password: ''})
         login(user);
@@ -39,47 +37,19 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
     }, [showLoginNotification]);
 
     return (
-        <>
-            {showLoginNotification && <Notification
+        <article>
+            <UserForm
+                showNotification={showLoginNotification}
                 setShowNotification={setShowLoginNotification}
-                message={"Login failed. Please confirm your username and password again."}
-                messageType={"error"}
-            />}
-            <h3>Log in</h3>
-            <form className={"login-form"} onSubmit={handleSubmit}>
-                <TextField
-                    required
-                    name={"username"}
-                    label={"Username"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                />
-                <TextField
-                    required
-                    name={"password"}
-                    label={"Password"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                    type={"password"}
-                />
-                <button
-                    type={"submit"}
-                    className={"login-form-submit"}
-                >Log in
-                </button>
-                <p style={{fontSize: "12px", marginTop: "30px"}}>If you don't have account?
-                    <Link
-                        to={"/signup"}
-                        style={{fontSize: "12px", color: "blue"}}
-                    > Sign up</Link>
-                </p>
-            </form>
-        </>
+                pageName={"Login"}
+                formType={"login"}
+                handleSubmit={handleLogin}
+                handleChange={handleChange}
+                buttonLabel={"Log in"}
+                linkMessage={"If you don't have account? "}
+                linkTo={"/signup"}
+                linkLabel={" Go to Signup page"}
+            />
+        </article>
     )
 }

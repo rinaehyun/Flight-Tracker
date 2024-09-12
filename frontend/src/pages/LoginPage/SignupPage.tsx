@@ -1,9 +1,8 @@
-import {Link, useNavigate} from "react-router-dom";
-import {TextField} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import {NewBasicUser} from "../../types/auth/userType.ts";
 import axios from "axios";
-import Notification from "../../components/Notification/Notification.tsx";
+import UserForm from "../../components/UserForm/UserForm.tsx";
 
 export default function SignupPage() {
     const [newUser, setNewUser] = useState<NewBasicUser>({
@@ -49,68 +48,18 @@ export default function SignupPage() {
 
     return(
         <article className={"signup-page"}>
-            {showNotification &&
-                <Notification
-                    setShowNotification={setShowNotification}
-                    message={"The passwords do not match."}
-                    messageType={"error"}
-                />}
-            <h3>Create an Account</h3>
-            <form className={"login-form"} onSubmit={handleRegister}>
-                <TextField
-                    required
-                    name={"username"}
-                    label={"Username"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                />
-                <TextField
-                    required
-                    name={"password"}
-                    label={"Password"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                    type={"password"}
-                />
-                <TextField
-                    required
-                    name={"passwordConfirmation"}
-                    label={"Password Confirmation"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                    type={"password"}
-                />
-                <TextField
-                    required
-                    name={"role"}
-                    label={"Role"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                />
-                <button
-                    type={"submit"}
-                    className={"login-form-submit"}
-                >Sign up
-                </button>
-                <p style={{fontSize: "12px", marginTop: "30px"}}>Already have an account?
-                    <Link
-                        to={"/login"}
-                        style={{fontSize: "12px", color: "blue"}}
-                    > Go to Login page</Link>
-                </p>
-            </form>
+            <UserForm
+                showNotification={showNotification}
+                setShowNotification={setShowNotification}
+                pageName={"Create an Account"}
+                formType={"signup"}
+                handleSubmit={handleRegister}
+                handleChange={handleChange}
+                buttonLabel={"Sign up"}
+                linkMessage={"Already have an account? "}
+                linkTo={"/login"}
+                linkLabel={" Go to Login page"}
+            />
         </article>
     )
 }
