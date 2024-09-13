@@ -81,7 +81,7 @@ function App() {
                         <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
                         <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
-                        <Route path={"/airport"} element={<AirportPage />} />
+                        <Route path={"/airport"} element={<AirportPage loggedInUser={loggedInUser}/>} />
                         <Route path={"/airline"} element={<AirlinePage />} />
                     </Route>
                 </Routes>

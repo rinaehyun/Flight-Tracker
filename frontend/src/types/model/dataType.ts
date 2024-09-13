@@ -22,3 +22,18 @@ export type NewFlight = {
     aircraftType: string,
     flightStatus: FlightStatus
 }
+
+export type Airport = {
+    id: string,
+    name: string,
+    iataCode: string,
+    geoCode: {
+        latitude: number,
+        longitude: number
+    },
+    address: {
+        countryName: string,
+    },
+    timeZone: {
+        offSet: string
+    }}
