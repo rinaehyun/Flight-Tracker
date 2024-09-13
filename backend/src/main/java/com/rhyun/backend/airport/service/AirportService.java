@@ -1,6 +1,7 @@
 package com.rhyun.backend.airport.service;
 
 import com.rhyun.backend.airport.dto.AirportDto;
+import com.rhyun.backend.airport.dto.GetAirportAddressDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
@@ -11,6 +12,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.rhyun.backend.utils.RegionConverter.mapRegionCode;
+import static com.rhyun.backend.utils.StringHelper.capitalizeFirstLetter;
 
 @Service
 public class AirportService {
@@ -34,11 +38,27 @@ public class AirportService {
         List<GetAirportDto> airportOptions = new ArrayList<>();
 
         for (Airport airport : airports) {
-            String name = StringHelper.capitalizeFirstLetter(airport.name() + ", " + airport.address().countryName());
+            String name = capitalizeFirstLetter(airport.name() + ", " + airport.address().countryName());
             airportOptions.add(new GetAirportDto(airport.iataCode(), name));
         }
 
         return airportOptions;
+    }
+
+    public List<GetAirportAddressDto> getAirportAddressOptions() {
+        List<Airport> airports = getAllAirports();
+
+        List<GetAirportAddressDto> airportAddressOptions = new ArrayList<>();
+
+        for (Airport airport : airports) {
+            airportAddressOptions.add(new GetAirportAddressDto(
+                    capitalizeFirstLetter(airport.address().countryName()),
+                    airport.address().countryCode(),
+                    mapRegionCode(airport.address().regionCode())
+            ));
+        }
+
+        return airportAddressOptions;
     }
 
     public Airport getAirportById(String id) {

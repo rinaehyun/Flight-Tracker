@@ -16,6 +16,12 @@ export type AirlinesAsInput = {
     name: string,
 }
 
+export type AirportAddressAsInput = {
+    countryName: string,
+    countryCode: string,
+    regionCode: string,
+}
+
 export type Filter = {
     airline: string | undefined,
     origin: string | undefined,

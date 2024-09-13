@@ -7,12 +7,12 @@ type AirportFilterProps = {
 }
 
 export default function AirportFilter({ setSelectedFilter }: AirportFilterProps) {
-    const { airports } = useFetchOptions();
+    const { airports, airportAddress } = useFetchOptions();
     const [filter, setFilter] = useState<AirportFilterType>({
         airport: undefined
     });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
-
+console.log(airportAddress)
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         setFilter({ airport: event.target.value });
         setIsDisabled(false);
