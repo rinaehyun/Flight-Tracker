@@ -7,13 +7,11 @@ import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.repository.AirportRepository;
 import com.rhyun.backend.globalservice.IdService;
-import com.rhyun.backend.utils.StringHelper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.rhyun.backend.utils.RegionConverter.mapRegionCode;
 import static com.rhyun.backend.utils.StringHelper.capitalizeFirstLetter;
 
 @Service
@@ -54,7 +52,7 @@ public class AirportService {
             airportAddressOptions.add(new GetAirportAddressDto(
                     capitalizeFirstLetter(airport.address().countryName()),
                     airport.address().countryCode(),
-                    mapRegionCode(airport.address().regionCode())
+                    airport.address().regionCode()
             ));
         }
 

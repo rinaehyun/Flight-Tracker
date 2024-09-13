@@ -29,5 +29,6 @@ export type Filter = {
 }
 
 export type AirportFilterType = {
+    region: string | undefined,
     airport: string | undefined
 }
