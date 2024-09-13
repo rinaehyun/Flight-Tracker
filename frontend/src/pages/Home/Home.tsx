@@ -7,7 +7,7 @@ type HomeProps = {
 export default function Home({ userId }: Readonly<HomeProps>) {
 
     return(
-        <>
+        <div>
             <h2>Welcome to Flight App!</h2>
             {userId ?
                 <h5> You are logged in. </h5> :
@@ -16,6 +16,6 @@ export default function Home({ userId }: Readonly<HomeProps>) {
                     <p>I need to create a new account <Link to={"/signup"} style={{color: "blue"}}>sign up</Link></p>
                 </div>
             }
-        </>
+        </div>
     )
 }

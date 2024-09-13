@@ -26,7 +26,7 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
     }
 
     return (
-        <article>
+        <div>
             <UserForm
                 showNotification={showLoginNotification}
                 setShowNotification={setShowLoginNotification}
@@ -40,6 +40,6 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
                 linkTo={"/signup"}
                 linkLabel={" Go to Signup page"}
             />
-        </article>
+        </div>
     )
 }

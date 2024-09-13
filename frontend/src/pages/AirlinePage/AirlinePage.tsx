@@ -1,5 +1,7 @@
 export default function AirlinePage() {
     return (
-        <p>You can manage Airline information here.</p>
+        <div>
+            <p>You can manage Airline information here.</p>
+        </div>
     )
 }

@@ -84,7 +84,7 @@ export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDet
     useNotificationTimer(showNotification, setShowNotification);
 
     return (
-        <article className={"flight-details-container"}>
+        <div className={"flight-details-container"}>
             {showNotification &&
                 <Notification
                     setShowNotification={setShowNotification}
@@ -114,6 +114,6 @@ export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDet
                 buttonLabel={"Edit Flight"}
                 editable={editable}
             />
-        </article>
+        </div>
     )
 }
