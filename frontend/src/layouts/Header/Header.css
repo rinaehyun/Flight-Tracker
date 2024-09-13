@@ -2,7 +2,7 @@ header {
     min-height: 50px;
     display: flex;
     flex-direction: row;
-    gap: 30px;
+    gap: 20px;
     align-items: center;
 }
 
@@ -17,14 +17,34 @@ header {
     padding: 0;
     list-style-type: none;
     display: inline-block;
+    font-size: 14px;
+}
+
+.login-button {
+    border: none;
+    background-color: inherit;
+    margin-right: 15px;
+    margin-bottom: 4px;
+    color: #213547;
+    padding: 0;
+}
+
+.login-button:focus,
+.login-button:focus-visible,
+.login-button:hover {
+    outline: none;
+    background-color: inherit;
+    margin-right: 15px;
+    margin-bottom: 4px;
+    padding: 0;
 }
 
 @media (min-width: 961px) {
     header {
-        gap: 100px;
+        gap: 30px;
     }
 
     .nav-ul {
-        gap: 20px;
+        gap: 25px;
     }
 }

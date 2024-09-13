@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -40,6 +41,7 @@ class FlightIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void retrieveAllFlightsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
 
@@ -51,6 +53,7 @@ class FlightIntegrationTest {
     }
 
     @Test
+    @WithMockUser
     void retrieveAllFlightsTest_whenRepoHasData_thenReturnMovieList() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX",
@@ -92,6 +95,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void retrieveAFlightTest_whenIdExists_thenReturnFlightEntity() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("123", "KE123", Airline.KE, "ICN", "LAX",
@@ -120,6 +124,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void retrieveAFlightTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
@@ -137,6 +142,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void createAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
         // GIVEN
 
@@ -170,6 +176,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void removeAFlightTest_whenIdExists_thenDeleteFlight() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
@@ -204,6 +211,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateAFlightTest_whenIdExists_thenUpdateFlight() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
@@ -243,6 +251,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void updateAFlightTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN

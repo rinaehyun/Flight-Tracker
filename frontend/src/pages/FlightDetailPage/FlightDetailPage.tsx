@@ -7,6 +7,7 @@ import {NewFlight} from "../../types/model/dataType.ts";
 import FlightForm from "../../components/FlightForm/FlightForm.tsx";
 import axios from "axios";
 import Notification from "../../components/Notification/Notification.tsx";
+import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
 
 type FlightDetailPageProps = {
     fetchAllFlights: () => void,
@@ -80,19 +81,17 @@ export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDet
         setEditable(false);
     }
 
-    useEffect(() => {
-        if (showNotification) {
-            const timer = setTimeout(() => {
-                setShowNotification(false);
-            }, 5000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [showNotification]);
+    useNotificationTimer(showNotification, setShowNotification);
 
     return (
         <article className={"flight-details-container"}>
-            {showNotification && <Notification setShowNotification={setShowNotification} message={"Flight data has been updated."}/>}
+            {showNotification &&
+                <Notification
+                    setShowNotification={setShowNotification}
+                    message={"Flight data has been updated."}
+                    messageType={"success"}
+                />
+            }
             <div className={"top-buttons"}>
                 <Box
                     sx={{
