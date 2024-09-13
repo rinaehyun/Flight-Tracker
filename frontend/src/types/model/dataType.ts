@@ -33,6 +33,8 @@ export type Airport = {
     },
     address: {
         countryName: string,
+        countryCode: string,
+        regionCode: string
     },
     timeZone: {
         offSet: string
