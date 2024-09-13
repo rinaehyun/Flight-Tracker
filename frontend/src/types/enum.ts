@@ -22,6 +22,6 @@ export type Filter = {
     destination: string | undefined,
 }
 
-export type AirportFilter = {
+export type AirportFilterType = {
     airport: string | undefined
 }
