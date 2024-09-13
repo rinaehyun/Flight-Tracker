@@ -38,7 +38,11 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
             !selectedFilter.region ||
             regionMapping[airport.address.regionCode] === selectedFilter.region
         )
-        .filter(airport => selectedFilter.airport ? airport.iataCode === selectedFilter.airport : airport);
+        .filter(airport =>
+            !selectedFilter.airport ||
+            airport.iataCode === selectedFilter.airport
+        );
+        //.filter(airport => selectedFilter.airport ? airport.iataCode === selectedFilter.airport : airport);
 
     return (
         <div>

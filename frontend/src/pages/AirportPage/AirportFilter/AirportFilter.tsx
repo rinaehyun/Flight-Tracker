@@ -33,7 +33,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     useEffect(() => {
         setFilter({ region: selectedFilter.region, airport: selectedFilter.airport })
         console.log('Updated airport filter:', filter);
-    }, []);
+    }, [selectedFilter]);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
@@ -42,6 +42,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     }
 
     const handleReset = () => {
+        setFilter({ region: undefined, airport: undefined })
         setSelectedFilter({ region: undefined, airport: undefined })
         setIsDisabled(true);
     }
