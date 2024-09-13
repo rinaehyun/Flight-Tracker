@@ -25,7 +25,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                 address => regionMapping[address.regionCode]
             ).filter(Boolean)
         ))
-            .sort();
+            .sort((a, b) => a.localeCompare(b));
 
         setDistinctRegions(uniqueRegions);
     }, [airportAddress]);
