@@ -5,15 +5,16 @@ import FlightFilter from "./components/FlightFilter/FlightFilter.tsx";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {Box} from "@mui/material";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Filter} from "../../types/enum.ts";
+import axios from "axios";
 
 type FlightPageProps = {
-    data: Flight[],
-    fetchAllFlights: () => void
+    data: Flight[]
 }
 
-export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
+export default function FlightPage({ data }: FlightPageProps ) {
+    const [flightData, setFlightData] = useState<Flight[]>(data);
     const [showFilter, setShowFilter] = useState<boolean>(false);
     const [selectedFilter, setSelectedFilter] = useState<Filter>({
         airline: undefined,
@@ -23,11 +24,25 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
 
     const navigate: NavigateFunction = useNavigate();
 
+    const fetchAllFlights = () => {
+        //if (loggedInUser?.username) {
+            axios.get("/api/flight")
+                .then(response=> {
+                    setFlightData(response.data)
+                })
+                .catch(error => alert(error));
+       // }
+    }
+
+    useEffect(() => {
+        fetchAllFlights();
+    },[])
+
     const handleClick = () => {
         navigate('/flight/add');
     }
 
-    const filteredFlightData = data
+    const filteredFlightData = flightData
         .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight)
         .filter(flight => selectedFilter.origin ? flight.origin === selectedFilter.origin : flight)
         .filter(flight => selectedFilter.destination ? flight.destination === selectedFilter.destination : flight);
