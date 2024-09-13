@@ -1,13 +1,15 @@
+import './AirportFilter.css';
 import {useFetchOptions} from "../../../hooks/useFetchOptions.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
 import {AirportFilterType} from "../../../types/enum.ts";
 import {regionMapping} from "../../../utils/Mapping.ts";
 
 type AirportFilterProps = {
+    selectedFilter: AirportFilterType,
     setSelectedFilter: Dispatch<SetStateAction<AirportFilterType>>,
 }
 
-export default function AirportFilter({ setSelectedFilter }: AirportFilterProps) {
+export default function AirportFilter({ selectedFilter, setSelectedFilter }: AirportFilterProps) {
     const { airports, airportAddress } = useFetchOptions();
     const [filter, setFilter] = useState<AirportFilterType>({
         region: undefined,
@@ -28,6 +30,11 @@ export default function AirportFilter({ setSelectedFilter }: AirportFilterProps)
         setDistinctRegions(uniqueRegions);
     }, [airportAddress]);
 
+    useEffect(() => {
+        setFilter({ region: selectedFilter.region, airport: selectedFilter.airport })
+        console.log('Updated airport filter:', filter);
+    }, []);
+
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
         setFilter({ ...filter, [name]: value });
@@ -45,9 +52,9 @@ export default function AirportFilter({ setSelectedFilter }: AirportFilterProps)
     }
 
     return (
-        <form onSubmit={handleSubmit} className={"filter-form"}>
-            <div className={"dropdown-filter"}>
-                <label className={"dropdown-label"}>Region</label>
+        <form onSubmit={handleSubmit} className={"airport-filter-form"}>
+            <div className={"airport-dropdown-filter"}>
+                <label className={"airport-dropdown-label"}>Region</label>
                 <select
                     name={"region"}
                     onChange={handleChange}
@@ -61,8 +68,8 @@ export default function AirportFilter({ setSelectedFilter }: AirportFilterProps)
                     ))}
                 </select>
             </div>
-            <div className={"dropdown-filter"}>
-                <label className={"dropdown-label"}>Airport</label>
+            <div className={"airport-dropdown-filter"}>
+                <label className={"airport-dropdown-label"}>Airport</label>
                 <select
                     name={"airport"}
                     onChange={handleChange}

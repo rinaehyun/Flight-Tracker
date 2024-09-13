@@ -43,7 +43,7 @@ export default function AirportPage({ loggedInUser }: AirportPageProps ) {
     return (
         <div>
             <h3>Airport Information</h3>
-            <AirportFilter setSelectedFilter={setSelectedFilter} />
+            <AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             <section>
                 {filteredAirportsData.map(airport => (
                     <div key={airport.id} className={"airport-card"}>

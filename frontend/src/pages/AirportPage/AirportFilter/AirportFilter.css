@@ -1,0 +1,13 @@
+.airport-filter-form {
+}
+
+.airport-dropdown-filter {
+    margin: 15px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.region-dropdown, .airport-dropdown {
+    width: 70%;
+}
