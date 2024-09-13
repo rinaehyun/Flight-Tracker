@@ -9,7 +9,7 @@ type AirportFilterProps = {
     setSelectedFilter: Dispatch<SetStateAction<AirportFilterType>>,
 }
 
-export default function AirportFilter({ selectedFilter, setSelectedFilter }: AirportFilterProps) {
+export default function AirportFilter({ selectedFilter, setSelectedFilter }: Readonly<AirportFilterProps>) {
     const { airports, airportAddress } = useFetchOptions();
     const [filter, setFilter] = useState<AirportFilterType>({
         region: undefined,

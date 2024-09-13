@@ -12,7 +12,7 @@ type AirportPageProps = {
     loggedInUser: BasicUser | null | undefined,
 }
 
-export default function AirportPage({ loggedInUser }: AirportPageProps ) {
+export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps> ) {
     const [airportsData, setAirportsData] = useState<Airport[]>([]);
     const [selectedFilter, setSelectedFilter] = useState<AirportFilterType>({
         region: undefined,
