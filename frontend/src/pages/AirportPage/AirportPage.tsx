@@ -5,7 +5,7 @@ import axios from "axios";
 import {BasicUser} from "../../types/auth/userType.ts";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {AirportFilterType} from "../../types/enum.ts";
-import AirportFilter from "./AirportFilter/AirportFilter.tsx";
+import AirportFilter from "./components/AirportFilter/AirportFilter.tsx";
 import {regionMapping} from "../../utils/Mapping.ts";
 
 type AirportPageProps = {
@@ -45,7 +45,7 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
         //.filter(airport => selectedFilter.airport ? airport.iataCode === selectedFilter.airport : airport);
 
     return (
-        <div>
+        <div className={"airport-page"}>
             <h3>Airport Information</h3>
             <AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
             <section>

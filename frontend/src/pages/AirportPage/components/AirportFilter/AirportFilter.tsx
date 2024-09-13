@@ -1,8 +1,8 @@
 import './AirportFilter.css';
-import {useFetchOptions} from "../../../hooks/useFetchOptions.ts";
+import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useEffect, useState} from "react";
-import {AirportFilterType} from "../../../types/enum.ts";
-import {regionMapping} from "../../../utils/Mapping.ts";
+import {AirportFilterType} from "../../../../types/enum.ts";
+import {regionMapping} from "../../../../utils/Mapping.ts";
 
 type AirportFilterProps = {
     selectedFilter: AirportFilterType,
