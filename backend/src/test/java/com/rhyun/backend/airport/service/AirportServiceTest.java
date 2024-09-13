@@ -1,6 +1,7 @@
 package com.rhyun.backend.airport.service;
 
 import com.rhyun.backend.airport.dto.AirportDto;
+import com.rhyun.backend.airport.dto.GetAirportAddressDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
@@ -75,7 +76,7 @@ class AirportServiceTest {
     }
 
     @Test
-    void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports () {
+    void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports() {
         // GIVEN
         List<Airport> airports = List.of(airport1, airport2);
         when(airportRepository.findAll()).thenReturn(airports);
@@ -87,6 +88,38 @@ class AirportServiceTest {
         GetAirportDto airportDto1 = new GetAirportDto("GDN", "Gdansk, Poland");
         GetAirportDto airportDto2 = new GetAirportDto("GOT", "Goteborg, Sweden");
         List<GetAirportDto> expected = List.of(airportDto1, airportDto2);
+
+        assertEquals(expected, actual);
+        verify(airportRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getAirportAddressOptionsTest_whenDBIsEmpty_thenReturnEmptyList() {
+        // GIVEN
+        List<Airport> airports = new ArrayList<>();
+        when(airportRepository.findAll()).thenReturn(airports);
+
+        // WHEN
+        List<GetAirportAddressDto> actual = airportService.getAirportAddressOptions();
+
+        // THEN
+        assertThat(actual).isEmpty();
+        verify(airportRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getAirportAddressOptionsTest_whenDBHasData_thenReturnListOfAirports() {
+        // GIVEN
+        List<Airport> airports = List.of(airport1, airport2);
+        when(airportRepository.findAll()).thenReturn(airports);
+
+        // WHEN
+        List<GetAirportAddressDto> actual = airportService.getAirportAddressOptions();
+
+        // THEN
+        GetAirportAddressDto airportAddressDto1 = new GetAirportAddressDto("Poland", "PL", "EEURO");
+        GetAirportAddressDto airportAddressDto2 = new GetAirportAddressDto("Sweden", "SE", "EUROP");
+        List<GetAirportAddressDto> expected = List.of(airportAddressDto1, airportAddressDto2);
 
         assertEquals(expected, actual);
         verify(airportRepository, times(1)).findAll();
