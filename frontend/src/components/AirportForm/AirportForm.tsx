@@ -2,7 +2,7 @@ import './AirportForm.css'
 import {Autocomplete, InputAdornment, SelectChangeEvent, TextField} from "@mui/material";
 import {NewAirport} from "../../types/model/dataType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
-import {FlightStatus} from "../../types/enum.ts";
+import {FlightStatus, TimeZoneOffSet, TimeZoneOffSetList} from "../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {regionOptions} from "../../utils/Mapping.ts";
 
@@ -35,14 +35,6 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                     [name]: value
                 }
             }));
-        } else if (name === "offSet") {
-            setNewAirport((prev) => ({
-                ...prev,
-                timeZone: {
-                    ...prev.timeZone,
-                    offSet: value
-                }
-            }));
         } else {
             setNewAirport((prev) => ({
                 ...prev,
@@ -54,13 +46,24 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
 
     const handleRegionChange = (_event: SyntheticEvent<Element, Event>, value: { code: string, name: string } | null) => {
         if (value) {
-            //const regionToSave = regionOptions.find((region) => region.name === value)?.code;
             const regionToSave = value.code;
             setNewAirport((prev) => ({
                 ...prev,
                 address: {
                     ...prev.address,
                     regionCode: regionToSave || ''
+                }
+            }));
+        }
+    };
+
+    const handleTimeZoneChange = (_event: SyntheticEvent<Element, Event>, value: TimeZoneOffSet | null) => {
+        if (value) {
+            setNewAirport((prev) => ({
+                ...prev,
+                timeZone: {
+                    ...prev.timeZone,
+                    offSet: value
                 }
             }));
         }
@@ -170,18 +173,23 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                     autoComplete={"off"}
                 />
             </div>
-            <TextField
-                required
-                id={"outlined-basic"}
-                label={"Time Zone"}
-                variant={"standard"}
-                placeholder={""}
-                color={"primary"}
-                sx={{width: "100%"}}
-                name={"offSet"}
-                value={newAirport.timeZone.offSet}
-                onChange={handleChange}
-                autoComplete={"off"}
+            <Autocomplete
+                disablePortal
+                options={TimeZoneOffSetList}
+                getOptionLabel={(option) => option}
+                sx={{margin: "auto", fontSize: "12px"}}
+                onChange={handleTimeZoneChange}
+                value={TimeZoneOffSetList.find(option => option === newAirport.timeZone.offSet) || null}
+                renderInput={(params) =>
+                    <TextField
+                        required
+                        {...params}
+                        label={"Time Zone"}
+                        variant={"standard"}
+                        placeholder={""}
+                        name={"offSet"}
+                    />
+                }
             />
             <button
                 type={"submit"}
