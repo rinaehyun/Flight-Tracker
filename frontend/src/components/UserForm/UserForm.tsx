@@ -1,12 +1,23 @@
 import './UserForm.css';
 import Notification from "../Notification/Notification.tsx";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
-import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useState} from "react";
+import {
+    FormControl,
+    IconButton,
+    InputAdornment,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField
+} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
 import {UserRoleList} from "../../types/auth/userType.ts";
 import {FlightStatus} from "../../types/enum.ts";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 type UserFormProps = {
     showNotification: boolean,
@@ -26,6 +37,21 @@ type UserFormProps = {
 export default function UserForm({ showNotification, setShowNotification, notificationMessage,
                                      pageName, formType, handleSubmit, handleChange,
                                      buttonLabel, linkMessage, linkTo, linkLabel }: Readonly<UserFormProps>) {
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState<boolean>(false);
+
+    const handleClickShowPassword = () => setShowPassword(
+        (show) => !show
+    );
+    const handleClickShowPasswordConfirmation = () => setShowPasswordConfirmation(
+        (show) => !show
+    ); // Separate handler
+
+
+    const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+    };
 
     useNotificationTimer(showNotification, setShowNotification);
 
@@ -59,7 +85,21 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                     sx={{width: "100%"}}
                     onChange={handleChange}
                     autoComplete={"off"}
-                    type={"password"}
+                    type={showPassword ? 'text' : 'password'}
+                    InputProps={{
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                    edge="end"
+                                >
+                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                </IconButton>
+                            </InputAdornment>
+                        )
+                    }}
                 />
                 {formType === "signup" &&
                     <>
@@ -72,7 +112,21 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                             sx={{width: "100%"}}
                             onChange={handleChange}
                             autoComplete={"off"}
-                            type={"password"}
+                            type={showPasswordConfirmation ? 'text' : 'password'}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={handleClickShowPasswordConfirmation}
+                                            onMouseDown={handleMouseDownPassword}
+                                            edge="end"
+                                        >
+                                            {showPasswordConfirmation ? <VisibilityOff /> : <Visibility />}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
                         />
                         <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                             <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
