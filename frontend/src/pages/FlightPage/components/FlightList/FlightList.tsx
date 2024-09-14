@@ -10,13 +10,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Notification from "../../../../components/Notification/Notification.tsx";
 import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 import {useNotificationTimer} from "../../../../hooks/useNotificationTimer.ts";
+import {BasicUser} from "../../../../types/auth/userType.ts";
 
 type FlightListProps = {
     data: Flight[],
-    fetchAllFlights: () => void
+    fetchAllFlights: () => void,
+    loggedInUser: BasicUser | null | undefined
 }
 
-export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
+export default function FlightList({ data, fetchAllFlights, loggedInUser }: Readonly<FlightListProps>) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
     const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -62,7 +64,9 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>
                         <div className={"flight-card-airline"}>
-                            <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                            {loggedInUser?.role != "USER" &&
+                                <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                            }
                             <h4>
                                 {airlines
                                     .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
@@ -72,11 +76,15 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                             <h4>{flight.flightCode}</h4>
                         </div>
                         <div className={"flight-card-icons"}>
-                            <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
-                            <DeleteIcon
-                                sx={{ marginRight: '15px', cursor: "pointer" }}
-                                onClick={() => handleDeleteFlight(flight)}
-                            />
+                            {loggedInUser?.role != "USER" &&
+                                <>
+                                    <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
+                                    <DeleteIcon
+                                        sx={{ marginRight: '15px', cursor: "pointer" }}
+                                        onClick={() => handleDeleteFlight(flight)}
+                                    />
+                                </>
+                            }
                         </div>
                     </div>
                     <div className={"flight-card-detail"}>

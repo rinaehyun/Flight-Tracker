@@ -78,7 +78,7 @@ function App() {
                     <Route path={"/login"} element={<LoginPage login={login} setShowLoginNotification={setShowLoginNotification} showLoginNotification={showLoginNotification} />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
-                        <Route path={"/flight"} element={<FlightPage data={flightData} />} />
+                        <Route path={"/flight"} element={<FlightPage data={flightData} loggedInUser={loggedInUser} />} />
                         <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/airport"} element={<AirportPage loggedInUser={loggedInUser}/>} />

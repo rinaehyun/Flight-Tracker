@@ -8,12 +8,14 @@ import {NavigateFunction, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Filter} from "../../types/enum.ts";
 import axios from "axios";
+import {BasicUser} from "../../types/auth/userType.ts";
 
 type FlightPageProps = {
-    data: Flight[]
+    data: Flight[],
+    loggedInUser: BasicUser | null | undefined
 }
 
-export default function FlightPage({ data }: FlightPageProps ) {
+export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
     const [flightData, setFlightData] = useState<Flight[]>(data);
     const [showFilter, setShowFilter] = useState<boolean>(false);
     const [selectedFilter, setSelectedFilter] = useState<Filter>({
@@ -59,10 +61,12 @@ export default function FlightPage({ data }: FlightPageProps ) {
                     borderRadius: 1,
                 }}
             >
-                <AddCircleIcon
-                    sx={{fontSize: "35px", cursor: "pointer"}}
-                    onClick={handleClick}
-                />
+                {loggedInUser?.role != "USER" &&
+                    <AddCircleIcon
+                        sx={{fontSize: "35px", cursor: "pointer"}}
+                        onClick={handleClick}
+                    />
+                }
             </Box>
             <article style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
                 <button onClick={() => setShowFilter(!showFilter)}
@@ -70,7 +74,7 @@ export default function FlightPage({ data }: FlightPageProps ) {
                 {showFilter && <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>}
             </article>
             {filteredFlightData.length == 0 ? <h5>No Flights found</h5> :
-                <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights}/>}
+                <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights} loggedInUser={loggedInUser} />}
         </div>
     )
 }
