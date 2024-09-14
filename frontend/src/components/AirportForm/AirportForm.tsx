@@ -1,16 +1,17 @@
 import './AirportForm.css'
 import {InputAdornment, SelectChangeEvent, TextField} from "@mui/material";
 import {NewAirport} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, SetStateAction} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
 import {FlightStatus} from "../../types/enum.ts";
 
 type AirportFormProps = {
     newAirport: NewAirport,
     setNewAirport: Dispatch<SetStateAction<NewAirport>>,
+    handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
     buttonLabel: string
 }
 
-export default function AirportForm({ newAirport, setNewAirport, buttonLabel}: Readonly<AirportFormProps>) {
+export default function AirportForm({ newAirport, setNewAirport, handleSubmit, buttonLabel}: Readonly<AirportFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
         ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
@@ -50,7 +51,7 @@ export default function AirportForm({ newAirport, setNewAirport, buttonLabel}: R
     };
 
     return (
-        <form className={"add-airport-form"} onSubmit={() => {}}>
+        <form className={"add-airport-form"} onSubmit={handleSubmit}>
             <TextField
                 required
                 id={"outlined-basic"}

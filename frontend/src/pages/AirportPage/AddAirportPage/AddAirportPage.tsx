@@ -2,8 +2,9 @@ import {Box} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {NavigateFunction, useNavigate} from "react-router-dom";
 import AirportForm from "../../../components/AirportForm/AirportForm.tsx";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
 import {NewAirport} from "../../../types/model/dataType.ts";
+import axios from "axios";
 
 export default function AddAirportPage() {
     const [newAirport, setNewAirport] = useState<NewAirport>({
@@ -25,6 +26,17 @@ export default function AddAirportPage() {
 
     const navigate: NavigateFunction = useNavigate();
 
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        console.log("Data submitted!");
+        axios.post("/api/airport", newAirport)
+            .then(response => console.log(response))
+            //.then(() => fetchAllAirports())
+            .then(error => console.log(error));
+
+        navigate("/airport")
+    }
+
     return (
         <div className={"add-flight-form-container"}>
             <Box
@@ -42,6 +54,7 @@ export default function AddAirportPage() {
             <AirportForm
                 newAirport={newAirport}
                 setNewAirport={setNewAirport}
+                handleSubmit={handleSubmit}
                 buttonLabel={"Add a new airport"}
             />
         </div>
