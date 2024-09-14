@@ -7,6 +7,7 @@ import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import {AirportFilterType} from "../../types/enum.ts";
 import AirportFilter from "./components/AirportFilter/AirportFilter.tsx";
 import {regionMapping} from "../../utils/Mapping.ts";
+import {useNavigate} from "react-router-dom";
 
 type AirportPageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -18,6 +19,8 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
         region: undefined,
         airport: undefined
     });
+
+    const navigate = useNavigate();
 
     const fetchAllAirports = () => {
         if (loggedInUser?.username) {
@@ -33,6 +36,10 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
         fetchAllAirports();
     }, []);
 
+    const handleClick = () => {
+        navigate('/airport/add');
+    }
+
     const filteredAirportsData = airportsData
         .filter(airport =>
             !selectedFilter.region ||
@@ -42,12 +49,18 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
             !selectedFilter.airport ||
             airport.iataCode === selectedFilter.airport
         );
-        //.filter(airport => selectedFilter.airport ? airport.iataCode === selectedFilter.airport : airport);
 
     return (
         <div className={"airport-page"}>
             <h3>Airport Information</h3>
-            <AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
+            {loggedInUser?.role != "USER" &&
+                <button onClick={handleClick} style={{
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "10px",
+                    fontSize: "0.7em"
+                }}>{"Add"}</button>
+            }<AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>
             <section>
                 {filteredAirportsData.map(airport => (
                     <div key={airport.id} className={"airport-card"}>
