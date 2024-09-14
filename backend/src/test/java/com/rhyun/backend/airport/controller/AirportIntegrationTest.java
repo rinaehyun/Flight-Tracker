@@ -96,7 +96,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
 
@@ -109,7 +109,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports() throws Exception {
         // GIVEN
         airportRepository.save(airport1);
@@ -135,7 +135,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportAddressOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
 
@@ -148,7 +148,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportAddressOptionsTest_whenDBHasData_thenReturnListOfAirports() throws Exception {
         // GIVEN
         airportRepository.save(airport1);
@@ -176,7 +176,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportByIdTest_whenIdExists_thenReturnAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -210,7 +210,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirportByIdTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
@@ -227,7 +227,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void deleteAirportByIdTest_whenIdExists_thenDeleteAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -267,7 +267,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void createAirportTest_whenPayloadIsCorrect_thenSaveAirportEntity() throws Exception {
         // GIVEN
         // WHEN
@@ -302,7 +302,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void updateAirportTest_whenIdExists_thenUpdateAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
@@ -355,7 +355,7 @@ class AirportIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void updateAirportTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN

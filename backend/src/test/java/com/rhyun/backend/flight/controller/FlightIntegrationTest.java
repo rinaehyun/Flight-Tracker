@@ -142,7 +142,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void createAFlightTest_whenNewFlightExists_thenReturnNewFlight() throws Exception {
         // GIVEN
 
@@ -176,7 +176,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void removeAFlightTest_whenIdExists_thenDeleteFlight() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
@@ -211,7 +211,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void updateAFlightTest_whenIdExists_thenUpdateFlight() throws Exception {
         // GIVEN
         flightRepository.save(new Flight("1", "KE123", Airline.KE, "ICN", "LAX",
@@ -251,7 +251,7 @@ class FlightIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void updateAFlightTest_whenIdDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
