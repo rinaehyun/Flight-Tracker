@@ -3,19 +3,22 @@ import {ChangeEvent, FormEvent, useState} from "react";
 import {NewBasicUser} from "../../types/auth/userType.ts";
 import axios from "axios";
 import UserForm from "../../components/UserForm/UserForm.tsx";
+import {SelectChangeEvent} from "@mui/material";
+import {FlightStatus} from "../../types/enum.ts";
 
 export default function SignupPage() {
     const [newUser, setNewUser] = useState<NewBasicUser>({
         username: '',
         password: '',
         passwordConfirmation: '',
-        role: ''
+        role: "USER"
     });
     const [showNotification, setShowNotification] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
+        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
         setNewUser({ ...newUser, [name]: value });
     }

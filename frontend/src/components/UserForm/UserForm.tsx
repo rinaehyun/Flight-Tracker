@@ -1,9 +1,12 @@
 import './UserForm.css';
 import Notification from "../Notification/Notification.tsx";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
-import {TextField} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
 import {Link} from "react-router-dom";
 import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
+import {UserRoleList} from "../../types/auth/userType.ts";
+import {FlightStatus} from "../../types/enum.ts";
+import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 
 type UserFormProps = {
     showNotification: boolean,
@@ -12,7 +15,8 @@ type UserFormProps = {
     pageName: string,
     formType: "login" | "signup",
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
-    handleChange: (event: ChangeEvent<HTMLInputElement>) => void,
+    handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
+        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => void,
     buttonLabel: string,
     linkMessage: string,
     linkTo: string,
@@ -70,16 +74,21 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                             autoComplete={"off"}
                             type={"password"}
                         />
-                        <TextField
-                            required
-                            name={"role"}
-                            label={"Role"}
-                            variant={"standard"}
-                            color={"primary"}
-                            sx={{width: "100%"}}
-                            onChange={handleChange}
-                            autoComplete={"off"}
-                        />
+                        <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
+                            <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-standard-label"
+                                id="demo-simple-select-standard"
+                                name={"role"}
+                                onChange={handleChange}
+                                label="User Role"
+                                style={{textAlign: "left"}}
+                            >
+                                {UserRoleList.map((role) => (
+                                    <MenuItem key={role} value={role}>{capitalizeFirstLetter(role)}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </>
                 }
                 <button

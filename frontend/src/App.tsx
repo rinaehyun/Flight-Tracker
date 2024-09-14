@@ -21,7 +21,7 @@ function App() {
     const [loggedInUser, setLoggedInUser] = useState<BasicUser | null | undefined>({
         id: '',
         username: '',
-        role: ''
+        role: "USER"
     })
     const [showLoginNotification, setShowLoginNotification] = useState<boolean>(false);
     const navigate = useNavigate();
