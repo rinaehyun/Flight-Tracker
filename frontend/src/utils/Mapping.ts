@@ -15,3 +15,8 @@ export const regionMapping: { [key: string]: string } = {
     'SEASI': 'Southeast Asia',
     'UNKNOWN': 'Unknown Region',
 };
+
+export const regionOptions = Object.entries(regionMapping).map(([code, name]) => ({
+    code,
+    name
+}));

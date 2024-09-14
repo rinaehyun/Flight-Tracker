@@ -1,8 +1,10 @@
 import './AirportForm.css'
-import {InputAdornment, SelectChangeEvent, TextField} from "@mui/material";
+import {Autocomplete, InputAdornment, SelectChangeEvent, TextField} from "@mui/material";
 import {NewAirport} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
 import {FlightStatus} from "../../types/enum.ts";
+import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
+import {regionOptions} from "../../utils/Mapping.ts";
 
 type AirportFormProps = {
     newAirport: NewAirport,
@@ -25,7 +27,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                     [name]: value
                 }
             }));
-        } else if (name === "countryName" || name === "countryCode" || name === "regionCode") {
+        } else if (name === "countryName" || name === "countryCode") {
             setNewAirport((prev) => ({
                 ...prev,
                 address: {
@@ -50,20 +52,39 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
         console.log(newAirport);
     };
 
+    const handleRegionChange = (_event: SyntheticEvent<Element, Event>, value: { code: string, name: string } | null) => {
+        if (value) {
+            //const regionToSave = regionOptions.find((region) => region.name === value)?.code;
+            const regionToSave = value.code;
+            setNewAirport((prev) => ({
+                ...prev,
+                address: {
+                    ...prev.address,
+                    regionCode: regionToSave || ''
+                }
+            }));
+        }
+    };
+
     return (
         <form className={"add-airport-form"} onSubmit={handleSubmit}>
-            <TextField
-                required
-                id={"outlined-basic"}
-                label={"Region"}
-                variant={"standard"}
-                placeholder={""}
-                color={"primary"}
-                sx={{width: "100%"}}
-                name={"regionCode"}
-                value={newAirport.address.regionCode}
-                onChange={handleChange}
-                autoComplete={"off"}
+            <Autocomplete
+                disablePortal
+                options={regionOptions}
+                getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
+                sx={{margin: "auto", fontSize: "12px"}}
+                onChange={handleRegionChange}
+                value={regionOptions.find(option => option.code === newAirport.address.regionCode) || null}
+                renderInput={(params) =>
+                    <TextField
+                        required
+                        {...params}
+                        label={"Region"}
+                        variant={"standard"}
+                        placeholder={""}
+                        name={"regionCode"}
+                    />
+                }
             />
             <TextField
                 required
