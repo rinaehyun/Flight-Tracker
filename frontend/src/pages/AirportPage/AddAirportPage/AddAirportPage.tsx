@@ -1,3 +1,4 @@
+import './AddAirportPage.css';
 import {Box} from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {NavigateFunction, useNavigate} from "react-router-dom";
@@ -38,7 +39,7 @@ export default function AddAirportPage() {
     }
 
     return (
-        <div className={"add-flight-form-container"}>
+        <div className={"add-airport-form-container"}>
             <Box
                 sx={{
                     display: 'flex',
@@ -56,6 +57,7 @@ export default function AddAirportPage() {
                 setNewAirport={setNewAirport}
                 handleSubmit={handleSubmit}
                 buttonLabel={"Add a new airport"}
+                editable={true}
             />
         </div>
     )

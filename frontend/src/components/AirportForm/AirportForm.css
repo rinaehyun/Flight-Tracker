@@ -1,3 +1,8 @@
+.airport-form {
+    max-width: 350px;
+    margin: auto;
+}
+
 .airport-form-submit {
     margin-top: 50px;
 }

@@ -27,13 +27,11 @@ export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
     const navigate: NavigateFunction = useNavigate();
 
     const fetchAllFlights = () => {
-        //if (loggedInUser?.username) {
-            axios.get("/api/flight")
-                .then(response=> {
-                    setFlightData(response.data)
-                })
-                .catch(error => alert(error));
-       // }
+        axios.get("/api/flight")
+            .then(response=> {
+                setFlightData(response.data)
+            })
+            .catch(error => alert(error));
     }
 
     useEffect(() => {

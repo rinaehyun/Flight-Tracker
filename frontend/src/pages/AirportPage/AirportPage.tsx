@@ -103,13 +103,15 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
                     marginRight: "10px",
                     fontSize: "0.7em"
                 }}>{"Add"}</button>
-            }<AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>
+            }
+            <AirportFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>
             <section>
                 {filteredAirportsData.map(airport => (
                     <div key={airport.id} className={"airport-card"}>
                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
                             <EditNoteIcon
                                 sx={{ marginRight: '5px', cursor: "pointer" }}
+                                onClick={() => navigate(`/airport/${airport.id}`)}
                             />
                             <DeleteIcon
                                 sx={{ marginRight: '15px', cursor: "pointer" }}

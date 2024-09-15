@@ -11,9 +11,10 @@ type AirportFormProps = {
     setNewAirport: Dispatch<SetStateAction<NewAirport>>,
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
     buttonLabel: string
+    editable: boolean
 }
 
-export default function AirportForm({ newAirport, setNewAirport, handleSubmit, buttonLabel}: Readonly<AirportFormProps>) {
+export default function AirportForm({ newAirport, setNewAirport, handleSubmit, buttonLabel, editable}: Readonly<AirportFormProps>) {
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
         ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
@@ -70,13 +71,14 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
     };
 
     return (
-        <form className={"add-airport-form"} onSubmit={handleSubmit}>
+        <form className={"airport-form"} onSubmit={handleSubmit}>
             <Autocomplete
                 disablePortal
                 options={regionOptions}
                 getOptionLabel={(option) => option.code + ' - ' + capitalizeFirstLetter(option.name)}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onChange={handleRegionChange}
+                disabled={!editable}
                 value={regionOptions.find(option => option.code === newAirport.address.regionCode) || null}
                 renderInput={(params) =>
                     <TextField
@@ -101,6 +103,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                 value={newAirport.address.countryName}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <TextField
                 required
@@ -114,6 +117,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                 value={newAirport.address.countryCode}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <TextField
                 required
@@ -127,6 +131,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                 value={newAirport.name}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <TextField
                 required
@@ -140,6 +145,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                 value={newAirport.iataCode}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <TextField
@@ -156,6 +162,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                     name={"latitude"}
                     value={newAirport.geoCode.latitude}
                     autoComplete={"off"}
+                    disabled={!editable}
                 />
                 <TextField
                     label={""}
@@ -171,6 +178,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                     name={"longitude"}
                     value={newAirport.geoCode.longitude}
                     autoComplete={"off"}
+                    disabled={!editable}
                 />
             </div>
             <Autocomplete
@@ -179,6 +187,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
                 getOptionLabel={(option) => option}
                 sx={{margin: "auto", fontSize: "12px"}}
                 onChange={handleTimeZoneChange}
+                disabled={!editable}
                 value={TimeZoneOffSetList.find(option => option === newAirport.timeZone.offSet) || null}
                 renderInput={(params) =>
                     <TextField
@@ -194,6 +203,7 @@ export default function AirportForm({ newAirport, setNewAirport, handleSubmit, b
             <button
                 type={"submit"}
                 className={"airport-form-submit"}
+                disabled={!editable}
             >{buttonLabel}</button>
         </form>
     )
