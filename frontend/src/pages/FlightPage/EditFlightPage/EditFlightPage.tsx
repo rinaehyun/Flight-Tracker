@@ -1,4 +1,4 @@
-import './FlightDetailPage.css';
+import './EditFlightPage.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {FormEvent, useEffect, useState} from "react";
@@ -13,7 +13,7 @@ type FlightDetailPageProps = {
     fetchAllFlights: () => void,
 }
 
-export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDetailPageProps>) {
+export default function EditFlightPage({ fetchAllFlights }: Readonly<FlightDetailPageProps>) {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
 

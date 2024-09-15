@@ -8,7 +8,7 @@ import axios from 'axios';
 import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
 import AddFlightPage from "./pages/FlightPage/AddFlightPage/AddFlightPage.tsx";
-import FlightDetailPage from "./pages/FlightPage/FlightDetailPage/FlightDetailPage.tsx";
+import EditFlightPage from "./pages/FlightPage/EditFlightPage/EditFlightPage.tsx";
 import {BasicUser, UserForLogin} from "./types/auth/userType.ts";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignupPage from "./pages/LoginPage/SignupPage.tsx";
@@ -81,7 +81,7 @@ function App() {
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
                         <Route path={"/flight"} element={<FlightPage data={flightData} loggedInUser={loggedInUser} />} />
-                        <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
+                        <Route path={"/flight/:id"} element={<EditFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/airport"} element={<AirportPage loggedInUser={loggedInUser}/>} />
                         <Route path={"/airport/add"} element={<AddAirportPage />} />

@@ -2,11 +2,12 @@ import './FlightList.css'
 import {Flight} from "../../../../types/model/dataType.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {calculateDuration, formatDate, formatTime} from "../../../../utils/functionsForTime.ts";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal.tsx";
 import {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import Notification from "../../../../components/Notification/Notification.tsx";
 import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 import {useNotificationTimer} from "../../../../hooks/useNotificationTimer.ts";
@@ -77,13 +78,16 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                         </div>
                         <div className={"flight-card-icons"}>
                             {loggedInUser?.role != "USER" &&
-                                <>
-                                    <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
+                                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                    <EditNoteIcon
+                                        sx={{marginRight: '5px', cursor: "pointer"}}
+                                        onClick={() => navigate(`/flight/${flight.id}`)}
+                                    />
                                     <DeleteIcon
-                                        sx={{ marginRight: '15px', cursor: "pointer" }}
+                                        sx={{marginRight: '15px', cursor: "pointer"}}
                                         onClick={() => handleDeleteFlight(flight)}
                                     />
-                                </>
+                                </div>
                             }
                         </div>
                     </div>

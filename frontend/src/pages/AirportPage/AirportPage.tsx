@@ -108,16 +108,18 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
             <section>
                 {filteredAirportsData.map(airport => (
                     <div key={airport.id} className={"airport-card"}>
-                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                            <EditNoteIcon
-                                sx={{ marginRight: '5px', cursor: "pointer" }}
-                                onClick={() => navigate(`/airport/${airport.id}`)}
-                            />
-                            <DeleteIcon
-                                sx={{ marginRight: '15px', cursor: "pointer" }}
-                                onClick={() => handleDeleteAirport(airport)}
-                            />
-                        </div>
+                        {loggedInUser?.role != "USER" &&
+                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                                <EditNoteIcon
+                                    sx={{ marginRight: '5px', cursor: "pointer" }}
+                                    onClick={() => navigate(`/airport/${airport.id}`)}
+                                />
+                                <DeleteIcon
+                                    sx={{ marginRight: '15px', cursor: "pointer" }}
+                                    onClick={() => handleDeleteAirport(airport)}
+                                />
+                            </div>
+                        }
                         <p>IATA Code: {airport.iataCode}</p>
                         <p>Location: {capitalizeFirstLetter(airport.name)}, {capitalizeFirstLetter(airport.address.countryName)} </p>
                     </div>
