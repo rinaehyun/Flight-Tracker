@@ -1,6 +1,7 @@
 package com.rhyun.backend.airport.controller;
 
 import com.rhyun.backend.airport.dto.AirportDto;
+import com.rhyun.backend.airport.dto.GetAirportAddressDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.model.Airport;
 import com.rhyun.backend.airport.service.AirportService;
@@ -26,6 +27,11 @@ public class AirportController {
     @GetMapping("/options-for-input")
     public List<GetAirportDto> getAirportOptions() {
         return airportService.getAirportOptions();
+    }
+
+    @GetMapping("/address-options-for-input")
+    public List<GetAirportAddressDto> getAirportAddressOptions() {
+        return airportService.getAirportAddressOptions();
     }
 
     @GetMapping("/{id}")

@@ -28,9 +28,9 @@ class AirportIntegrationTest {
 
 
     Airport airport1 = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-            new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
-    Airport airport2 = new Airport("456", "GOTEBORG", "GOT",
-            new GeoCode(57, 12), new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+            new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
+    Airport airport2 = new Airport("456", "GOTEBORG", "GOT", new GeoCode(57, 12),
+            new AirportAddress("SWEDEN", "SE", "EUROP"), new AirportTimeZone("+02:00"));
 
 
     @Test
@@ -136,10 +136,51 @@ class AirportIntegrationTest {
     @Test
     @DirtiesContext
     @WithMockUser
+    void getAirportAddressOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
+        // GIVEN
+
+        // WHEN
+        mockMvc.perform(get("/api/airport/address-options-for-input"))
+                // THEN
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser
+    void getAirportAddressOptionsTest_whenDBHasData_thenReturnListOfAirports() throws Exception {
+        // GIVEN
+        airportRepository.save(airport1);
+        airportRepository.save(airport2);
+
+        // WHEN
+        mockMvc.perform(get("/api/airport/address-options-for-input"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+            [
+                {
+                    "countryName": "Poland",
+                    "countryCode": "PL",
+                    "regionCode": "EEURO"
+                },
+                {
+                    "countryName": "Sweden",
+                    "countryCode": "SE",
+                    "regionCode": "EUROP"
+                }
+            ]
+        """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser
     void getAirportByIdTest_whenIdExists_thenReturnAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-            new AirportAddress("POLAND"), new AirportTimeZone("+02:00"))
+            new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"))
         );
 
         // WHEN
@@ -156,7 +197,9 @@ class AirportIntegrationTest {
                         "longitude": 18
                     },
                     "address": {
-                        "countryName": "POLAND"
+                        "countryName": "POLAND",
+                        "countryCode": "PL",
+                        "regionCode": "EEURO"
                     },
                     "timeZone": {
                         "offSet": "+02:00"
@@ -188,7 +231,7 @@ class AirportIntegrationTest {
     void deleteAirportByIdTest_whenIdExists_thenDeleteAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-                new AirportAddress("POLAND"), new AirportTimeZone("+02:00")));
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00")));
 
         mockMvc.perform(get("/api/airport"))
             .andExpect(status().isOk())
@@ -202,7 +245,9 @@ class AirportIntegrationTest {
                         "longitude": 18
                     },
                     "address": {
-                        "countryName": "POLAND"
+                        "countryName": "POLAND",
+                        "countryCode": "PL",
+                        "regionCode": "EEURO"
                     },
                     "timeZone": {
                         "offSet": "+02:00"
@@ -261,7 +306,7 @@ class AirportIntegrationTest {
     void updateAirportTest_whenIdExists_thenUpdateAirportEntity() throws Exception {
         // GIVEN
         airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"))
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"))
         );
 
         // WHEN
@@ -276,7 +321,9 @@ class AirportIntegrationTest {
                         "longitude": 12
                     },
                     "address": {
-                        "countryName": "SWEDEN"
+                        "countryName": "SWEDEN",
+                        "countryCode": "SE",
+                        "regionCode": "EUROP"
                     },
                     "timeZone": {
                         "offSet": "+02:00"
@@ -295,7 +342,9 @@ class AirportIntegrationTest {
                         "longitude": 12
                     },
                     "address": {
-                        "countryName": "SWEDEN"
+                        "countryName": "SWEDEN",
+                        "countryCode": "SE",
+                        "regionCode": "EUROP"
                     },
                     "timeZone": {
                         "offSet": "+02:00"
@@ -321,7 +370,9 @@ class AirportIntegrationTest {
                         "longitude": 12
                     },
                     "address": {
-                        "countryName": "SWEDEN"
+                        "countryName": "SWEDEN",
+                        "countryCode": "SE",
+                        "regionCode": "EUROP"
                     },
                     "timeZone": {
                         "offSet": "+02:00"

@@ -30,6 +30,9 @@ public class SecurityConfig {
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/flight").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/airport").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/airport/**").permitAll()
                         .anyRequest().authenticated()
                 )
                .httpBasic(httpSecurityHttpBasicConfigurer ->

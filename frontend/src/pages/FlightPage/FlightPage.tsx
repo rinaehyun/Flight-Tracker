@@ -34,6 +34,7 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
 
     return (
         <div className={"flight-page"}>
+            <h3>Flight Information</h3>
             <Box
                 sx={{
                     display: 'flex',
@@ -48,11 +49,13 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
                     onClick={handleClick}
                 />
             </Box>
-            <section style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
-                <button onClick={() => setShowFilter(!showFilter)} className={"show-filter-btn"}>{!showFilter ? 'Show Filters' : 'Close Filters'}</button>
+            <article style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
+                <button onClick={() => setShowFilter(!showFilter)}
+                        className={"show-filter-btn"}>{!showFilter ? 'Show Filters' : 'Close Filters'}</button>
                 {showFilter && <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>}
-            </section>
-            {filteredFlightData.length == 0 ? <h5>No Flights found</h5> : <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights}/>}
+            </article>
+            {filteredFlightData.length == 0 ? <h5>No Flights found</h5> :
+                <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights}/>}
         </div>
-)
+    )
 }
