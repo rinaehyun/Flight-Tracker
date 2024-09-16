@@ -1,6 +1,7 @@
 package com.rhyun.backend.airport.service;
 
 import com.rhyun.backend.airport.dto.AirportDto;
+import com.rhyun.backend.airport.dto.GetAirportAddressDto;
 import com.rhyun.backend.airport.dto.GetAirportDto;
 import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.airport.model.Airport;
@@ -26,9 +27,9 @@ class AirportServiceTest {
     private final AirportService airportService = new AirportService(airportRepository, idService);
 
     Airport airport1 = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-            new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+            new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
     Airport airport2 = new Airport("456", "GOTEBORG", "GOT", new GeoCode(57, 12),
-            new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+            new AirportAddress("SWEDEN", "SE", "EUROP"), new AirportTimeZone("+02:00"));
 
     @Test
     void getAllAirportsTest_whenDBIsEmpty_thenReturnEmptyList() {
@@ -75,7 +76,7 @@ class AirportServiceTest {
     }
 
     @Test
-    void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports () {
+    void getAirportOptionsTest_whenDBHasData_thenReturnListOfAirports() {
         // GIVEN
         List<Airport> airports = List.of(airport1, airport2);
         when(airportRepository.findAll()).thenReturn(airports);
@@ -93,6 +94,38 @@ class AirportServiceTest {
     }
 
     @Test
+    void getAirportAddressOptionsTest_whenDBIsEmpty_thenReturnEmptyList() {
+        // GIVEN
+        List<Airport> airports = new ArrayList<>();
+        when(airportRepository.findAll()).thenReturn(airports);
+
+        // WHEN
+        List<GetAirportAddressDto> actual = airportService.getAirportAddressOptions();
+
+        // THEN
+        assertThat(actual).isEmpty();
+        verify(airportRepository, times(1)).findAll();
+    }
+
+    @Test
+    void getAirportAddressOptionsTest_whenDBHasData_thenReturnListOfAirports() {
+        // GIVEN
+        List<Airport> airports = List.of(airport1, airport2);
+        when(airportRepository.findAll()).thenReturn(airports);
+
+        // WHEN
+        List<GetAirportAddressDto> actual = airportService.getAirportAddressOptions();
+
+        // THEN
+        GetAirportAddressDto airportAddressDto1 = new GetAirportAddressDto("Poland", "PL", "EEURO");
+        GetAirportAddressDto airportAddressDto2 = new GetAirportAddressDto("Sweden", "SE", "EUROP");
+        List<GetAirportAddressDto> expected = List.of(airportAddressDto1, airportAddressDto2);
+
+        assertEquals(expected, actual);
+        verify(airportRepository, times(1)).findAll();
+    }
+
+    @Test
     void getAirportByIdTest_whenIdExists_thenReturnAnAirline() {
         // GIVEN
         String id = "123";
@@ -103,7 +136,7 @@ class AirportServiceTest {
 
         // THEN
         Airport expected = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
-                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
 
         assertEquals(expected, actual);
         verify(airportRepository, times(1)).findById(id);
@@ -137,7 +170,7 @@ class AirportServiceTest {
     void createAirportTest_whenPayloadIsCorrect_thenReturnAirportEntity() {
         // GIVEN
         AirportDto airportDto = new AirportDto( "GDANSK", "GDN", new GeoCode(54, 18),
-                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
         Airport airportToSave = new Airport("1", airportDto.name(), airportDto.iataCode(), airportDto.geoCode(),
                 airportDto.address(), airportDto.timeZone());
         when(airportRepository.save(airportToSave)).thenReturn(airportToSave);
@@ -159,10 +192,10 @@ class AirportServiceTest {
     void updateAirportTest_whenIdExistsAndPayloadIsCorrect_thenUpdateAirportEntity() {
         // GIVEN
         Airport original = new Airport("1", "GDANSK", "GDN", new GeoCode(54, 18),
-                new AirportAddress("POLAND"), new AirportTimeZone("+02:00"));
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
 
         AirportDto updateDto = new AirportDto( "GOTEBORG", "GOT", new GeoCode(57, 12),
-                new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+                new AirportAddress("SWEDEN", "SE", "EUROP"), new AirportTimeZone("+02:00"));
 
         Airport updated = new Airport("1", updateDto.name(), updateDto.iataCode(), updateDto.geoCode(),
                 updateDto.address(), updateDto.timeZone());
@@ -184,7 +217,7 @@ class AirportServiceTest {
     void updateAirportTest_whenIdDoesNotExist_thenThrow() {
         // GIVEN
         AirportDto updateDto = new AirportDto( "GOTEBORG", "GOT", new GeoCode(57, 12),
-                new AirportAddress("SWEDEN"), new AirportTimeZone("+02:00"));
+                new AirportAddress("SWEDEN", "SE", "EUROP"), new AirportTimeZone("+02:00"));
         Airport updated = new Airport("1", updateDto.name(), updateDto.iataCode(), updateDto.geoCode(),
                 updateDto.address(), updateDto.timeZone());
 

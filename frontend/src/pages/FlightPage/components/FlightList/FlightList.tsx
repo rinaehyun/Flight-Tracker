@@ -5,10 +5,11 @@ import {calculateDuration, formatDate, formatTime} from "../../../../utils/funct
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal.tsx";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import Notification from "../../../../components/Notification/Notification.tsx";
 import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
+import {useNotificationTimer} from "../../../../hooks/useNotificationTimer.ts";
 
 type FlightListProps = {
     data: Flight[],
@@ -48,19 +49,15 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
         }
     }
 
-    useEffect(() => {
-        if (showNotification) {
-            const timer = setTimeout(() => {
-                setShowNotification(false);
-            }, 5000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [showNotification]);
+    useNotificationTimer(showNotification, setShowNotification);
 
     return(
         <div>
-            {showNotification && <Notification setShowNotification={setShowNotification} message={`${flightToDelete?.flightCode} has been deleted.`}/>}
+            {showNotification && <Notification
+                setShowNotification={setShowNotification}
+                message={`${flightToDelete?.flightCode} has been deleted.`}
+                messageType={"success"}
+            />}
             {data.map(flight => (
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>

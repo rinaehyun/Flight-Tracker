@@ -1,0 +1,16 @@
+.user-form {
+    max-width: 350px;
+    margin: auto;
+}
+
+.user-form-submit {
+    margin-top: 50px;
+}
+
+.user-form-submit:disabled,
+.user-form-submit[disabled]{
+    border: 1px solid #999999;
+    background-color: #cccccc;
+    color: #666666;
+    cursor: inherit;
+}

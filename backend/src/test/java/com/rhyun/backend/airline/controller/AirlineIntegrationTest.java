@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,6 +30,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllAirlinesTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
         // WHEN
@@ -40,6 +42,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAllAirlinesTest_whenDBHasData_thenReturnListOfAirlines() throws Exception {
         // GIVEN
         airlineRepository.save(airline1);
@@ -70,6 +73,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirlineOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
         // WHEN
@@ -81,6 +85,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser
     void getAirlineOptionsTest_whenDBHasData_thenReturnListOfAirlines() throws Exception {
         // GIVEN
         airlineRepository.save(airline1);

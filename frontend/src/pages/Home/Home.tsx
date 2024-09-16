@@ -1,10 +1,21 @@
 import {Link} from "react-router-dom";
 
-export default function WelcomePage() {
+type HomeProps = {
+    userId: string | undefined,
+}
+
+export default function Home({ userId }: Readonly<HomeProps>) {
+
     return(
-        <>
+        <div>
             <h2>Welcome to Flight App!</h2>
-            <Link to={"/flight"}>Login</Link>
-        </>
+            {userId ?
+                <h5> You are logged in. </h5> :
+                <div style={{display: "flex", flexDirection: "column"}}>
+                    <p>Already have an <Link to={"/login"} style={{color: "blue"}}>account</Link></p>
+                    <p>I need to create a new account <Link to={"/signup"} style={{color: "blue"}}>sign up</Link></p>
+                </div>
+            }
+        </div>
     )
 }
