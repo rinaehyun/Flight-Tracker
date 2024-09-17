@@ -4,6 +4,7 @@ import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.UserDto;
 import com.rhyun.backend.security.model.AppUser;
+import com.rhyun.backend.security.model.AppUserRole;
 import com.rhyun.backend.security.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
@@ -33,7 +34,7 @@ class UserServiceTest {
     @Test
     void saveUserTest() {
         // GIVEN
-        UserDto userDto = new UserDto("user1", "password123", "USER");
+        UserDto userDto = new UserDto("user1", "password123", AppUserRole.ADMIN);
         AppUser userToSave = new AppUser("1", userDto.username(), userDto.password(), userDto.role());
         when(idService.randomId()).thenReturn("1");
         when(passwordEncoder.encode(userDto.password())).thenReturn("password123");
@@ -43,7 +44,7 @@ class UserServiceTest {
         AppUser actual = userService.saveUser(userDto);
 
         // THEN
-        AppUser expected = new AppUser("1", "user1", "password123", "USER");
+        AppUser expected = new AppUser("1", "user1", "password123", AppUserRole.ADMIN);
 
         assertEquals(expected, actual);
         verify(idService, times(1)).randomId();
@@ -54,14 +55,14 @@ class UserServiceTest {
     @Test
     void findUserByUsernameTest_whenUsernameExists_thenReturnUser() {
         // GIVEN
-        AppUser user = new AppUser("1", "user1", "password1", "USER");
+        AppUser user = new AppUser("1", "user1", "password1", AppUserRole.ADMIN);
         when(userRepository.findUserByUsername("user1")).thenReturn(Optional.of(user));
 
         // WHEN
         AppUser actual = userService.findUserByUsername("user1");
 
         // THEN
-        AppUser expected = new AppUser("1", "user1", "password1", "USER");
+        AppUser expected = new AppUser("1", "user1", "password1", AppUserRole.ADMIN);
 
         assertEquals(expected, actual);
         verify(userRepository, times(1)).findUserByUsername("user1");
@@ -86,14 +87,14 @@ class UserServiceTest {
         when(securityContext.getAuthentication()).thenReturn(authentication);
         SecurityContextHolder.setContext(securityContext);
 
-        AppUser appUser = new AppUser("1", "user1", "password123", "USER");
+        AppUser appUser = new AppUser("1", "user1", "password123", AppUserRole.ADMIN);
         when(userRepository.findUserByUsername("user1")).thenReturn(Optional.of(appUser));
 
         // WHEN
         GetUserDto actual = userService.getLoggedInUser();
 
         // THEN
-        GetUserDto expected = new GetUserDto("1", "user1", "USER");
+        GetUserDto expected = new GetUserDto("1", "user1", AppUserRole.ADMIN);
 
         assertEquals(expected, actual);
         verify(userRepository, times(1)).findUserByUsername("user1");

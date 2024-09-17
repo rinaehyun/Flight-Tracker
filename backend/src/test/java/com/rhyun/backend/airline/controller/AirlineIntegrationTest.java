@@ -30,7 +30,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAllAirlinesTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
         // WHEN
@@ -42,7 +42,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAllAirlinesTest_whenDBHasData_thenReturnListOfAirlines() throws Exception {
         // GIVEN
         airlineRepository.save(airline1);
@@ -73,7 +73,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirlineOptionsTest_whenDBIsEmpty_thenReturnEmptyList() throws Exception {
         // GIVEN
         // WHEN
@@ -85,7 +85,7 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
-    @WithMockUser
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirlineOptionsTest_whenDBHasData_thenReturnListOfAirlines() throws Exception {
         // GIVEN
         airlineRepository.save(airline1);

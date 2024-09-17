@@ -28,7 +28,10 @@ public class AppUserDetailsService implements UserDetailsService {
         return new User(
                 appUser.username(),
                 appUser.password(),
-                List.of(new SimpleGrantedAuthority(appUser.role()))
+                List.of(
+                        new SimpleGrantedAuthority("ROLE_" + appUser.role())
+                )
+
         );
     }
 }

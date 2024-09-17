@@ -2,13 +2,13 @@ export type NewBasicUser = {
     username: string,
     password: string,
     passwordConfirmation: string,
-    role: string
+    role: UserRole
 }
 
 export type BasicUser = {
     id: string,
     username: string,
-    role: string
+    role: UserRole
 }
 
 export type UserForLogin = {
@@ -19,5 +19,9 @@ export type UserForLogin = {
 export type User = {
     id: string,
     githubId: string,
-    role: string,
+    role: UserRole,
 }
+
+export type UserRole = "ADMIN" | "EMPLOYEE" | "USER";
+
+export const UserRoleList : UserRole[] = ["ADMIN", "EMPLOYEE", "USER"];

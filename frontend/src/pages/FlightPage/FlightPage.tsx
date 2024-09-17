@@ -5,15 +5,18 @@ import FlightFilter from "./components/FlightFilter/FlightFilter.tsx";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {Box} from "@mui/material";
 import {NavigateFunction, useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Filter} from "../../types/enum.ts";
+import axios from "axios";
+import {BasicUser} from "../../types/auth/userType.ts";
 
 type FlightPageProps = {
     data: Flight[],
-    fetchAllFlights: () => void
+    loggedInUser: BasicUser | null | undefined
 }
 
-export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPageProps>) {
+export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
+    const [flightData, setFlightData] = useState<Flight[]>(data);
     const [showFilter, setShowFilter] = useState<boolean>(false);
     const [selectedFilter, setSelectedFilter] = useState<Filter>({
         airline: undefined,
@@ -23,11 +26,23 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
 
     const navigate: NavigateFunction = useNavigate();
 
+    const fetchAllFlights = () => {
+        axios.get("/api/flight")
+            .then(response=> {
+                setFlightData(response.data)
+            })
+            .catch(error => alert(error));
+    }
+
+    useEffect(() => {
+        fetchAllFlights();
+    },[])
+
     const handleClick = () => {
         navigate('/flight/add');
     }
 
-    const filteredFlightData = data
+    const filteredFlightData = flightData
         .filter(flight => selectedFilter.airline ? flight.airline === selectedFilter.airline : flight)
         .filter(flight => selectedFilter.origin ? flight.origin === selectedFilter.origin : flight)
         .filter(flight => selectedFilter.destination ? flight.destination === selectedFilter.destination : flight);
@@ -44,10 +59,12 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
                     borderRadius: 1,
                 }}
             >
-                <AddCircleIcon
-                    sx={{fontSize: "35px", cursor: "pointer"}}
-                    onClick={handleClick}
-                />
+                {loggedInUser?.role != "USER" &&
+                    <AddCircleIcon
+                        sx={{fontSize: "35px", cursor: "pointer"}}
+                        onClick={handleClick}
+                    />
+                }
             </Box>
             <article style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
                 <button onClick={() => setShowFilter(!showFilter)}
@@ -55,7 +72,7 @@ export default function FlightPage({ data, fetchAllFlights }: Readonly<FlightPag
                 {showFilter && <FlightFilter selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter}/>}
             </article>
             {filteredFlightData.length == 0 ? <h5>No Flights found</h5> :
-                <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights}/>}
+                <FlightList data={filteredFlightData} fetchAllFlights={fetchAllFlights} loggedInUser={loggedInUser} />}
         </div>
     )
 }

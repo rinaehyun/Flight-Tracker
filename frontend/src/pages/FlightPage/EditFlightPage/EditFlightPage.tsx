@@ -1,19 +1,19 @@
-import './FlightDetailPage.css';
+import './EditFlightPage.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {NavigateFunction, useNavigate, useParams} from "react-router-dom";
 import {FormEvent, useEffect, useState} from "react";
 import {Box} from "@mui/material";
-import {NewFlight} from "../../types/model/dataType.ts";
-import FlightForm from "../../components/FlightForm/FlightForm.tsx";
+import {NewFlight} from "../../../types/model/dataType.ts";
+import FlightForm from "../../../components/FlightForm/FlightForm.tsx";
 import axios from "axios";
-import Notification from "../../components/Notification/Notification.tsx";
-import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
+import Notification from "../../../components/Notification/Notification.tsx";
+import {useNotificationTimer} from "../../../hooks/useNotificationTimer.ts";
 
 type FlightDetailPageProps = {
     fetchAllFlights: () => void,
 }
 
-export default function FlightDetailPage({ fetchAllFlights }: Readonly<FlightDetailPageProps>) {
+export default function EditFlightPage({ fetchAllFlights }: Readonly<FlightDetailPageProps>) {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
 

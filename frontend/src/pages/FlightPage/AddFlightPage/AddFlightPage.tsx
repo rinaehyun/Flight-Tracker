@@ -1,6 +1,6 @@
 import './AddFlightPage.css';
-import FlightForm from "../../components/FlightForm/FlightForm.tsx";
-import {NewFlight} from "../../types/model/dataType.ts";
+import FlightForm from "../../../components/FlightForm/FlightForm.tsx";
+import {NewFlight} from "../../../types/model/dataType.ts";
 import {FormEvent, useState} from "react";
 import axios from "axios";
 import {NavigateFunction, useNavigate} from "react-router-dom";

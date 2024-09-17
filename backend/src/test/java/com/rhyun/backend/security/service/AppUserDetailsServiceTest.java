@@ -1,6 +1,7 @@
 package com.rhyun.backend.security.service;
 
 import com.rhyun.backend.security.model.AppUser;
+import com.rhyun.backend.security.model.AppUserRole;
 import com.rhyun.backend.security.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,14 +23,14 @@ class AppUserDetailsServiceTest {
     @Test
     void loadUserByUsernameTest_whenUsernameExists_thenReturnUser() {
         // GIVEN
-        AppUser appUser = new AppUser("1", "user1", "password123", "USER");
+        AppUser appUser = new AppUser("1", "user1", "password123", AppUserRole.ADMIN);
         when(userRepository.findUserByUsername("user1")).thenReturn(Optional.of(appUser));
 
         // WHEN
         UserDetails actual = appUserDetailsService.loadUserByUsername("user1");
 
         // THEN
-        UserDetails expected = new User(appUser.username(), appUser.password(), List.of(new SimpleGrantedAuthority(appUser.role())));
+        UserDetails expected = new User(appUser.username(), appUser.password(), List.of(new SimpleGrantedAuthority("ROLE_" + appUser.role())));
 
         assertEquals(expected, actual);
         verify(userRepository, times(1)).findUserByUsername("user1");

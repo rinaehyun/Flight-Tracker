@@ -2,21 +2,24 @@ import './FlightList.css'
 import {Flight} from "../../../../types/model/dataType.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {calculateDuration, formatDate, formatTime} from "../../../../utils/functionsForTime.ts";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal.tsx";
 import {useState} from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
+import EditNoteIcon from '@mui/icons-material/EditNote';
 import Notification from "../../../../components/Notification/Notification.tsx";
 import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 import {useNotificationTimer} from "../../../../hooks/useNotificationTimer.ts";
+import {BasicUser} from "../../../../types/auth/userType.ts";
 
 type FlightListProps = {
     data: Flight[],
-    fetchAllFlights: () => void
+    fetchAllFlights: () => void,
+    loggedInUser: BasicUser | null | undefined
 }
 
-export default function FlightList({ data, fetchAllFlights }: Readonly<FlightListProps>) {
+export default function FlightList({ data, fetchAllFlights, loggedInUser }: Readonly<FlightListProps>) {
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
     const [showNotification, setShowNotification] = useState<boolean>(false);
@@ -62,7 +65,9 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                 <div key={flight.id} className={"flight-card"}>
                     <div className={"flight-card-headline"}>
                         <div className={"flight-card-airline"}>
-                            <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                            {loggedInUser?.role != "USER" &&
+                                <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                            }
                             <h4>
                                 {airlines
                                     .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
@@ -72,11 +77,18 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                             <h4>{flight.flightCode}</h4>
                         </div>
                         <div className={"flight-card-icons"}>
-                            <Link className={"go-to-detail-link"} to={`/flight/${flight.id}`}>Go to detail</Link>
-                            <DeleteIcon
-                                sx={{ marginRight: '15px', cursor: "pointer" }}
-                                onClick={() => handleDeleteFlight(flight)}
-                            />
+                            {loggedInUser?.role != "USER" &&
+                                <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                    <EditNoteIcon
+                                        sx={{marginRight: '5px', cursor: "pointer"}}
+                                        onClick={() => navigate(`/flight/${flight.id}`)}
+                                    />
+                                    <DeleteIcon
+                                        sx={{marginRight: '15px', cursor: "pointer"}}
+                                        onClick={() => handleDeleteFlight(flight)}
+                                    />
+                                </div>
+                            }
                         </div>
                     </div>
                     <div className={"flight-card-detail"}>
@@ -96,7 +108,8 @@ export default function FlightList({ data, fetchAllFlights }: Readonly<FlightLis
                         <ConfirmationModal
                             handleClose={handleClose}
                             handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
-                            flightToBeDeleted={flightToDelete}
+                            itemId={flightToDelete?.id}
+                            itemName={flightToDelete?.flightCode}
                         />
                     }
                 </div>

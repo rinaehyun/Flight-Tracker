@@ -39,3 +39,19 @@ export type Airport = {
     timeZone: {
         offSet: string
     }}
+
+export type NewAirport = {
+    name: string,
+    iataCode: string,
+    geoCode: {
+        latitude: number,
+        longitude: number
+    },
+    address: {
+        countryName: string,
+        countryCode: string,
+        regionCode: string
+    },
+    timeZone: {
+        offSet: string
+    }}
