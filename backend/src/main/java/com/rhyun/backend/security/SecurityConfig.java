@@ -25,9 +25,14 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        String adminRole = "ROLE_" + AppUserRole.ADMIN.name();
-        String employeeRole = "ROLE_" + AppUserRole.EMPLOYEE.name();
-        String userRole = "ROLE_" + AppUserRole.USER.name();
+
+        final String ROLE_PREFIX = "ROLE_";
+        String adminRole = ROLE_PREFIX + AppUserRole.ADMIN.name();
+        String employeeRole = ROLE_PREFIX + AppUserRole.EMPLOYEE.name();
+        String userRole = ROLE_PREFIX + AppUserRole.USER.name();
+
+        String airportEndpoint = "/api/airport/**";
+
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -40,10 +45,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/flight/**").hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.PUT, "/api/flight/**").hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.GET, "/api/airport").hasAnyAuthority(adminRole, employeeRole, userRole)
-                        .requestMatchers(HttpMethod.GET, "/api/airport/**").hasAnyAuthority(adminRole, employeeRole, userRole)
+                        .requestMatchers(HttpMethod.GET, airportEndpoint).hasAnyAuthority(adminRole, employeeRole, userRole)
                         .requestMatchers(HttpMethod.POST, "/api/airport").hasAnyAuthority(adminRole, employeeRole)
-                        .requestMatchers(HttpMethod.DELETE, "/api/airport/**").hasAnyAuthority(adminRole, employeeRole)
-                        .requestMatchers(HttpMethod.PUT, "/api/airport/**").hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.DELETE, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.PUT, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.GET, "/api/airline/options-for-input").hasAnyAuthority(adminRole, employeeRole, userRole)
                         .anyRequest().authenticated()
                 )

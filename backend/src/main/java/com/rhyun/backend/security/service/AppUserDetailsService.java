@@ -1,7 +1,6 @@
 package com.rhyun.backend.security.service;
 
 import com.rhyun.backend.security.model.AppUser;
-import com.rhyun.backend.security.model.AppUserRole;
 import com.rhyun.backend.security.repository.UserRepository;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
