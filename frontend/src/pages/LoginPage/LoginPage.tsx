@@ -1,6 +1,8 @@
 import {UserForLogin} from "../../types/auth/userType.ts";
 import {ChangeEvent, Dispatch, FormEvent, SetStateAction, useState} from "react";
 import UserForm from "../../components/UserForm/UserForm.tsx";
+import {SelectChangeEvent} from "@mui/material";
+import {FlightStatus} from "../../types/enum.ts";
 
 type LoginPageProps = {
     login: (user : UserForLogin) => void;
@@ -14,7 +16,8 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
         password: ''
     })
 
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
+        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
         setUser({ ...user, [name]: value });
     }

@@ -1,6 +1,7 @@
 package com.rhyun.backend.security.controller;
 
 import com.rhyun.backend.security.model.AppUser;
+import com.rhyun.backend.security.model.AppUserRole;
 import com.rhyun.backend.security.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ class AuthControllerTest {
     @WithMockUser(username = "user1")
     void getLoggedInUserTest() throws Exception {
         // GIVEN
-        userRepository.save(new AppUser("1", "user1", "password123", "USER"));
+        userRepository.save(new AppUser("1", "user1", "password123", AppUserRole.ADMIN));
 
         // WHEN
         mockMvc.perform(get("/api/auth/me"))
@@ -43,7 +44,7 @@ class AuthControllerTest {
                 {
                     "id": "1",
                     "username": "user1",
-                    "role": "USER"
+                    "role": "ADMIN"
                 }
             """));
     }
@@ -59,7 +60,7 @@ class AuthControllerTest {
                 {
                     "username": "user1",
                     "password": "password123",
-                    "role": "USER"
+                    "role": "ADMIN"
                 }
             """))
             // THEN
@@ -67,7 +68,7 @@ class AuthControllerTest {
             .andExpect(content().json("""
                 {
                     "username": "user1",
-                    "role": "USER"
+                    "role": "ADMIN"
                 }
             """))
             .andExpect(jsonPath("$.id").exists());

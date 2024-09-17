@@ -7,21 +7,23 @@ import FlightPage from "./pages/FlightPage/FlightPage.tsx";
 import axios from 'axios';
 import {useEffect, useState} from "react";
 import {Flight} from "./types/model/dataType.ts";
-import AddFlightPage from "./pages/AddFlightPage/AddFlightPage.tsx";
-import FlightDetailPage from "./pages/FlightDetailPage/FlightDetailPage.tsx";
+import AddFlightPage from "./pages/FlightPage/AddFlightPage/AddFlightPage.tsx";
+import EditFlightPage from "./pages/FlightPage/EditFlightPage/EditFlightPage.tsx";
 import {BasicUser, UserForLogin} from "./types/auth/userType.ts";
 import LoginPage from "./pages/LoginPage/LoginPage.tsx";
 import SignupPage from "./pages/LoginPage/SignupPage.tsx";
 import AirportPage from "./pages/AirportPage/AirportPage.tsx";
 import AirlinePage from "./pages/AirlinePage/AirlinePage.tsx";
 import ProtectedRoutes from "./auth/ProtectedRoutes.tsx";
+import AddAirportPage from "./pages/AirportPage/AddAirportPage/AddAirportPage.tsx";
+import EditAirportPage from "./pages/AirportPage/EditAirportPage/EditAirportPage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
     const [loggedInUser, setLoggedInUser] = useState<BasicUser | null | undefined>({
         id: '',
         username: '',
-        role: ''
+        role: "USER"
     })
     const [showLoginNotification, setShowLoginNotification] = useState<boolean>(false);
     const navigate = useNavigate();
@@ -78,10 +80,12 @@ function App() {
                     <Route path={"/login"} element={<LoginPage login={login} setShowLoginNotification={setShowLoginNotification} showLoginNotification={showLoginNotification} />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
-                        <Route path={"/flight"} element={<FlightPage data={flightData} fetchAllFlights={fetchAllFlights} />} />
-                        <Route path={"/flight/:id"} element={<FlightDetailPage fetchAllFlights={fetchAllFlights} />}/>
+                        <Route path={"/flight"} element={<FlightPage data={flightData} loggedInUser={loggedInUser} />} />
+                        <Route path={"/flight/:id"} element={<EditFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/airport"} element={<AirportPage loggedInUser={loggedInUser}/>} />
+                        <Route path={"/airport/add"} element={<AddAirportPage />} />
+                        <Route path={"/airport/:id"} element={<EditAirportPage />}/>
                         <Route path={"/airline"} element={<AirlinePage />} />
                     </Route>
                 </Routes>
