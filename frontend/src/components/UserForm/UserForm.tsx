@@ -24,19 +24,20 @@ type UserFormProps = {
     setShowNotification: Dispatch<SetStateAction<boolean>>,
     notificationMessage: string,
     pageName: string,
-    formType: "login" | "signup",
+    formType: "login" | "signup" | "edit",
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
     handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
         ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => void,
     buttonLabel: string,
-    linkMessage: string,
-    linkTo: string,
-    linkLabel: string,
+    linkMessage?: string,
+    linkTo?: string,
+    linkLabel?: string,
+    editable: boolean,
 }
 
 export default function UserForm({ showNotification, setShowNotification, notificationMessage,
                                      pageName, formType, handleSubmit, handleChange,
-                                     buttonLabel, linkMessage, linkTo, linkLabel }: Readonly<UserFormProps>) {
+                                     buttonLabel, linkMessage, linkTo, linkLabel, editable }: Readonly<UserFormProps>) {
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showPasswordConfirmation, setShowPasswordConfirmation] = useState<boolean>(false);
@@ -75,6 +76,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                     sx={{width: "100%"}}
                     onChange={handleChange}
                     autoComplete={"off"}
+                    disabled={!editable}
                 />
                 <TextField
                     required
@@ -85,6 +87,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                     sx={{width: "100%"}}
                     onChange={handleChange}
                     autoComplete={"off"}
+                    disabled={!editable}
                     type={showPassword ? 'text' : 'password'}
                     InputProps={{
                         endAdornment: (
@@ -101,7 +104,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                         )
                     }}
                 />
-                {formType === "signup" &&
+                {formType !== "login" &&
                     <>
                         <TextField
                             required
@@ -112,6 +115,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                             sx={{width: "100%"}}
                             onChange={handleChange}
                             autoComplete={"off"}
+                            disabled={!editable}
                             type={showPasswordConfirmation ? 'text' : 'password'}
                             InputProps={{
                                 endAdornment: (
@@ -136,6 +140,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                                 name={"role"}
                                 onChange={handleChange}
                                 label="User Role"
+                                disabled={!editable}
                                 style={{textAlign: "left"}}
                             >
                                 {UserRoleList.map((role) => (
@@ -148,13 +153,17 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                 <button
                     type={"submit"}
                     className={"user-form-submit"}
+                    disabled={!editable}
                 >{buttonLabel}
                 </button>
                 <p style={{fontSize: "12px", marginTop: "30px"}}>{linkMessage}
-                    <Link
-                        to={linkTo}
-                        style={{fontSize: "12px", color: "blue"}}
-                    > {linkLabel}</Link>
+                    {
+                        linkTo &&
+                        <Link
+                            to={linkTo}
+                            style={{fontSize: "12px", color: "blue"}}
+                        > {linkLabel}</Link>
+                    }
                 </p>
             </form>
         </>
