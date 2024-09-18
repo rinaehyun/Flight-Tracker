@@ -3,12 +3,14 @@ import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {Link, useNavigate} from "react-router-dom";
 import {BasicUser} from "../../types/auth/userType.ts";
 import AccountMenu from "./components/UserMenu/AccountMenu.tsx";
+import {Dispatch, SetStateAction} from "react";
 
 type HeaderProps = {
     loggedInUser: BasicUser | null | undefined,
+    setLoggedInUser: Dispatch<SetStateAction<BasicUser | null | undefined>>,
 }
 
-export default function Header({ loggedInUser }: Readonly<HeaderProps>) {
+export default function Header({ loggedInUser, setLoggedInUser }: Readonly<HeaderProps>) {
     const navigate = useNavigate();
 
     return(
@@ -36,7 +38,7 @@ export default function Header({ loggedInUser }: Readonly<HeaderProps>) {
             <div style={{float: "right", marginLeft: "auto"}}>
                 {
                     loggedInUser?.id
-                        ? <AccountMenu loggedInUser={loggedInUser} />
+                        ? <AccountMenu loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
                         : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
                 }
             </div>

@@ -1,21 +1,34 @@
 import {Avatar, Box, Divider, IconButton, ListItemIcon, Menu, MenuItem, Tooltip} from "@mui/material";
-import React from "react";
+import React, {Dispatch, SetStateAction} from "react";
 import Logout from '@mui/icons-material/Logout';
 import {BasicUser} from "../../../../types/auth/userType.ts";
+import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 type AccountMenuProps = {
     loggedInUser: BasicUser | null | undefined,
+    setLoggedInUser: Dispatch<SetStateAction<BasicUser | null | undefined>>,
 }
 
-export default function AccountMenu({ loggedInUser }: Readonly<AccountMenuProps>) {
+export default function AccountMenu({ loggedInUser, setLoggedInUser }: Readonly<AccountMenuProps>) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
+    const navigate = useNavigate();
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+   const logout = () => {
+        axios.post("/api/auth/logout")
+            .then(() => navigate("/login"))
+            .catch(error => console.error(error))
+            .finally(() => setLoggedInUser(null));
+    }
 
     return (
         <>
@@ -24,7 +37,7 @@ export default function AccountMenu({ loggedInUser }: Readonly<AccountMenuProps>
                 <IconButton
                     onClick={handleClick}
                     size="small"
-                    sx={{ ml: 2 }}
+                    sx={{ ml: 2, marginRight: "10px" }}
                     aria-controls={open ? 'account-menu' : undefined}
                     aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
@@ -77,7 +90,7 @@ export default function AccountMenu({ loggedInUser }: Readonly<AccountMenuProps>
                 <Avatar /> My account
             </MenuItem>
             <Divider />
-            <MenuItem onClick={() => {}}>
+            <MenuItem onClick={logout}>
                 <ListItemIcon>
                     <Logout fontSize="small" />
                 </ListItemIcon>
