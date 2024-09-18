@@ -1,12 +1,14 @@
 import './Header.css'
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
 import {Link, useNavigate} from "react-router-dom";
+import {BasicUser} from "../../types/auth/userType.ts";
+import AccountMenu from "./components/UserMenu/AccountMenu.tsx";
 
 type HeaderProps = {
-    userId: string | undefined,
-    logout: () => void,
+    loggedInUser: BasicUser | null | undefined,
 }
-export default function Header({ userId, logout }: Readonly<HeaderProps>) {
+
+export default function Header({ loggedInUser }: Readonly<HeaderProps>) {
     const navigate = useNavigate();
 
     return(
@@ -33,8 +35,8 @@ export default function Header({ userId, logout }: Readonly<HeaderProps>) {
             </nav>
             <div style={{float: "right", marginLeft: "auto"}}>
                 {
-                    userId
-                        ? <button className={"login-button"} onClick={logout}>Log out</button>
+                    loggedInUser?.id
+                        ? <AccountMenu loggedInUser={loggedInUser} />
                         : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
                 }
             </div>
