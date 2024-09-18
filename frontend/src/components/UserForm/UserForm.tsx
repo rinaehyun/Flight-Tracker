@@ -106,6 +106,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                 />
                 {formType !== "login" &&
                     <>
+                    {editable &&
                         <TextField
                             required
                             name={"passwordConfirmation"}
@@ -132,6 +133,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                                 )
                             }}
                         />
+                    }
                         <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                             <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
                             <Select
