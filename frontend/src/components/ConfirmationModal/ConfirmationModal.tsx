@@ -4,7 +4,7 @@ import AirplanemodeInactiveIcon from '@mui/icons-material/AirplanemodeInactive';
 type ConfirmationModalProps = {
     handleClose: () => void,
     handleDeleteConfirm: (id: string | undefined) => void,
-    itemId: string | undefined,
+    itemId?: string | undefined,
     itemName: string | undefined
 }
 
