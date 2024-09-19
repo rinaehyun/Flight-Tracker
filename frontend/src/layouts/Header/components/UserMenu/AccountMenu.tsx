@@ -86,7 +86,7 @@ export default function AccountMenu({ loggedInUser, setLoggedInUser }: Readonly<
             <MenuItem onClick={() => {}}>
                 <Avatar /> Profile
             </MenuItem>
-            <MenuItem onClick={() => navigate(`/user/${loggedInUser?.id}`)}>
+            <MenuItem onClick={() => {}}>
                 <Avatar /> Edit account
             </MenuItem>
             <Divider />
