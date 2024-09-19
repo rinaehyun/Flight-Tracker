@@ -188,4 +188,16 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById("1");
         verify(userRepository, never()).save(updatedUser);
     }
+
+    @Test
+    void deleteUserById_whenIdExists_thenDeleteUserEntity() {
+        // GIVEN
+        String id = "123";
+        doNothing().when(userRepository).deleteById(id);
+
+        // WHEN
+        // THEN
+        userService.deleteUserById(id);
+        verify(userRepository, times(1)).deleteById(id);
+    }
 }
