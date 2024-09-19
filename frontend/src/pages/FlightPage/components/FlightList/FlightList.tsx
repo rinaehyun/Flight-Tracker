@@ -110,6 +110,7 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                             handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
                             itemId={flightToDelete?.id}
                             itemName={flightToDelete?.flightCode}
+                            modalName={"Flight"}
                         />
                     }
                 </div>

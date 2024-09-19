@@ -14,6 +14,7 @@ export default function EditUserPage() {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
     const [showSuccessNotification, setShowSuccessNotification] = useState<boolean>(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
     const [updatedUser, setUpdatedUser] = useState<NewBasicUser>({
         username: "",
         password: "",
@@ -97,10 +98,14 @@ export default function EditUserPage() {
                 .then(response => {
                     if (response.status === 200) {
                         console.log('Flight deleted successfully');
+                        setShowDeleteConfirmation(true);
+                        setShowDeleteModal(false);
                     }
                 })
                 .catch(error => console.log(error.message));
-            navigate("/login");
+            setTimeout(() => {
+                navigate("/login");
+            }, 3000)
         }
     }
 
@@ -114,6 +119,13 @@ export default function EditUserPage() {
                 <Notification
                     setShowNotification={setShowSuccessNotification}
                     message={"User Data has been successfully updated."}
+                    messageType={"success"}
+                />
+            }
+            {showDeleteConfirmation &&
+                <Notification
+                    setShowNotification={setShowDeleteConfirmation}
+                    message={"User Data has been successfully deleted."}
                     messageType={"success"}
                 />
             }
@@ -152,6 +164,7 @@ export default function EditUserPage() {
                     handleClose={() => setShowDeleteModal(false)}
                     handleDeleteConfirm={() => handleDeleteConfirm(id)}
                     itemName={originalUser?.username}
+                    modalName={"User"}
                 />
             }
         </div>
