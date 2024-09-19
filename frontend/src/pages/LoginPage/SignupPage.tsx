@@ -53,6 +53,7 @@ export default function SignupPage() {
                 linkMessage={"Already have an account? "}
                 linkTo={"/login"}
                 linkLabel={" Go to Login page"}
+                editable={true}
             />
         </div>
     )

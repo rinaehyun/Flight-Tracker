@@ -42,6 +42,7 @@ export default function LoginPage({ login, setShowLoginNotification, showLoginNo
                 linkMessage={"If you don't have account? "}
                 linkTo={"/signup"}
                 linkLabel={" Go to Signup page"}
+                editable={true}
             />
         </div>
     )
