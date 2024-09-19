@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     public ErrorMessage handleUserException(UserNotFoundException ex) {
         return new ErrorMessage(
                 new Date(),
-                HttpStatus.NO_CONTENT.value(),
+                HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
     }

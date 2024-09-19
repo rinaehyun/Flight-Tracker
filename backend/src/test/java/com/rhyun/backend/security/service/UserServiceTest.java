@@ -3,6 +3,7 @@ package com.rhyun.backend.security.service;
 import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.UserDto;
+import com.rhyun.backend.security.exception.UserNotFoundException;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.model.AppUserRole;
 import com.rhyun.backend.security.repository.UserRepository;
@@ -118,5 +119,37 @@ class UserServiceTest {
         verify(userRepository, times(1)).findUserByUsername("user1");
         verify(authentication, times(1)).getPrincipal();
         verify(securityContext, times(1)).getAuthentication();
+    }
+
+    @Test
+    void findUserByIdTest_whenIdExists_thenReturnUser() {
+        // GIVEN
+        AppUser user = new AppUser("1", "user1", "password1", AppUserRole.ADMIN);
+        when(userRepository.findById("1")).thenReturn(Optional.of(user));
+
+        // WHEN
+        UserDto actual = userService.findUserById("1");
+
+        // THEN
+        UserDto expected = new UserDto(user.username(), user.password(), user.role());
+        assertEquals(expected, actual);
+        verify(userRepository, times(1)).findById("1");
+    }
+
+    @Test
+    void findUserByIdTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        when(userRepository.findById("1")).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(
+                UserNotFoundException.class,
+                () -> userService.findUserById("1")
+        );
+        verify(userRepository, times(1)).findById("1");
+
+        assertThrows(UsernameNotFoundException.class, () -> userService.findUserByUsername("user1"));
+        verify(userRepository, times(1)).findUserByUsername("user1");
     }
 }

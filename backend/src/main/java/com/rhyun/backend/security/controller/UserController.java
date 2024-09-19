@@ -1,18 +1,10 @@
 package com.rhyun.backend.security.controller;
 
-import com.rhyun.backend.airport.dto.GetAirportDto;
-import com.rhyun.backend.airport.model.Airport;
-import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.PutUserDto;
 import com.rhyun.backend.security.dto.UserDto;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.service.UserService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.rhyun.backend.utils.StringHelper.capitalizeFirstLetter;
 
 @RestController
 @RequestMapping("/api/user")

@@ -49,7 +49,7 @@ public class UserService {
 
     public UserDto findUserById(String id) {
         AppUser appUser = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id" + id + " cannot be found."));
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " cannot be found."));
 
         return new UserDto(
                 appUser.username(),
@@ -60,7 +60,7 @@ public class UserService {
 
     public AppUser updateUser(String id, PutUserDto putUserDto) {
         AppUser appUserToUpdate = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with id" + id + " cannot be found."))
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " cannot be found."))
                 .withPassword(passwordEncoder.encode(putUserDto.password()))
                 .withRole(putUserDto.role());
 
