@@ -47,8 +47,7 @@ export default function UserForm({ user, showNotification, setShowNotification, 
     );
     const handleClickShowPasswordConfirmation = () => setShowPasswordConfirmation(
         (show) => !show
-    ); // Separate handler
-
+    );
 
     const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -76,66 +75,67 @@ export default function UserForm({ user, showNotification, setShowNotification, 
                     sx={{width: "100%"}}
                     onChange={handleChange}
                     autoComplete={"off"}
-                    disabled={!editable}
+                    disabled={ formType === "edit" ? true : !editable}
                     value={user?.username}
                 />
-                <TextField
-                    required
-                    name={"password"}
-                    label={"Password"}
-                    variant={"standard"}
-                    color={"primary"}
-                    sx={{width: "100%"}}
-                    onChange={handleChange}
-                    autoComplete={"off"}
-                    disabled={!editable}
-                    type={showPassword ? 'text' : 'password'}
-                    value={user?.password}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                </IconButton>
-                            </InputAdornment>
-                        )
-                    }}
-                />
+                {editable &&
+                    <TextField
+                        required
+                        name={"password"}
+                        label={"Password"}
+                        variant={"standard"}
+                        color={"primary"}
+                        sx={{width: "100%"}}
+                        onChange={handleChange}
+                        autoComplete={"off"}
+                        disabled={!editable}
+                        type={showPassword ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        onClick={handleClickShowPassword}
+                                        onMouseDown={handleMouseDownPassword}
+                                        edge="end"
+                                    >
+                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
+                    />
+                }
                 {formType !== "login" &&
                     <>
-                    {editable &&
-                        <TextField
-                            required
-                            name={"passwordConfirmation"}
-                            label={"Password Confirmation"}
-                            variant={"standard"}
-                            color={"primary"}
-                            sx={{width: "100%"}}
-                            onChange={handleChange}
-                            autoComplete={"off"}
-                            disabled={!editable}
-                            type={showPasswordConfirmation ? 'text' : 'password'}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPasswordConfirmation}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {showPasswordConfirmation ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
-                            }}
-                        />
-                    }
+                        {editable &&
+                            <TextField
+                                required
+                                name={"passwordConfirmation"}
+                                label={"Password Confirmation"}
+                                variant={"standard"}
+                                color={"primary"}
+                                sx={{width: "100%"}}
+                                onChange={handleChange}
+                                autoComplete={"off"}
+                                disabled={!editable}
+                                type={showPasswordConfirmation ? 'text' : 'password'}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPasswordConfirmation}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {showPasswordConfirmation ? <VisibilityOff/> : <Visibility/>}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }}
+                            />
+                        }
                         <FormControl variant="standard" sx={{m: 1, width: "100%", margin: 0}}>
                             <InputLabel id="demo-simple-select-standard-label">Role</InputLabel>
                             <Select
