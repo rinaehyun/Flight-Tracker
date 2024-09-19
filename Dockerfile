@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 openjdk:21
+FROM --platform=linux/amd64 openjdk:22
 
 EXPOSE 8080
 
