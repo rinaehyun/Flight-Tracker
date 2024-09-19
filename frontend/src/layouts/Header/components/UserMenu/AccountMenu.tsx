@@ -19,11 +19,12 @@ export default function AccountMenu({ loggedInUser, setLoggedInUser }: Readonly<
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
 
-   const logout = () => {
+    const logout = () => {
         axios.post("/api/auth/logout")
             .then(() => navigate("/login"))
             .catch(error => console.error(error))
@@ -83,10 +84,7 @@ export default function AccountMenu({ loggedInUser, setLoggedInUser }: Readonly<
             transformOrigin={{ horizontal: 'right', vertical: 'top' }}
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-            <MenuItem onClick={() => {}}>
-                <Avatar /> Profile
-            </MenuItem>
-            <MenuItem onClick={() => {}}>
+            <MenuItem onClick={() => navigate(`/user/${loggedInUser?.id}`)}>
                 <Avatar /> Edit account
             </MenuItem>
             <Divider />
