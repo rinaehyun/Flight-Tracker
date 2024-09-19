@@ -7,11 +7,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -58,5 +60,29 @@ class UserControllerTest {
                 }
             """))
             .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void updateUserTest_whenIdDoesNotExist_thenThrows() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/user/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "password": "password",
+                    "role": "EMPLOYEE"
+                }
+            """))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "User with id 1 cannot be found."
+                }
+            """));
     }
 }
