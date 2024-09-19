@@ -6,10 +6,12 @@ import {useNavigate, useParams} from "react-router-dom";
 import {NewBasicUser, UserRole} from "../../../types/auth/userType.ts";
 import axios from "axios";
 import {useNotificationTimer} from "../../../hooks/useNotificationTimer.ts";
+import Notification from "../../../components/Notification/Notification.tsx";
 
 export default function EditUserPage() {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [showSuccessNotification, setShowSuccessNotification] = useState<boolean>(false);
     const [updatedUser, setUpdatedUser] = useState<NewBasicUser>({
         username: "",
         password: "",
@@ -67,7 +69,7 @@ export default function EditUserPage() {
         })
         .then(response => {
             if (response.status === 200) {
-                console.log("Data updated")
+                setShowSuccessNotification(true);
                 setEditable(false);
             }
         })
@@ -86,10 +88,19 @@ export default function EditUserPage() {
         if (id) updateUser(updatedUser);
     }
 
+    useNotificationTimer(showSuccessNotification, setShowSuccessNotification);
+
     useNotificationTimer(showNotification, setShowNotification);
 
     return (
         <div className={"edit-account-page"}>
+            {showSuccessNotification &&
+                <Notification
+                    setShowNotification={setShowSuccessNotification}
+                    message={"User Data has been successfully updated."}
+                    messageType={"success"}
+                />
+            }
             <div className={"top-buttons"}>
                 <Box
                     sx={{
