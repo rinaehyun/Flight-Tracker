@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import {Link} from "react-router-dom";
 import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
-import {UserRoleList} from "../../types/auth/userType.ts";
-import {FlightStatus} from "../../types/enum.ts";
+import {FetchedUser, NewBasicUser, UserRole, UserRoleList} from "../../types/auth/userType.ts";
 import {capitalizeFirstLetter} from "../../utils/funtioncs.ts";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 type UserFormProps = {
+    user?: FetchedUser | NewBasicUser,
     showNotification: boolean,
     setShowNotification: Dispatch<SetStateAction<boolean>>,
     notificationMessage: string,
@@ -27,7 +27,7 @@ type UserFormProps = {
     formType: "login" | "signup" | "edit",
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
     handleChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
-        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => void,
+        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<UserRole>) => void,
     buttonLabel: string,
     linkMessage?: string,
     linkTo?: string,
@@ -35,7 +35,7 @@ type UserFormProps = {
     editable: boolean,
 }
 
-export default function UserForm({ showNotification, setShowNotification, notificationMessage,
+export default function UserForm({ user, showNotification, setShowNotification, notificationMessage,
                                      pageName, formType, handleSubmit, handleChange,
                                      buttonLabel, linkMessage, linkTo, linkLabel, editable }: Readonly<UserFormProps>) {
 
@@ -77,6 +77,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                     onChange={handleChange}
                     autoComplete={"off"}
                     disabled={!editable}
+                    value={user?.username}
                 />
                 <TextField
                     required
@@ -89,6 +90,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                     autoComplete={"off"}
                     disabled={!editable}
                     type={showPassword ? 'text' : 'password'}
+                    value={user?.password}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment position="end">
@@ -143,6 +145,7 @@ export default function UserForm({ showNotification, setShowNotification, notifi
                                 onChange={handleChange}
                                 label="User Role"
                                 disabled={!editable}
+                                value={user?.role}
                                 style={{textAlign: "left"}}
                             >
                                 {UserRoleList.map((role) => (
