@@ -61,10 +61,9 @@ public class UserService {
     public AppUser updateUser(String id, PutUserDto putUserDto) {
         AppUser appUserToUpdate = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id" + id + " cannot be found."))
-                .withPassword(putUserDto.password())
+                .withPassword(passwordEncoder.encode(putUserDto.password()))
                 .withRole(putUserDto.role());
 
         return userRepository.save(appUserToUpdate);
     }
-
 }

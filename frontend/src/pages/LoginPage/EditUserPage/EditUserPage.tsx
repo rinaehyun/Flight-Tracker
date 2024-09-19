@@ -3,21 +3,23 @@ import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {Box, SelectChangeEvent} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
-import {FetchedUser, UserRole} from "../../../types/auth/userType.ts";
+import {NewBasicUser, UserRole} from "../../../types/auth/userType.ts";
 import axios from "axios";
 import {useNotificationTimer} from "../../../hooks/useNotificationTimer.ts";
 
 export default function EditUserPage() {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
-    const [updatedUser, setUpdatedUser] = useState<FetchedUser>({
+    const [updatedUser, setUpdatedUser] = useState<NewBasicUser>({
         username: "",
         password: "",
+        passwordConfirmation: "",
         role: "USER"
     });
-    const [originalUser, setOriginalUser] = useState<FetchedUser>({
+    const [originalUser, setOriginalUser] = useState<NewBasicUser>({
         username: "",
         password: "",
+        passwordConfirmation: "",
         role: "USER"
     });
 
@@ -50,26 +52,38 @@ export default function EditUserPage() {
         setEditable(!editable)
     }
 
-/*    const updateUser = (user: NewBasicUser) => {
-        axios.put(`/api/user/{id}`, user)
-            .then(response => {
-                if (response.status === 200) {
-                    setShowNotification(true);
-                }
-            })
-            .catch(error => console.log(error.response.data))
-    }*/
+    const updateUser = (user: NewBasicUser) => {
+        if (user.password !== user.passwordConfirmation) {
+            console.log("not the same")
+            setShowNotification(true);
+            setEditable(true);
+            return;
+        }
+
+        axios.put(`/api/user/${id}`, {
+            username: user.username,
+            password: user.password,
+            role: user.role
+        })
+        .then(response => {
+            if (response.status === 200) {
+                console.log("Data updated")
+                setEditable(false);
+            }
+        })
+        .catch(error => console.log(error.response.data))
+    }
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
         ChangeEvent<HTMLSelectElement> | SelectChangeEvent<UserRole>) => {
         const { name, value } = event.target;
+        console.log(event.target)
         setUpdatedUser({ ...updatedUser, [name]: value });
     }
 
     const handleEditAccount = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        //if (id) updateUser(updatedUser);
-        setEditable(false);
+        if (id) updateUser(updatedUser);
     }
 
     useNotificationTimer(showNotification, setShowNotification);
@@ -91,7 +105,7 @@ export default function EditUserPage() {
                 <button onClick={onEdit}>{editable ? "Cancel Edit" : "Edit"}</button>
             </div>
             <UserForm
-                user={updatedUser}
+                user={originalUser}
                 showNotification={showNotification}
                 setShowNotification={setShowNotification}
                 notificationMessage={"The passwords do not match."}
