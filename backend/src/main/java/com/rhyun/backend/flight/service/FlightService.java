@@ -1,5 +1,7 @@
 package com.rhyun.backend.flight.service;
 
+import com.rhyun.backend.airport.model.Airport;
+import com.rhyun.backend.airport.repository.AirportRepository;
 import com.rhyun.backend.flight.dto.FlightDto;
 import com.rhyun.backend.flight.exception.FlightNotFoundException;
 import com.rhyun.backend.flight.model.Flight;
@@ -7,6 +9,9 @@ import com.rhyun.backend.flight.repository.FlightRepository;
 import com.rhyun.backend.globalservice.IdService;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -14,10 +19,12 @@ public class FlightService {
 
     private final FlightRepository flightRepository;
     private final IdService idService;
+    private final AirportRepository airportRepository;
 
-    public FlightService(FlightRepository flightRepository, IdService idService) {
+    public FlightService(FlightRepository flightRepository, IdService idService, AirportRepository airportRepository) {
         this.flightRepository = flightRepository;
         this.idService = idService;
+        this.airportRepository = airportRepository;
     }
 
     public List<Flight> getAllFlights() {
@@ -29,7 +36,23 @@ public class FlightService {
                 .orElseThrow(() -> new FlightNotFoundException("Flight with id " + id + " not found."));
     }
 
+    public Duration calculateFlightDuration(FlightDto flightDto) {
+        Airport originAirport = airportRepository.getAirportByIataCode(flightDto.origin());
+        Airport destinationAirport = airportRepository.getAirportByIataCode(flightDto.destination());
+
+        ZoneOffset originOffset = ZoneOffset.of(originAirport.timeZone().offSet());
+        ZoneOffset destinationOffset = ZoneOffset.of(destinationAirport.timeZone().offSet());
+
+        ZonedDateTime departureTime = ZonedDateTime.of(flightDto.departureTime(), originOffset);
+        ZonedDateTime arrivalTime = ZonedDateTime.of(flightDto.arrivalTime(), destinationOffset);
+
+        return Duration.between(departureTime, arrivalTime);
+    }
+
     public Flight saveAFlight(FlightDto flightDto) {
+
+        Duration flightDuration = calculateFlightDuration(flightDto);
+
         Flight flightToSave = new Flight(
                 idService.randomId(),
                 flightDto.flightCode(),
@@ -39,7 +62,8 @@ public class FlightService {
                 flightDto.departureTime(),
                 flightDto.arrivalTime(),
                 flightDto.aircraftType(),
-                flightDto.flightStatus()
+                flightDto.flightStatus(),
+                flightDuration
         );
 
         return flightRepository.save(flightToSave);
