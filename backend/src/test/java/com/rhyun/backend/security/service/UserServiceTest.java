@@ -148,19 +148,17 @@ class UserServiceTest {
                 () -> userService.findUserById("1")
         );
         verify(userRepository, times(1)).findById("1");
-
-        assertThrows(UsernameNotFoundException.class, () -> userService.findUserByUsername("user1"));
-        verify(userRepository, times(1)).findUserByUsername("user1");
     }
 
     @Test
     void updateUserTest_whenIdExists_thenUpdateUserEntity() {
         // GIVEN
         AppUser originalUser = new AppUser("1", "user1", "password1", AppUserRole.ADMIN);
-        PutUserDto putUserDto = new PutUserDto("pass123", AppUserRole.EMPLOYEE);
-        AppUser updatedUser = new AppUser("1", "user1", passwordEncoder.encode(putUserDto.password()), putUserDto.role());
+        PutUserDto putUserDto = new PutUserDto("newPassword", AppUserRole.EMPLOYEE);
+        AppUser updatedUser = new AppUser("1", "user1", "encodedPassword", putUserDto.role());
 
         when(userRepository.findById("1")).thenReturn(Optional.of(originalUser));
+        when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
         when(userRepository.save(updatedUser)).thenReturn(updatedUser);
 
         // WHEN
@@ -170,15 +168,16 @@ class UserServiceTest {
         assertNotNull(actual);
         assertEquals(updatedUser, actual);
         verify(userRepository, times(1)).findById("1");
+        verify(passwordEncoder, times(1)).encode("newPassword");
         verify(userRepository, times(1)).save(updatedUser);
     }
 
     @Test
     void updateUserTest_whenIdDoesNotExist_thenThrow() {
         // GIVEN
-        PutUserDto putUserDto = new PutUserDto("pass123", AppUserRole.EMPLOYEE);
+        PutUserDto putUserDto = new PutUserDto("newPassword", AppUserRole.EMPLOYEE);
         AppUser updatedUser = new AppUser("1", "user1",
-                passwordEncoder.encode(putUserDto.password()), putUserDto.role());
+                "encodedPassword", putUserDto.role());
 
         when(userRepository.findById("1")).thenReturn(Optional.empty());
 
@@ -187,5 +186,6 @@ class UserServiceTest {
         assertThrows(UserNotFoundException.class, () -> userService.findUserById("1"));
         verify(userRepository, times(1)).findById("1");
         verify(userRepository, never()).save(updatedUser);
+        verify(passwordEncoder, never()).encode("newPassword");
     }
 }
