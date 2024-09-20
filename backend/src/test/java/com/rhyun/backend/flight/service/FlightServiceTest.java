@@ -1,7 +1,7 @@
 package com.rhyun.backend.flight.service;
 
 import com.rhyun.backend.flight.dto.FlightDto;
-import com.rhyun.backend.flight.exception.FlightNotFountException;
+import com.rhyun.backend.flight.exception.FlightNotFoundException;
 import com.rhyun.backend.flight.model.Airline;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.model.FlightStatus;
@@ -93,7 +93,7 @@ class FlightServiceTest {
         // WHEN
 
         // THEN
-        assertThrows(FlightNotFountException.class, () -> flightService.getAFlightById("123"));
+        assertThrows(FlightNotFoundException.class, () -> flightService.getAFlightById("123"));
         verify(flightRepository, times(1)).findById("123");
     }
 
@@ -170,7 +170,7 @@ class FlightServiceTest {
         // WHEN
 
         // THEN
-        assertThrows(FlightNotFountException.class, () -> flightService.updateFlightById("123", updatedDto));
+        assertThrows(FlightNotFoundException.class, () -> flightService.updateFlightById("123", updatedDto));
         verify(flightRepository, times(1)).findById("123");
         verify(flightRepository, never()).save(updated);
     }
