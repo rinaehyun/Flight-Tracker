@@ -2,7 +2,9 @@ package com.rhyun.backend.security.service;
 
 import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.GetUserDto;
+import com.rhyun.backend.security.dto.PutUserDto;
 import com.rhyun.backend.security.dto.UserDto;
+import com.rhyun.backend.security.exception.UserNotFoundException;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,5 +45,25 @@ public class UserService {
         var principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         AppUser appUser = findUserByUsername(principal.getUsername());
         return new GetUserDto(appUser.id(), appUser.username(), appUser.role());
+    }
+
+    public UserDto findUserById(String id) {
+        AppUser appUser = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " cannot be found."));
+
+        return new UserDto(
+                appUser.username(),
+                appUser.password(),
+                appUser.role()
+        );
+    }
+
+    public AppUser updateUser(String id, PutUserDto putUserDto) {
+        AppUser appUserToUpdate = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " cannot be found."))
+                .withPassword(passwordEncoder.encode(putUserDto.password()))
+                .withRole(putUserDto.role());
+
+        return userRepository.save(appUserToUpdate);
     }
 }

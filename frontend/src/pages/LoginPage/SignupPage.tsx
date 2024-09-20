@@ -1,10 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {ChangeEvent, FormEvent, useState} from "react";
-import {NewBasicUser} from "../../types/auth/userType.ts";
+import {NewBasicUser, UserRole} from "../../types/auth/userType.ts";
 import axios from "axios";
 import UserForm from "../../components/UserForm/UserForm.tsx";
 import {SelectChangeEvent} from "@mui/material";
-import {FlightStatus} from "../../types/enum.ts";
 
 export default function SignupPage() {
     const [newUser, setNewUser] = useState<NewBasicUser>({
@@ -18,7 +17,7 @@ export default function SignupPage() {
     const navigate = useNavigate();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> |
-        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
+        ChangeEvent<HTMLSelectElement> | SelectChangeEvent<UserRole>) => {
         const { name, value } = event.target;
         setNewUser({ ...newUser, [name]: value });
     }
@@ -42,6 +41,7 @@ export default function SignupPage() {
     return(
         <div className={"signup-page"}>
             <UserForm
+                user={newUser}
                 showNotification={showNotification}
                 setShowNotification={setShowNotification}
                 notificationMessage={"The passwords do not match."}
@@ -53,6 +53,7 @@ export default function SignupPage() {
                 linkMessage={"Already have an account? "}
                 linkTo={"/login"}
                 linkLabel={" Go to Login page"}
+                editable={true}
             />
         </div>
     )

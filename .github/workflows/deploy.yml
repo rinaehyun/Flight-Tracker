@@ -49,7 +49,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: app.jar
+          name: flight-app.jar
           path: backend/target/flight-app.jar
 
   push-to-docker-hub:

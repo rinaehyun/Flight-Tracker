@@ -40,6 +40,8 @@ public class SecurityConfig {
                 .exceptionHandling(e -> e.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user").hasAnyAuthority(adminRole, employeeRole, userRole)
+                        .requestMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority(adminRole, employeeRole, userRole)
                         .requestMatchers(HttpMethod.GET, "/api/flight").hasAnyAuthority(adminRole, employeeRole, userRole)
                         .requestMatchers(HttpMethod.POST, "/api/flight").hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.DELETE, "/api/flight/**").hasAnyAuthority(adminRole, employeeRole)
@@ -50,7 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.PUT, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.GET, "/api/airline/options-for-input").hasAnyAuthority(adminRole, employeeRole, userRole)
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                .httpBasic(httpSecurityHttpBasicConfigurer ->
                        httpSecurityHttpBasicConfigurer.authenticationEntryPoint(((request, response, authException) -> response.sendError(401))));
