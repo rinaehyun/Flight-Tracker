@@ -1,6 +1,6 @@
 import './FlightForm.css'
 import {NewFlight} from "../../types/model/dataType.ts";
-import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent} from "react";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useState} from "react";
 import {
     Autocomplete,
     FormControl,
@@ -27,17 +27,37 @@ type FlightFormProps = {
 
 export default function FlightForm({newFlight, setNewFlight, handleSubmit, buttonLabel, editable}: Readonly<FlightFormProps>) {
     const { airports, airlines } = useFetchOptions();
+    const [flightCodeError, setFlightCodeError] = useState<string>('');
 
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | ChangeEvent<HTMLSelectElement> | SelectChangeEvent<FlightStatus>) => {
         const { name, value } = event.target;
         setNewFlight({ ...newFlight, [name]: value });
+
+        if (name === 'flightCode' && flightCodeError) {
+            setFlightCodeError(''); // Clear error when flight code is updated
+        }
     }
 
     const handleAirlineChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const airlineToSave= airlines.filter(airline => value.includes(airline.code))[0].code;
-            setNewFlight({ ...newFlight, airline: airlineToSave });
+            const selectedAirline = airlines.find(airline => value.includes(airline.code));
+            if (selectedAirline) {
+                setNewFlight({ ...newFlight, airline: selectedAirline.code, flightCode: selectedAirline.code + (newFlight.flightCode.slice(selectedAirline.code.length) || '') });
+            }
         }
+    };
+
+    const handleFlightCodeChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const { value } = event.target;
+        const airlineCode = newFlight.airline;
+
+        if (!value.startsWith(airlineCode)) {
+            setFlightCodeError(`Flight code must start with the airline code: ${airlineCode}`);
+        } else {
+            setFlightCodeError(''); // Reset error
+        }
+
+        setNewFlight({ ...newFlight, flightCode: value });
     };
 
     const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
@@ -85,9 +105,11 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                 sx={{width: "100%"}}
                 name={"flightCode"}
                 value={newFlight.flightCode}
-                onChange={handleChange}
+                onChange={handleFlightCodeChange}
                 autoComplete={"off"}
                 disabled={!editable}
+                error={!!flightCodeError}
+                helperText={flightCodeError}
             />
             <Autocomplete
                 disablePortal
@@ -176,7 +198,9 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                     disabled={!editable}
                 >
                     {FlightStatusList.map((status) => (
-                        <MenuItem key={status} value={status}>{capitalizeFirstLetter(status)}</MenuItem>
+                        <MenuItem key={status} value={status}>
+                            {capitalizeFirstLetter(status)}
+                        </MenuItem>
                     ))}
                 </Select>
             </FormControl>
