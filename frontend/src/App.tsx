@@ -17,6 +17,7 @@ import AirlinePage from "./pages/AirlinePage/AirlinePage.tsx";
 import ProtectedRoutes from "./auth/ProtectedRoutes.tsx";
 import AddAirportPage from "./pages/AirportPage/AddAirportPage/AddAirportPage.tsx";
 import EditAirportPage from "./pages/AirportPage/EditAirportPage/EditAirportPage.tsx";
+import EditUserPage from "./pages/LoginPage/EditUserPage/EditUserPage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -64,22 +65,16 @@ function App() {
             })
     }
 
-    const logout = () => {
-        axios.post("/api/auth/logout")
-            .then(() => navigate("/login"))
-            .catch(error => console.error(error))
-            .finally(() => setLoggedInUser(null));
-    }
-
     return (
         <div className={"app"}>
-            <Header userId={loggedInUser?.id} logout={logout}/>
+            <Header loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
             <main>
                 <Routes>
                     <Route path={"/"} element={<Home userId={loggedInUser?.id} />}/>
                     <Route path={"/login"} element={<LoginPage login={login} setShowLoginNotification={setShowLoginNotification} showLoginNotification={showLoginNotification} />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
+                        <Route path={"/user/:id"} element={<EditUserPage />} />
                         <Route path={"/flight"} element={<FlightPage data={flightData} loggedInUser={loggedInUser} />} />
                         <Route path={"/flight/:id"} element={<EditFlightPage fetchAllFlights={fetchAllFlights} />}/>
                         <Route path={"/flight/add"} element={<AddFlightPage fetchAllFlights={fetchAllFlights} />}/>

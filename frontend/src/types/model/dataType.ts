@@ -9,7 +9,8 @@ export type Flight = {
     departureTime: string,
     arrivalTime: string,
     aircraftType: string,
-    flightStatus: FlightStatus
+    flightStatus: FlightStatus,
+    duration: string,
 }
 
 export type NewFlight = {

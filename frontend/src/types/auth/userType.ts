@@ -11,6 +11,12 @@ export type BasicUser = {
     role: UserRole
 }
 
+export type FetchedUser = {
+    username: string,
+    password: string,
+    role: UserRole
+}
+
 export type UserForLogin = {
     username: string,
     password: string,

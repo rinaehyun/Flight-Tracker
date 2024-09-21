@@ -131,6 +131,7 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
                     handleDeleteConfirm={() => handleDeleteConfirm(airportToDelete?.id)}
                     itemId={airportToDelete?.id}
                     itemName={airportNameToDelete}
+                    modalName={"Airport"}
                 />
             }
         </div>

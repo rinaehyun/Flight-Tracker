@@ -1,7 +1,7 @@
 import './FlightList.css'
 import {Flight} from "../../../../types/model/dataType.ts";
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff';
-import {calculateDuration, formatDate, formatTime} from "../../../../utils/functionsForTime.ts";
+import {formatDate, formatTime, parseDuration} from "../../../../utils/functionsForTime.ts";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import ConfirmationModal from "../../../../components/ConfirmationModal/ConfirmationModal.tsx";
@@ -97,7 +97,7 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                             <h5>{formatDate(flight.departureTime)}</h5>
                             <h5>{formatTime(flight.departureTime)}</h5>
                         </div>
-                        <p style={{fontSize: "16px"}}>{calculateDuration(flight.departureTime, flight.arrivalTime)}</p>
+                        <p style={{fontSize: "16px"}}>{parseDuration(flight.duration)}</p>
                         <div className={"flight-destination"}>
                             <h3>{flight.destination}</h3>
                             <h5>{formatDate(flight.arrivalTime)}</h5>
@@ -110,6 +110,7 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                             handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
                             itemId={flightToDelete?.id}
                             itemName={flightToDelete?.flightCode}
+                            modalName={"Flight"}
                         />
                     }
                 </div>
