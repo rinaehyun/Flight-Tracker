@@ -36,7 +36,7 @@ export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
 
     useEffect(() => {
         fetchAllFlights();
-    },[])
+    },[data])
 
     const handleClick = () => {
         navigate('/flight/add');

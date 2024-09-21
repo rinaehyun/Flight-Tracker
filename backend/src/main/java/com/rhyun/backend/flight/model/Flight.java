@@ -3,6 +3,7 @@ package com.rhyun.backend.flight.model;
 import lombok.With;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Document(collection = "flights")
@@ -16,6 +17,7 @@ public record Flight(
         LocalDateTime departureTime,
         LocalDateTime arrivalTime,
         String aircraftType,
-        FlightStatus flightStatus
+        FlightStatus flightStatus,
+        Duration duration
 ) {
 }
