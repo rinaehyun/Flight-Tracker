@@ -4,6 +4,7 @@ import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.PutUserDto;
 import com.rhyun.backend.security.dto.UserDto;
+import com.rhyun.backend.security.exception.UserAlreadyExistsException;
 import com.rhyun.backend.security.exception.UserNotFoundException;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.model.AppUserRole;
@@ -33,10 +34,12 @@ class UserServiceTest {
     private final SecurityContext securityContext = mock(SecurityContext.class);
 
     @Test
-    void saveUserTest() {
+    void saveUserTest_whenUsernameIsNew_thenUserEntityIsCreated() {
         // GIVEN
         UserDto userDto = new UserDto("user1", "password123", AppUserRole.ADMIN);
         AppUser userToSave = new AppUser("1", userDto.username(), userDto.password(), userDto.role());
+
+        when(userRepository.findUserByUsername(userDto.username())).thenReturn(Optional.empty());
         when(idService.randomId()).thenReturn("1");
         when(passwordEncoder.encode(userDto.password())).thenReturn("password123");
         when(userRepository.save(userToSave)).thenReturn(userToSave);
@@ -48,9 +51,29 @@ class UserServiceTest {
         AppUser expected = new AppUser("1", "user1", "password123", AppUserRole.ADMIN);
 
         assertEquals(expected, actual);
+        verify(userRepository, times(1)).findUserByUsername(userDto.username());
         verify(idService, times(1)).randomId();
         verify(passwordEncoder, times(1)).encode("password123");
         verify(userRepository, times(1)).save(userToSave);
+    }
+
+    @Test
+    void saveUserTest_whenUsernameAlreadyExists_thenThrow() {
+        // GIVEN
+        AppUser user = new AppUser("1", "user1", "password1", AppUserRole.ADMIN);
+        UserDto userDto = new UserDto("user1", "password123", AppUserRole.ADMIN);
+        AppUser userToSave = new AppUser("1", userDto.username(), userDto.password(), userDto.role());
+
+        when(userRepository.findUserByUsername("user1")).thenReturn(Optional.of(user));
+
+        // WHEN
+        // THEN
+        assertThrows(UserAlreadyExistsException.class, () -> userService.saveUser(userDto));
+
+        verify(userRepository, times(1)).findUserByUsername("user1");
+        verify(idService, never()).randomId();
+        verify(passwordEncoder, never()).encode(userDto.password());
+        verify(userRepository, never()).save(userToSave);
     }
 
     @Test
@@ -187,5 +210,17 @@ class UserServiceTest {
         verify(userRepository, times(1)).findById("1");
         verify(userRepository, never()).save(updatedUser);
         verify(passwordEncoder, never()).encode("newPassword");
+    }
+
+    @Test
+    void deleteUserById_whenIdExists_thenDeleteUserEntity() {
+        // GIVEN
+        String id = "123";
+        doNothing().when(userRepository).deleteById(id);
+
+        // WHEN
+        // THEN
+        userService.deleteUserById(id);
+        verify(userRepository, times(1)).deleteById(id);
     }
 }

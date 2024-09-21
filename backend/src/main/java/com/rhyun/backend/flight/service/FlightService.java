@@ -1,7 +1,7 @@
 package com.rhyun.backend.flight.service;
 
 import com.rhyun.backend.flight.dto.FlightDto;
-import com.rhyun.backend.flight.exception.FlightNotFountException;
+import com.rhyun.backend.flight.exception.FlightNotFoundException;
 import com.rhyun.backend.flight.model.Flight;
 import com.rhyun.backend.flight.repository.FlightRepository;
 import com.rhyun.backend.globalservice.IdService;
@@ -26,7 +26,7 @@ public class FlightService {
 
     public Flight getAFlightById(String id) {
         return flightRepository.findById(id)
-                .orElseThrow(() -> new FlightNotFountException("Flight with id " + id + " not found."));
+                .orElseThrow(() -> new FlightNotFoundException("Flight with id " + id + " not found."));
     }
 
     public Flight saveAFlight(FlightDto flightDto) {
@@ -51,7 +51,7 @@ public class FlightService {
 
     public Flight updateFlightById(String id, FlightDto flightDto) {
         Flight flightToUpdate = flightRepository.findById(id)
-                .orElseThrow(() -> new FlightNotFountException("Flight with id " + id + " not found."))
+                .orElseThrow(() -> new FlightNotFoundException("Flight with id " + id + " not found."))
                 .withFlightCode(flightDto.flightCode())
                 .withAirline(flightDto.airline())
                 .withOrigin(flightDto.origin())

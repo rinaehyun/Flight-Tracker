@@ -51,7 +51,7 @@ class AuthControllerTest {
 
     @Test
     @DirtiesContext
-    void registerTest() throws Exception {
+    void registerTest_whenUsernameIsNew_thenUserIsCreated() throws Exception {
         // GIVEN
         // WHEN
         mockMvc.perform(post("/api/auth/register")
@@ -72,6 +72,33 @@ class AuthControllerTest {
                 }
             """))
             .andExpect(jsonPath("$.id").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    void registerTest_whenUsernameAlreadyExists_thenThrow() throws Exception {
+        // GIVEN
+        userRepository.save(new AppUser("1", "user1", "password123", AppUserRole.ADMIN));
+
+        // WHEN
+        mockMvc.perform(post("/api/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "username": "user1",
+                        "password": "pass123",
+                        "role": "USER"
+                    }
+                """))
+                // THEN
+                .andExpect(status().isConflict())
+                .andExpect(content().json("""
+                    {
+                        "status": 409,
+                        "message": "User with username user1 already exists."
+                    }
+                """))
+                .andExpect(jsonPath("$.timestamp").exists());
     }
 
     @Test

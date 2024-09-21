@@ -28,4 +28,9 @@ public class UserController {
     ){
         return userService.updateUser(id, putUserDto);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteUserById(@PathVariable String id) {
+        userService.deleteUserById(id);
+    }
 }

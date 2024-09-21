@@ -4,6 +4,7 @@ import com.rhyun.backend.globalservice.IdService;
 import com.rhyun.backend.security.dto.GetUserDto;
 import com.rhyun.backend.security.dto.PutUserDto;
 import com.rhyun.backend.security.dto.UserDto;
+import com.rhyun.backend.security.exception.UserAlreadyExistsException;
 import com.rhyun.backend.security.exception.UserNotFoundException;
 import com.rhyun.backend.security.model.AppUser;
 import com.rhyun.backend.security.repository.UserRepository;
@@ -27,6 +28,10 @@ public class UserService {
     }
 
     public AppUser saveUser(UserDto userDto) {
+        if (userRepository.findUserByUsername(userDto.username()).isPresent()) {
+            throw new UserAlreadyExistsException("User with username " + userDto.username() + " already exists.");
+        }
+
         AppUser appUserToSave = new AppUser(
                 idService.randomId(),
                 userDto.username(),
@@ -65,5 +70,9 @@ public class UserService {
                 .withRole(putUserDto.role());
 
         return userRepository.save(appUserToUpdate);
+    }
+
+    public void deleteUserById(String id) {
+        userRepository.deleteById(id);
     }
 }

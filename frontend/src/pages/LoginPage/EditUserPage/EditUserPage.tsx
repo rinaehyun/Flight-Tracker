@@ -1,17 +1,20 @@
+import './EditUserPage.css';
 import UserForm from "../../../components/UserForm/UserForm.tsx";
 import {ChangeEvent, FormEvent, useEffect, useState} from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import {Box, SelectChangeEvent} from "@mui/material";
+import {Box, Divider, SelectChangeEvent} from "@mui/material";
 import {useNavigate, useParams} from "react-router-dom";
 import {NewBasicUser, UserRole} from "../../../types/auth/userType.ts";
 import axios from "axios";
 import {useNotificationTimer} from "../../../hooks/useNotificationTimer.ts";
 import Notification from "../../../components/Notification/Notification.tsx";
+import ConfirmationModal from "../../../components/ConfirmationModal/ConfirmationModal.tsx";
 
 export default function EditUserPage() {
     const [editable, setEditable ] = useState<boolean>(false);
     const [showNotification, setShowNotification] = useState<boolean>(false);
     const [showSuccessNotification, setShowSuccessNotification] = useState<boolean>(false);
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState<boolean>(false);
     const [updatedUser, setUpdatedUser] = useState<NewBasicUser>({
         username: "",
         password: "",
@@ -25,15 +28,17 @@ export default function EditUserPage() {
         role: "USER"
     });
 
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+
     const navigate = useNavigate();
     const params = useParams();
     const id: string | undefined = params.id;
 
     const fetchUser = () => {
+        console.log(id)
         axios.get(`/api/user/${id}`)
             .then(response => {
-                console.log('Fetched user:', response.data);
-                setUpdatedUser(response.data); // This will trigger a re-render
+                setUpdatedUser(response.data);
                 setOriginalUser(response.data);
             })
             .catch(error => console.log(error.response.data))
@@ -56,7 +61,6 @@ export default function EditUserPage() {
 
     const updateUser = (user: NewBasicUser) => {
         if (user.password !== user.passwordConfirmation) {
-            console.log("not the same")
             setShowNotification(true);
             setEditable(true);
             return;
@@ -88,6 +92,23 @@ export default function EditUserPage() {
         if (id) updateUser(updatedUser);
     }
 
+    const handleDeleteConfirm = (id: string | undefined): void => {
+        if (id) {
+            axios.delete('/api/user/' + id)
+                .then(response => {
+                    if (response.status === 200) {
+                        console.log('Flight deleted successfully');
+                        setShowDeleteConfirmation(true);
+                        setShowDeleteModal(false);
+                    }
+                })
+                .catch(error => console.log(error.message));
+            setTimeout(() => {
+                navigate("/login");
+            }, 3000)
+        }
+    }
+
     useNotificationTimer(showSuccessNotification, setShowSuccessNotification);
 
     useNotificationTimer(showNotification, setShowNotification);
@@ -98,6 +119,13 @@ export default function EditUserPage() {
                 <Notification
                     setShowNotification={setShowSuccessNotification}
                     message={"User Data has been successfully updated."}
+                    messageType={"success"}
+                />
+            }
+            {showDeleteConfirmation &&
+                <Notification
+                    setShowNotification={setShowDeleteConfirmation}
+                    message={"User Data has been successfully deleted."}
                     messageType={"success"}
                 />
             }
@@ -120,13 +148,25 @@ export default function EditUserPage() {
                 showNotification={showNotification}
                 setShowNotification={setShowNotification}
                 notificationMessage={"The passwords do not match."}
-                pageName={"Edit Account"}
+                pageName={"Account Setting"}
                 formType={"edit"}
                 handleSubmit={handleEditAccount}
                 handleChange={handleChange}
                 buttonLabel={"Update"}
                 editable={editable}
             />
+            <Divider />
+            <h4>Delete Account</h4>
+            <p>Your account will be deleted.</p>
+            <button onClick={() => setShowDeleteModal(true)}>Delete account</button>
+            {showDeleteModal &&
+                <ConfirmationModal
+                    handleClose={() => setShowDeleteModal(false)}
+                    handleDeleteConfirm={() => handleDeleteConfirm(id)}
+                    itemName={originalUser?.username}
+                    modalName={"User"}
+                />
+            }
         </div>
     )
 }
