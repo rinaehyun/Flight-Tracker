@@ -187,7 +187,7 @@ class FlightIntegrationTest {
             .andExpect(jsonPath("$.arrivalTime").value("2023-01-24T01:15:00"))
             .andExpect(jsonPath("$.aircraftType").value("B777"))
             .andExpect(jsonPath("$.flightStatus").value("ARRIVED"))
-            .andExpect(jsonPath("$.duration").exists());
+            .andExpect(jsonPath("$.duration").value("PT25H45M"));
     }
 
     @Test
@@ -266,7 +266,8 @@ class FlightIntegrationTest {
                      "departureTime": "2023-01-23T15:30:00",
                      "arrivalTime": "2023-01-24T01:15:00",
                      "aircraftType": "A350",
-                     "flightStatus": "DELAYED"
+                     "flightStatus": "DELAYED",
+                     "duration": "PT25H45M"
                  }
              """));
     }
