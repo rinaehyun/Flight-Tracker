@@ -108,6 +108,31 @@ class FlightServiceTest {
     }
 
     @Test
+    void calculateFlightDurationTest() {
+        // GIVEN
+        Airport originAirport = new Airport("a123", "INCHEON", "ICN", new GeoCode(54, 18),
+                new AirportAddress("KOREA", "KR", "ASIA"), new AirportTimeZone("+09:00"));
+        Airport destinationAirport = new Airport("a456", "LOS ANGELES", "LAX", new GeoCode(32, 126),
+                new AirportAddress("UNITED STATES OF AMERICA", "US", "NAMER"), new AirportTimeZone("-07:00"));
+
+        when(airportRepository.getAirportByIataCode("ICN")).thenReturn(originAirport);
+        when(airportRepository.getAirportByIataCode("LAX")).thenReturn(destinationAirport);
+
+        FlightDto flightDto = new FlightDto("KE123", Airline.KE, "ICN", "LAX",
+                localDateTimeOrigin, localDateTimeDestination, "B777", FlightStatus.ARRIVED);
+
+        // WHEN
+        Duration actual = flightService.calculateFlightDuration(flightDto);
+
+        // THEN
+        Duration expected = Duration.parse("PT39H45M");
+
+        verify(airportRepository, times(1)).getAirportByIataCode("ICN");
+        verify(airportRepository, times(1)).getAirportByIataCode("LAX");
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void saveAFlightTest_whenPayloadIsCorrect_thenReturnNewFlight() {
         // GIVEN
         Airport originAirport = new Airport("a123", "INCHEON", "ICN", new GeoCode(54, 18),
