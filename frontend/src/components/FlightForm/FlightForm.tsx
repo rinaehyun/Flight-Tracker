@@ -34,7 +34,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
         setNewFlight({ ...newFlight, [name]: value });
 
         if (name === 'flightCode' && flightCodeError) {
-            setFlightCodeError(''); // Clear error when flight code is updated
+            setFlightCodeError('');
         }
     }
 
@@ -54,7 +54,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
         if (!value.startsWith(airlineCode)) {
             setFlightCodeError(`Flight code must start with the airline code: ${airlineCode}`);
         } else {
-            setFlightCodeError(''); // Reset error
+            setFlightCodeError('');
         }
 
         setNewFlight({ ...newFlight, flightCode: value });
@@ -62,16 +62,24 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
 
     const handleOriginChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const originToSave= airports.filter(airport => value.includes(airport.code))[0].code;
+            const originToSave= airports.filter(airport => value.includes(airport.code))[0]?.code;
             setNewFlight({ ...newFlight, origin: originToSave });
         }
     };
 
     const handleDestinationChange = (_event: SyntheticEvent<Element, Event>, value: string) => {
         if (value) {
-            const destinationToSave= airports.filter(airport => value.includes(airport.code))[0].code;
+            const destinationToSave= airports.filter(airport => value.includes(airport.code))[0]?.code;
             setNewFlight({ ...newFlight, destination: destinationToSave });
         }
+    };
+
+    const getMinArrivalTime = () => {
+        return newFlight.departureTime ? newFlight.departureTime : undefined;
+    };
+
+    const getMaxDepartureTime = () => {
+        return newFlight.arrivalTime ? newFlight.arrivalTime : undefined;
     };
 
     return (
@@ -139,6 +147,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                     onChange={handleChange}
                     required={true}
                     disabled={!editable}
+                    max={getMaxDepartureTime()}
                 />
             </div>
             <Autocomplete
@@ -169,6 +178,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                     onChange={handleChange}
                     required={true}
                     disabled={!editable}
+                    min={getMinArrivalTime()}
                 />
             </div>
             <TextField
