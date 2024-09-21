@@ -80,8 +80,11 @@ public class FlightService {
                 .withAirline(flightDto.airline())
                 .withOrigin(flightDto.origin())
                 .withDestination(flightDto.destination())
+                .withDepartureTime(flightDto.departureTime())
+                .withArrivalTime(flightDto.arrivalTime())
                 .withAircraftType(flightDto.aircraftType())
-                .withFlightStatus(flightDto.flightStatus());
+                .withFlightStatus(flightDto.flightStatus())
+                .withDuration(calculateFlightDuration(flightDto));
 
         return flightRepository.save(flightToUpdate);
     }
