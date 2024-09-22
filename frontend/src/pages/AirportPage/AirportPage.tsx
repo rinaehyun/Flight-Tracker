@@ -13,6 +13,7 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal.tsx";
 import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
 import Notification from "../../components/Notification/Notification.tsx";
+import AirportMap from "./components/AirportMap.tsx";
 
 type AirportPageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -160,6 +161,9 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
                                         <h6 className={"airport-info-title-right"}>Longitude</h6>
                                         <h6 className={"airport-info-desc-right"}>{airport.geoCode.longitude}</h6>
                                     </div>
+                                </div>
+                                <div style={{ height: '40vh', width: '100%' }}>
+                                    <AirportMap latitude={airport.geoCode.latitude} longitude={airport.geoCode.longitude} />
                                 </div>
                             </>
                             }
