@@ -108,20 +108,50 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
             <section>
                 {filteredAirportsData.map(airport => (
                     <div key={airport.id} className={"airport-card"}>
-                        {loggedInUser?.role != "USER" &&
-                            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                                <EditNoteIcon
-                                    sx={{ marginRight: '5px', cursor: "pointer" }}
-                                    onClick={() => navigate(`/airport/${airport.id}`)}
-                                />
-                                <DeleteIcon
-                                    sx={{ marginRight: '15px', cursor: "pointer" }}
-                                    onClick={() => handleDeleteAirport(airport)}
-                                />
+                        <div className={"airport-card-headline"}>
+                            <div className={"airport-name"}>
+                                <h5 style={{marginLeft: "15px"}}>{airport.iataCode}</h5>
+                                <h6>{capitalizeFirstLetter(airport.name)}</h6>
                             </div>
-                        }
-                        <p>IATA Code: {airport.iataCode}</p>
-                        <p>Location: {capitalizeFirstLetter(airport.name)}, {capitalizeFirstLetter(airport.address.countryName)} </p>
+                            <div className={"airport-card-icons"}>
+                                {loggedInUser?.role != "USER" &&
+                                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                        <EditNoteIcon
+                                            sx={{marginRight: '5px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => navigate(`/airport/${airport.id}`)}
+                                        />
+                                        <DeleteIcon
+                                            sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => handleDeleteAirport(airport)}
+                                        />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div className={"airport-info"}>
+                            <div className={"airport-info-details"}>
+                                <h6 className={"airport-info-title"}>Region Code</h6>
+                                <h6 className={"airport-info-desc"}>{airport.address.regionCode}</h6>
+                            </div>
+                            <div className={"airport-info-details"}>
+                                <h6 className={"airport-info-title"}>Country</h6>
+                                <h6 className={"airport-info-desc"}>{capitalizeFirstLetter(airport.address.countryName)} ({airport.address.countryCode})</h6>
+                            </div>
+                            <div className={"airport-info-details"}>
+                                <h6 className={"airport-info-title"}>Time Zone</h6>
+                                <h6 className={"airport-info-desc"}>UTC {airport.timeZone.offSet}</h6>
+                            </div>
+                        </div>
+                        <div className={"airport-info"}>
+                            <div className={"airport-info-details"}>
+                                <h6 className={"airport-info-title"}>Latitude</h6>
+                                <h6 className={"airport-info-desc"}>{airport.geoCode.latitude}</h6>
+                            </div>
+                            <div className={"airport-info-details"}>
+                                <h6 className={"airport-info-title-right"}>Longitude</h6>
+                                <h6 className={"airport-info-desc-right"}>{airport.geoCode.longitude}</h6>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </section>
