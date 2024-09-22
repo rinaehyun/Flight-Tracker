@@ -1,4 +1,4 @@
-export function capitalizeFirstLetter(string: string) {
+export function capitalizeFirstLetter(string: string | undefined) {
     if (string) {
         const splitStr: string[] = string.toLowerCase().split(' ');
         for (let i = 0; i < splitStr.length; i++) {
