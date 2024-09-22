@@ -53,4 +53,9 @@ public class AirportController {
     public Airport updateAirport(@PathVariable String id, @RequestBody AirportDto airportDto) {
         return airportService.updateAirport(id, airportDto);
     }
+
+    @GetMapping("/iata/{iataCode}")
+    public Airport getAirportByIataCode(@PathVariable String iataCode) {
+        return airportService.getAirportByIataCode(iataCode);
+    }
 }
