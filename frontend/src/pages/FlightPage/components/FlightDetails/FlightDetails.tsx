@@ -3,6 +3,7 @@ import {Airport, Flight} from "../../../../types/model/dataType.ts";
 import axios from "axios";
 import {useEffect, useState} from "react";
 import {capitalizeFirstLetter} from "../../../../utils/funtioncs.ts";
+import FlightRouteMap from "./FlightRouteMap.tsx";
 
 type FlightDetailsProps = {
     flight: Flight
@@ -23,7 +24,7 @@ export default function FlightDetails({ flight }: Readonly<FlightDetailsProps>) 
 
     useEffect(() => {
         fetchOriginAirport();
-    }, [flight.origin])
+    }, [])
 
     const fetchDestinationAirport = () => {
         axios.get(`/api/airport/iata/${flight.destination}`)
@@ -36,7 +37,7 @@ export default function FlightDetails({ flight }: Readonly<FlightDetailsProps>) 
 
     useEffect(() => {
         fetchDestinationAirport();
-    }, [flight.destination])
+    }, [])
 
     console.log(originAirport)
     console.log(destinationAirport)
@@ -69,7 +70,16 @@ export default function FlightDetails({ flight }: Readonly<FlightDetailsProps>) 
                     <h6 className={"flight-detail-info"}>{flight.flightStatus}</h6>
                 </div>
             </div>
+            {originAirport && destinationAirport && (
+                <div style={{ height: '40vh', width: '100%' }}>
+                    <FlightRouteMap
+                        originLat={originAirport.geoCode.latitude}
+                        originLng={originAirport.geoCode.longitude}
+                        destLat={destinationAirport.geoCode.latitude}
+                        destLng={destinationAirport.geoCode.longitude}
+                    />
+                </div>
+            )}
         </section>
-
     )
 }
