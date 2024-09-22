@@ -6,8 +6,18 @@
     #ebd0cd
 */
 
+/* COLOR PALETTE
+  #EFF3FF
+  #C6DBEF
+  #9ECAE1
+  #6BAED6
+  #4294C6
+  #2171B6
+  #084594
+*/
+
 :root {
-  background-color: #ebd0cd;
+  background-color: #003073;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -81,7 +91,7 @@ h1 {
 }
 
 h2 {
-  color: #223030;
+  color: #1a1a1a;
   font-size: 30px;
   padding: 0;
   font-family: "Lato", sans-serif;
@@ -89,32 +99,32 @@ h2 {
 }
 
 h3 {
-  color: #223030;
+  color: #1a1a1a;
   padding: 0;
   font-family: "Lato", sans-serif;
   font-size: 24px;
 }
 
 h4 {
-  color: #223030;
+  color: #1a1a1a;
   font-family: "Lato", sans-serif;
   font-size: 20px;
 }
 
 h5 {
-  color: #223030;
+  color: #1a1a1a;
   font-family: "Lato", sans-serif;
   font-size: 16px;
 }
 
 h6 {
-  color: #223030;
+  color: #1a1a1a;
   font-family: "Lato", sans-serif;
   font-size: 12px;
 }
 
 p {
-  color: #223030;
+  color: #1a1a1a;
   font-family: "Lato", sans-serif;
 }
 
@@ -136,26 +146,27 @@ body {
 
 
 button {
-  border-radius: 5px;
+  border-radius: 2px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.5em 1.0em;
   font-size: 0.9em;
   font-weight: 700;
   font-family: inherit;
-  background-color: #223030;
-  color: antiquewhite;
+  background-color: #003580;
+  color: #fff;
   cursor: pointer;
   transition: background-color 250ms;
 }
 
 button:hover {
-  background-color: antiquewhite;
-  color: #223030;
+  background-color: #fff;
+  color: #003580;
+  outline: 1px auto #003580;
 }
 
 button:focus,
 button:focus-visible {
-  outline: 1px auto #223030;
+  outline: 1px auto #003580;
 }
 
 

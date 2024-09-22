@@ -40,10 +40,30 @@
     font-size: 0.7em;
 }
 
-.apply-btn:disabled,
-.apply-btn[disabled]{
+
+.apply-btn-flight-page[disabled] {
     border: 1px solid #999999;
-    background-color: #cccccc;
+    background-color: #fff;
+    color: #999999;
+    cursor: inherit;
+}
+
+.apply-btn-flight-page:focus {
+    border: 1px solid #999999;
+    background-color: #fff;
+    color: #003580;
+    cursor: inherit;
+}
+
+.apply-btn-flight-page[disabled]:focus {
+    border: 1px solid #999999;
+    background-color: #fff;
+    cursor: inherit;
+}
+
+.reset-btn {
+    border: 1px solid #999999;
+    background-color: #fff;
     color: #666666;
     cursor: inherit;
 }

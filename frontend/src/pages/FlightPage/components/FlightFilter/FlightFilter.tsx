@@ -91,11 +91,12 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     type={"reset"}
                     className={"reset-btn"}
                     onClick={handleReset}
+                    disabled={isDisabled}
                 >Reset
                 </button>
                 <button
                     type={"submit"}
-                    className={"apply-btn"}
+                    className={"apply-btn-flight-page"}
                     disabled={isDisabled}
                 >Apply
                 </button>
