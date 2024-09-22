@@ -3,9 +3,6 @@
     margin: 20px 0;
     border-radius: 5px;
     box-shadow: 0 0 8px rgba(33,33,33,.2);
-    /*display: flex;
-    flex-direction: column;
-    margin: 20px 0;*/
 }
 
 .flight-card-headline {
@@ -70,28 +67,3 @@
     color: #555555;
     font-weight: bold;
 }
-
-/*
-@media (max-width: 600px) {
-    .flight-card-headline {
-        display: inline;
-    }
-
-    .flight-card-airline {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        margin: 3px 10px 0 10px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .flight-card-airline > h4 {
-        margin: 10px 0;
-    }
-
-    .flight-card-icons {
-        float: right;
-        margin: 3px 0 0 10px;
-    }
-}*/

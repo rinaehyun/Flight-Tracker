@@ -73,7 +73,7 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                 const isExpanded = expandedFlightId === flight.id;
 
                 return(
-                    <div key={flight.id} className={"flight-card"} onClick={() => toggleBox(flight.id)}>
+                    <div key={flight.id} className={"flight-card"} onClick={() => toggleBox(flight.id)} role="button">
                         <div className={"flight-card-headline"}>
                             <div className={"flight-card-airline"}>
                                 {loggedInUser?.role != "USER" &&
