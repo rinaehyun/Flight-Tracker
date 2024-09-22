@@ -51,7 +51,7 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
             setShowDeleteModal(false);
         }
     }
-
+console.log(data[0])
     useNotificationTimer(showNotification, setShowNotification);
 
     return(
@@ -66,25 +66,24 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                     <div className={"flight-card-headline"}>
                         <div className={"flight-card-airline"}>
                             {loggedInUser?.role != "USER" &&
-                                <FlightTakeoffIcon sx={{fontSize: "25px"}}/>
+                                <FlightTakeoffIcon sx={{fontSize: "20px"}}/>
                             }
-                            <h4>
+                            <h5>
                                 {airlines
                                     .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
                                     .map(filteredAirline => filteredAirline.name)
                                 }
-                            </h4>
-                            <h4>{flight.flightCode}</h4>
+                            </h5>
                         </div>
                         <div className={"flight-card-icons"}>
                             {loggedInUser?.role != "USER" &&
                                 <div style={{display: "flex", justifyContent: "flex-end"}}>
                                     <EditNoteIcon
-                                        sx={{marginRight: '5px', cursor: "pointer"}}
+                                        sx={{marginRight: '5px', cursor: "pointer", fontSize: "20px"}}
                                         onClick={() => navigate(`/flight/${flight.id}`)}
                                     />
                                     <DeleteIcon
-                                        sx={{marginRight: '15px', cursor: "pointer"}}
+                                        sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
                                         onClick={() => handleDeleteFlight(flight)}
                                     />
                                 </div>
@@ -93,15 +92,18 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
                     </div>
                     <div className={"flight-card-detail"}>
                         <div className={"flight-origin"}>
-                            <h3>{flight.origin}</h3>
-                            <h5>{formatDate(flight.departureTime)}</h5>
-                            <h5>{formatTime(flight.departureTime)}</h5>
+                            <h5 className={"flight-airport"}>{flight.origin}</h5>
+                            <h6 className={"flight-date"}>{formatDate(flight.departureTime)}</h6>
+                            <h6 className={"flight-time"}>{formatTime(flight.departureTime)}</h6>
                         </div>
-                        <p style={{fontSize: "16px"}}>{parseDuration(flight.duration)}</p>
+                        <div className={"flight-duration-info"}>
+                            <h6 className={"flight-duration"}>{parseDuration(flight.duration)}</h6>
+                            <hr style={{border: '1px solid gray', width: '80%'}}/>
+                        </div>
                         <div className={"flight-destination"}>
-                            <h3>{flight.destination}</h3>
-                            <h5>{formatDate(flight.arrivalTime)}</h5>
-                            <h5>{formatTime(flight.arrivalTime)}</h5>
+                            <h5 className={"flight-airport"}>{flight.destination}</h5>
+                            <h6 className={"flight-date"}>{formatDate(flight.arrivalTime)}</h6>
+                            <h6 className={"flight-time"}>{formatTime(flight.arrivalTime)}</h6>
                         </div>
                     </div>
                     {showDeleteModal &&
