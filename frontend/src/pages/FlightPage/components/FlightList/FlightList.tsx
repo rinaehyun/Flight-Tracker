@@ -12,6 +12,7 @@ import Notification from "../../../../components/Notification/Notification.tsx";
 import {useFetchOptions} from "../../../../hooks/useFetchOptions.ts";
 import {useNotificationTimer} from "../../../../hooks/useNotificationTimer.ts";
 import {BasicUser} from "../../../../types/auth/userType.ts";
+import FlightDetails from "../FlightDetails/FlightDetails.tsx";
 
 type FlightListProps = {
     data: Flight[],
@@ -23,6 +24,8 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [flightToDelete, setFlightToDelete] = useState<Flight | null>(null);
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [expandedFlightId, setExpandedFlightId] = useState<string | null>(null);
+
     const { airlines } = useFetchOptions();
 
     const navigate = useNavigate();
@@ -51,7 +54,11 @@ export default function FlightList({ data, fetchAllFlights, loggedInUser }: Read
             setShowDeleteModal(false);
         }
     }
-console.log(data[0])
+
+    const toggleBox = (flightId: string) => {
+        setExpandedFlightId(expandedFlightId === flightId ? null : flightId);
+    };
+
     useNotificationTimer(showNotification, setShowNotification);
 
     return(
@@ -61,62 +68,68 @@ console.log(data[0])
                 message={`${flightToDelete?.flightCode} has been deleted.`}
                 messageType={"success"}
             />}
-            {data.map(flight => (
-                <div key={flight.id} className={"flight-card"}>
-                    <div className={"flight-card-headline"}>
-                        <div className={"flight-card-airline"}>
-                            {loggedInUser?.role != "USER" &&
-                                <FlightTakeoffIcon sx={{fontSize: "20px"}}/>
-                            }
-                            <h5>
-                                {airlines
-                                    .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
-                                    .map(filteredAirline => filteredAirline.name)
+
+            {data.map(flight => {
+                const isExpanded = expandedFlightId === flight.id;
+
+                return(
+                    <div key={flight.id} className={"flight-card"} onClick={() => toggleBox(flight.id)}>
+                        <div className={"flight-card-headline"}>
+                            <div className={"flight-card-airline"}>
+                                {loggedInUser?.role != "USER" &&
+                                    <FlightTakeoffIcon sx={{fontSize: "20px"}}/>
                                 }
-                            </h5>
+                                <h5>
+                                    {airlines
+                                        .filter(airline => airline.code.toLowerCase() === flight.airline.toLowerCase())
+                                        .map(filteredAirline => filteredAirline.name)
+                                    }
+                                </h5>
+                            </div>
+                            <div className={"flight-card-icons"}>
+                                {loggedInUser?.role != "USER" &&
+                                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                        <EditNoteIcon
+                                            sx={{marginRight: '5px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => navigate(`/flight/${flight.id}`)}
+                                        />
+                                        <DeleteIcon
+                                            sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => handleDeleteFlight(flight)}
+                                        />
+                                    </div>
+                                }
+                            </div>
                         </div>
-                        <div className={"flight-card-icons"}>
-                            {loggedInUser?.role != "USER" &&
-                                <div style={{display: "flex", justifyContent: "flex-end"}}>
-                                    <EditNoteIcon
-                                        sx={{marginRight: '5px', cursor: "pointer", fontSize: "20px"}}
-                                        onClick={() => navigate(`/flight/${flight.id}`)}
-                                    />
-                                    <DeleteIcon
-                                        sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
-                                        onClick={() => handleDeleteFlight(flight)}
-                                    />
-                                </div>
-                            }
+                        <div className={"flight-card-detail"}>
+                            <div className={"flight-origin"}>
+                                <h5 className={"flight-airport"}>{flight.origin}</h5>
+                                <h6 className={"flight-date"}>{formatDate(flight.departureTime)}</h6>
+                                <h6 className={"flight-time"}>{formatTime(flight.departureTime)}</h6>
+                            </div>
+                            <div className={"flight-duration-info"}>
+                                <h6 className={"flight-duration"}>{parseDuration(flight.duration)}</h6>
+                                <hr style={{border: '1px solid gray', width: '80%'}}/>
+                            </div>
+                            <div className={"flight-destination"}>
+                                <h5 className={"flight-airport"}>{flight.destination}</h5>
+                                <h6 className={"flight-date"}>{formatDate(flight.arrivalTime)}</h6>
+                                <h6 className={"flight-time"}>{formatTime(flight.arrivalTime)}</h6>
+                            </div>
                         </div>
+                        {isExpanded && <FlightDetails flight={flight} />}
+                        {showDeleteModal &&
+                            <ConfirmationModal
+                                handleClose={handleClose}
+                                handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
+                                itemId={flightToDelete?.id}
+                                itemName={flightToDelete?.flightCode}
+                                modalName={"Flight"}
+                            />
+                        }
                     </div>
-                    <div className={"flight-card-detail"}>
-                        <div className={"flight-origin"}>
-                            <h5 className={"flight-airport"}>{flight.origin}</h5>
-                            <h6 className={"flight-date"}>{formatDate(flight.departureTime)}</h6>
-                            <h6 className={"flight-time"}>{formatTime(flight.departureTime)}</h6>
-                        </div>
-                        <div className={"flight-duration-info"}>
-                            <h6 className={"flight-duration"}>{parseDuration(flight.duration)}</h6>
-                            <hr style={{border: '1px solid gray', width: '80%'}}/>
-                        </div>
-                        <div className={"flight-destination"}>
-                            <h5 className={"flight-airport"}>{flight.destination}</h5>
-                            <h6 className={"flight-date"}>{formatDate(flight.arrivalTime)}</h6>
-                            <h6 className={"flight-time"}>{formatTime(flight.arrivalTime)}</h6>
-                        </div>
-                    </div>
-                    {showDeleteModal &&
-                        <ConfirmationModal
-                            handleClose={handleClose}
-                            handleDeleteConfirm={() => handleDeleteConfirm(flightToDelete?.id)}
-                            itemId={flightToDelete?.id}
-                            itemName={flightToDelete?.flightCode}
-                            modalName={"Flight"}
-                        />
-                    }
-                </div>
-            ))}
+                );
+            })}
         </div>
     )
 }
