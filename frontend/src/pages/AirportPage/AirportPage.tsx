@@ -119,8 +119,8 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
                         <div key={airport.id} className={"airport-card"} onClick={() => toggleBox(airport.id)}>
                             <div className={"airport-card-headline"}>
                                 <div className={"airport-name"}>
-                                    <h5 style={{marginLeft: "15px"}}>{airport.iataCode}</h5>
-                                    <h6>{capitalizeFirstLetter(airport.name)}</h6>
+                                    <h5 style={{ marginLeft: "15px", textAlign: "start", minWidth: "43px"}}>{airport.iataCode}</h5>
+                                    <h6 style={{ textAlign: "start"}}>{capitalizeFirstLetter(airport.name)}</h6>
                                 </div>
                                 <div className={"airport-card-icons"}>
                                     {loggedInUser?.role != "USER" &&
