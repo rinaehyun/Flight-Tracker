@@ -91,4 +91,8 @@ public class AirportService {
 
         return airportRepository.save(airportToUpdate);
     }
+
+    public Airport getAirportByIataCode(String iataCode) {
+        return airportRepository.getAirportByIataCode(iataCode);
+    }
 }

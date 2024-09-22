@@ -16,7 +16,7 @@ export default function Header({ loggedInUser, setLoggedInUser }: Readonly<Heade
     return(
         <header>
             <FlightTakeoffIcon
-                sx={{fontSize: "25px", marginLeft: "20px", cursor: "pointer"}}
+                sx={{fontSize: "25px", marginLeft: "20px", cursor: "pointer", color: "white"}}
                 onClick={() => window.location.href = '/'}
             />
             <nav>

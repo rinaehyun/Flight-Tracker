@@ -2,9 +2,8 @@ import './FlightPage.css';
 import {Flight} from "../../types/model/dataType.ts";
 import FlightList from "./components/FlightList/FlightList.tsx";
 import FlightFilter from "./components/FlightFilter/FlightFilter.tsx";
-import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {Box} from "@mui/material";
-import {NavigateFunction, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Filter} from "../../types/enum.ts";
 import axios from "axios";
@@ -24,7 +23,7 @@ export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
         destination: undefined
     });
 
-    const navigate: NavigateFunction = useNavigate();
+    const navigate = useNavigate();
 
     const fetchAllFlights = () => {
         axios.get("/api/flight")
@@ -39,7 +38,7 @@ export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
     },[data])
 
     const handleClick = () => {
-        navigate('/flight/add');
+        navigate("/flight/add");
     }
 
     const filteredFlightData = flightData
@@ -60,10 +59,12 @@ export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
                 }}
             >
                 {loggedInUser?.role != "USER" &&
-                    <AddCircleIcon
-                        sx={{fontSize: "35px", cursor: "pointer"}}
-                        onClick={handleClick}
-                    />
+                    <button onClick={handleClick} style={{
+                        display: "block",
+                        marginLeft: "auto",
+                        marginRight: "1px",
+                        fontSize: "0.7em"
+                    }}>{"Add"}</button>
                 }
             </Box>
             <article style={{border: "1px solid #523d35", borderRadius: "2px", alignContent: "center"}}>
