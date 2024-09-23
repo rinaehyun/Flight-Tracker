@@ -13,11 +13,13 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     const { airports, airportAddress } = useFetchOptions();
     const [filter, setFilter] = useState<AirportFilterType>({
         region: undefined,
+        country: undefined,
         airport: undefined
     });
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     const [distinctRegions, setDistinctRegions] = useState<string[]>([]);
+    const [distinctCountries, setDistinctCountries] = useState<string[]>([]);
 
     useEffect(() => {
         const uniqueRegions = Array.from(new Set(
@@ -31,26 +33,49 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     }, [airportAddress]);
 
     useEffect(() => {
-        setFilter({ region: selectedFilter.region, airport: selectedFilter.airport })
-        console.log('Updated airport filter:', filter);
+        if (filter.region) {
+            const filteredCountries = Array.from(new Set(
+                airportAddress
+                    .filter(address => regionMapping[address.regionCode] === filter.region)
+                    .map(address => address.countryName)
+                    .filter(Boolean)
+            )).sort((a, b) => a.localeCompare(b));
+
+            setDistinctCountries(filteredCountries);
+        } else {
+            // Reset to all countries if no region is selected
+            const uniqueCountries = Array.from(
+                new Set(airportAddress.map(address => address.countryName).filter(Boolean))
+            ).sort((a, b) => a.localeCompare(b));
+            setDistinctCountries(uniqueCountries);
+        }
+    }, [filter.region, airportAddress]);
+
+    // Sync filter with the selectedFilter state
+    useEffect(() => {
+        setFilter({
+            region: selectedFilter.region,
+            country: selectedFilter.country,
+            airport: selectedFilter.airport
+        });
     }, [selectedFilter]);
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target;
         setFilter({ ...filter, [name]: value });
         setIsDisabled(false);
-    }
+    };
 
     const handleReset = () => {
-        setFilter({ region: undefined, airport: undefined })
-        setSelectedFilter({ region: undefined, airport: undefined })
+        setFilter({ region: undefined, country: undefined, airport: undefined });
+        setSelectedFilter({ region: undefined, country: undefined, airport: undefined });
         setIsDisabled(true);
-    }
+    };
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
-        setSelectedFilter({ region: filter.region, airport: filter.airport })
-    }
+        setSelectedFilter({ region: filter.region, country: filter.country, airport: filter.airport });
+    };
 
     return (
         <form onSubmit={handleSubmit} className={"airport-filter-form"}>
@@ -60,6 +85,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                     name={"region"}
                     onChange={handleChange}
                     className={"region-dropdown"}
+                    value={filter.region || ""}
                 >
                     <option>All</option>
                     {distinctRegions.map((region) => (
@@ -70,11 +96,28 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                 </select>
             </div>
             <div className={"airport-dropdown-filter"}>
+                <label className={"airport-dropdown-label"}>Country</label>
+                <select
+                    name={"country"}
+                    onChange={handleChange}
+                    className={"country-dropdown"}
+                    value={filter.country || ""}
+                >
+                    <option>All</option>
+                    {distinctCountries.map((country) => (
+                        <option key={country} value={country}>
+                            {country}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className={"airport-dropdown-filter-hidden"}>
                 <label className={"airport-dropdown-label"}>Airport</label>
                 <select
                     name={"airport"}
                     onChange={handleChange}
                     className={"airport-dropdown"}
+                    value={filter.airport || ""}
                 >
                     <option>All</option>
                     {airports.map((airport) => (

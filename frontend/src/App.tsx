@@ -70,7 +70,7 @@ function App() {
             <Header loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
             <main>
                 <Routes>
-                    <Route path={"/"} element={<Home userId={loggedInUser?.id} />}/>
+                    <Route path={"/"} element={<Home user={loggedInUser} />}/>
                     <Route path={"/login"} element={<LoginPage login={login} setShowLoginNotification={setShowLoginNotification} showLoginNotification={showLoginNotification} />} />
                     <Route path={"/signup"} element={<SignupPage />} />
                     <Route element={<ProtectedRoutes userId={loggedInUser?.id}/>}>
