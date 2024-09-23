@@ -39,8 +39,6 @@ export default function FlightDetails({ flight }: Readonly<FlightDetailsProps>) 
         fetchDestinationAirport();
     }, [])
 
-    console.log(originAirport)
-    console.log(destinationAirport)
     return (
         <section>
             <hr style={{border: '1px dotted #D3D3D3', width: '95%'}}/>
@@ -57,7 +55,7 @@ export default function FlightDetails({ flight }: Readonly<FlightDetailsProps>) 
                 </div>
             </div>
             <div className={"flight-detail-section"}>
-            <div className={"flight-detail"}>
+                <div className={"flight-detail"}>
                     <h6 className={"flight-detail-title"}>Flight Code</h6>
                     <h6 className={"flight-detail-info"}>{flight.flightCode}</h6>
                 </div>

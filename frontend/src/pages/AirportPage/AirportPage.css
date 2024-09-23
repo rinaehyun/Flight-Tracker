@@ -6,7 +6,55 @@
 .airport-card {
     border: 1px solid;
     border-radius: 5px;
+    margin: 20px 0;
+    box-shadow: 0 0 8px rgba(33,33,33,.2);
+}
+
+.airport-card-headline {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    max-height: 50px;
+    justify-content: space-between;
+    font-size: 16px;
+}
+
+.airport-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+}
+
+.airport-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.airport-info-details {
     display: flex;
     flex-direction: column;
-    margin: 20px 0;
+    margin: 5px 13px 8px 13px;
+}
+
+.airport-info-title, .airport-info-desc {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    text-align: start;
+}
+
+.airport-info-title-right, .airport-info-desc-right {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    text-align: end;
+}
+
+.airport-info-title, .airport-info-title-right {
+    color: #213547;
+}
+
+.airport-info-desc, .airport-info-desc-right {
+    font-weight: normal;
 }
