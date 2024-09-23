@@ -12,10 +12,11 @@ export function formatTime(dateTimeString: string): string {
 export function formatDate(dateTimeString: string): string {
     const date = new Date(dateTimeString);
 
-    return date.toLocaleDateString([], {
-        month: 'long',
+    return date.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'short',
         day: '2-digit'
-    });
+    }).replace(/ /g, '.').replace(',', '');
 }
 
 export function calculateDuration(departureTime: string, arrivalTime: string): string  {

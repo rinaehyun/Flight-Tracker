@@ -1,10 +1,14 @@
-.airport-dropdown-filter {
+.airport-dropdown-filter, .airport-dropdown-filter-hidden {
     margin: 15px 10px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-.region-dropdown, .airport-dropdown {
+.airport-dropdown-filter-hidden {
+    display: none;
+}
+
+.region-dropdown, .airport-dropdown, .country-dropdown {
     width: 70%;
 }

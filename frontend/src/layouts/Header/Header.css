@@ -20,6 +20,14 @@ header {
     font-size: 14px;
 }
 
+.nav-li > a {
+    color: white;
+}
+
+.nav-li > a:active, .nav-li > a:focus {
+    color: #80BBE6;
+}
+
 .login-button {
     border: none;
     background-color: inherit;

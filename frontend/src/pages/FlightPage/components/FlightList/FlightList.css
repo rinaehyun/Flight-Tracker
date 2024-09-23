@@ -1,9 +1,8 @@
 .flight-card {
     border: 1px solid;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
     margin: 20px 0;
+    border-radius: 5px;
+    box-shadow: 0 0 8px rgba(33,33,33,.2);
 }
 
 .flight-card-headline {
@@ -11,13 +10,14 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    max-height: 50px;
 }
 
 .flight-card-airline {
     display: flex;
     flex-direction: row;
     gap: 10px;
-    margin: 3px 10px 0 15px;
+    margin: 0 10px 0 13px;
     align-items: center;
 }
 
@@ -26,39 +26,44 @@
     flex-direction: row;
     gap: 5px;
     align-items: center;
-    margin: 25px 15px 25px 0;
+    margin: 25px 0 25px 0;
 }
 
 .flight-card-detail {
-    margin: 0 20px;
+    margin: 0 13px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
+.flight-origin {
+    text-align: start;
+}
 
+.flight-destination {
+    text-align: end;
+}
 
-@media (max-width: 600px) {
-    .flight-card-headline {
-        display: inline;
-    }
+.flight-airport {
+    margin: 2px 2px 0 2px;
+}
 
-    .flight-card-airline {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        margin: 3px 10px 0 10px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
+.flight-date {
+    margin: 10px 0 5px 0;
+}
 
-    .flight-card-airline > h4 {
-        margin: 10px 0;
-    }
+.flight-time {
+    margin: 5px 0 10px 0;
+}
 
-    .flight-card-icons {
-        float: right;
-        margin: 3px 0 0 10px;
-    }
+.flight-duration-info {
+    width: 120%;
+}
+
+.flight-duration {
+    margin-bottom: -5px;
+    font-size: 13px;
+    color: #555555;
+    font-weight: bold;
 }
