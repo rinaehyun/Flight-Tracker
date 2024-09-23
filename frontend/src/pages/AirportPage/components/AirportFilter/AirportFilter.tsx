@@ -18,6 +18,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     const [distinctRegions, setDistinctRegions] = useState<string[]>([]);
+    const [distinctCountries, setDistinctCountries] = useState<string[]>([]);
 
     useEffect(() => {
         const uniqueRegions = Array.from(new Set(
@@ -28,6 +29,14 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
             .sort((a, b) => a.localeCompare(b));
 
         setDistinctRegions(uniqueRegions);
+    }, [airportAddress]);
+
+    useEffect(() => {
+        const uniqueCountries = Array.from(
+            new Set(airportAddress.map(address => address.countryName).filter(Boolean))
+        ).sort((a, b) => a.localeCompare(b));
+
+        setDistinctCountries(uniqueCountries);
     }, [airportAddress]);
 
     useEffect(() => {
@@ -65,6 +74,21 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                     {distinctRegions.map((region) => (
                         <option key={region} value={region}>
                             {region}
+                        </option>
+                    ))}
+                </select>
+            </div>
+            <div className={"airport-dropdown-filter"}>
+                <label className={"airport-dropdown-label"}>Country</label>
+                <select
+                    name={"country"}
+                    onChange={handleChange}
+                    className={"country-dropdown"}
+                >
+                    <option>All</option>
+                    {distinctCountries.map((country) => (
+                        <option key={country} value={country}>
+                            {country}
                         </option>
                     ))}
                 </select>
