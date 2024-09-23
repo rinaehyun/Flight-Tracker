@@ -1,0 +1,36 @@
+.home-page {
+    max-width: 650px;
+    margin: auto;
+}
+
+.home-greetings {
+    text-align:start;
+}
+
+.home-greetings > h5 {
+    margin: 7px 0 5px 0;
+    font-weight: normal;
+}
+
+.home-info-section {
+    margin-top: 30px;
+}
+
+.image-flight-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 1px solid beige;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(33,33,33,.2);
+}
+
+.image-airport-container {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    border: 1px solid beige;
+    border-radius: 2px;
+    box-shadow: 0 0 8px rgba(33,33,33,.2);
+    margin-top: 20px;
+}
