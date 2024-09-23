@@ -23,6 +23,7 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
     const [airportsData, setAirportsData] = useState<Airport[]>([]);
     const [selectedFilter, setSelectedFilter] = useState<AirportFilterType>({
         region: undefined,
+        country: undefined,
         airport: undefined
     });
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
@@ -84,6 +85,10 @@ export default function AirportPage({ loggedInUser }: Readonly<AirportPageProps>
         .filter(airport =>
             !selectedFilter.region ||
             regionMapping[airport.address.regionCode] === selectedFilter.region
+        )
+        .filter(airport =>
+            !selectedFilter.country ||
+            airport.address.countryName.toLowerCase() === selectedFilter.country.toLowerCase()
         )
         .filter(airport =>
             !selectedFilter.airport ||
