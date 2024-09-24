@@ -39,7 +39,7 @@ export default function Header({ loggedInUser, setLoggedInUser }: Readonly<Heade
                 {
                     loggedInUser?.id
                         ? <AccountMenu loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
-                        : <button className={"login-button"} onClick={() => navigate('/login')}>Log in</button>
+                        : <button className={"login-button"} onClick={() => navigate('/login')} style={{ color: "white" }}>Log in</button>
                 }
             </div>
         </header>
