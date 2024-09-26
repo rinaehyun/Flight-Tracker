@@ -215,6 +215,7 @@ class AirportIntegrationTest {
         // GIVEN
         // WHEN
         mockMvc.perform(get("/api/airport/123"))
+            // THEN
             .andExpect(status().isNotFound())
             .andExpect(content().json("""
                 {
@@ -223,6 +224,50 @@ class AirportIntegrationTest {
                 }
             """))
             .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirportByIataCodeTest_whenIataCodeExists_thenReturnAirportEntity() throws Exception {
+        // GIVEN
+        airportRepository.save(new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"))
+        );
+
+        // WHEN
+        mockMvc.perform(get("/api/airport/iata/GDN"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "123",
+                    "name": "GDANSK",
+                    "iataCode": "GDN",
+                    "geoCode": {
+                    "latitude": 54,
+                        "longitude": 18
+                    },
+                    "address": {
+                        "countryName": "POLAND",
+                        "countryCode": "PL",
+                        "regionCode": "EEURO"
+                    },
+                    "timeZone": {
+                        "offSet": "+02:00"
+                    }
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirportByIataCodeTest_whenIataCodeDoesNotExists_thenReturnEmpty() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airport/iata/GDN"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().string(""));
     }
 
     @Test

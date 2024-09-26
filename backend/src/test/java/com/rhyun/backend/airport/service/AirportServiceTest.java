@@ -155,6 +155,37 @@ class AirportServiceTest {
     }
 
     @Test
+    void getAirportByIataCodeTest_whenIataCodeExists_thenReturnAirportEntity() {
+        // GIVEN
+        String iataCode = "GDN";
+        when(airportRepository.getAirportByIataCode(iataCode)).thenReturn(airport1);
+
+        // WHEN
+        Airport actual = airportService.getAirportByIataCode(iataCode);
+
+        // THEN
+        Airport expected = new Airport("123", "GDANSK", "GDN", new GeoCode(54, 18),
+                new AirportAddress("POLAND", "PL", "EEURO"), new AirportTimeZone("+02:00"));
+
+        assertEquals(expected, actual);
+        verify(airportRepository, times(1)).getAirportByIataCode(iataCode);
+    }
+
+    @Test
+    void getAirportByIataCodeTest_whenIataCodeDoesNotExists_thenReturnEmpty() {
+        // GIVEN
+        String iataCode = "GDN";
+        when(airportRepository.getAirportByIataCode(iataCode)).thenReturn(null);
+
+        // WHEN
+        Airport actual = airportService.getAirportByIataCode(iataCode);
+
+        // THEN
+        verify(airportRepository, times(1)).getAirportByIataCode(iataCode);
+        assertNull(actual);
+    }
+
+    @Test
     void deleteAirportByIdTest_whenIdExists_thenDeleteFlightEntity() {
         // GIVEN
         String id = "123";

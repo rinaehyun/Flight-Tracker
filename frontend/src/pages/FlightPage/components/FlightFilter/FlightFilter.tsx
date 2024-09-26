@@ -91,7 +91,6 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
                     type={"reset"}
                     className={"reset-btn"}
                     onClick={handleReset}
-                    disabled={isDisabled}
                 >Reset
                 </button>
                 <button
