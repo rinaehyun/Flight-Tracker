@@ -3,6 +3,7 @@ package com.rhyun.backend.airline.service;
 import com.rhyun.backend.airline.dto.GetAirlineDto;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.repository.AirlineRepository;
+import com.rhyun.backend.globalservice.IdService;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -15,12 +16,11 @@ import static org.mockito.Mockito.*;
 class AirlineServiceTest {
 
     private final AirlineRepository airlineRepository = mock(AirlineRepository.class);
-    private final AirlineService airlineService = new AirlineService(airlineRepository);
+    private final IdService idService = mock(IdService.class);
+    private final AirlineService airlineService = new AirlineService(airlineRepository, idService);
 
-    Airline airline1 = new Airline("1", "airline", "SQ", "SIA",
-            "SINGAPORE AIRLINES", "SINGAPORE");
-    Airline airline2 = new Airline("2", "airline", "KE", "KAL",
-            "KOREAN AIR", "KOREAN AIR");
+    Airline airline1 = new Airline("1", "SQ", "SINGAPORE AIRLINES", "SINGAPORE");
+    Airline airline2 = new Airline("2", "KE", "KOREAN AIR", "KOREAN AIR");
 
     @Test
     void getAllAirlinesTest_whenDBIsEmpty_thenReturnEmptyList() {

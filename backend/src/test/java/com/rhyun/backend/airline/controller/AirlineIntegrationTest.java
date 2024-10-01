@@ -23,10 +23,8 @@ class AirlineIntegrationTest {
     @Autowired
     private AirlineRepository airlineRepository;
 
-    Airline airline1 = new Airline("1", "airline", "SQ", "SIA",
-            "SINGAPORE AIRLINES", "SINGAPORE");
-    Airline airline2 = new Airline("2", "airline", "KE", "KAL",
-            "KOREAN AIR", "KOREAN AIR");
+    Airline airline1 = new Airline("1", "SQ", "SINGAPORE AIRLINES", "SINGAPORE");
+    Airline airline2 = new Airline("2", "KE", "KOREAN AIR", "KOREAN AIR");
 
     @Test
     @DirtiesContext
@@ -53,18 +51,14 @@ class AirlineIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(content().json("""
                     [{
-                        "id": "1",
-                        "type": "airline",
-                        "iataCode": "SQ",
-                        "icaoCode": "SIA",
+                        "id": "1", 
+                        "iataCode": "SQ", 
                         "businessName": "SINGAPORE AIRLINES",
                         "commonName": "SINGAPORE"
                     },
                     {
-                        "id": "2",
-                        "type": "airline",
-                        "iataCode": "KE",
-                        "icaoCode": "KAL",
+                        "id": "2", 
+                        "iataCode": "KE", 
                         "businessName": "KOREAN AIR",
                         "commonName": "KOREAN AIR"
                     }]
