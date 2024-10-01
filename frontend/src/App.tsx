@@ -81,7 +81,7 @@ function App() {
                         <Route path={"/airport"} element={<AirportPage loggedInUser={loggedInUser}/>} />
                         <Route path={"/airport/add"} element={<AddAirportPage />} />
                         <Route path={"/airport/:id"} element={<EditAirportPage />}/>
-                        <Route path={"/airline"} element={<AirlinePage />} />
+                        <Route path={"/airline"} element={<AirlinePage loggedInUser={loggedInUser} />} />
                     </Route>
                 </Routes>
             </main>
