@@ -1,5 +1,6 @@
 package com.rhyun.backend.airline.service;
 
+import com.rhyun.backend.airline.dto.AirlineDto;
 import com.rhyun.backend.airline.dto.GetAirlineDto;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.repository.AirlineRepository;
@@ -81,5 +82,25 @@ class AirlineServiceTest {
 
         assertEquals(expected, actual);
         verify(airlineRepository, times(1)).findAll();
+    }
+
+    @Test
+    void createAirlineTest_whenPayloadIsCorrect_thenReturnAirlineEntity() {
+        // GIVEN
+        AirlineDto airlineDto = new AirlineDto("KE", "KOREAN AIR", "KOREAN AIR");
+        Airline airlineToSave = new Airline("1", airlineDto.iataCode(), airlineDto.businessName(), airlineDto.commonName());
+
+        when(idService.randomId()).thenReturn("1");
+        when(airlineRepository.save(airlineToSave)).thenReturn(airlineToSave);
+
+        // WHEN
+        Airline actual = airlineService.createAirline(airlineDto);
+
+        // THEN
+        Airline expected = new Airline("1", "KE", "KOREAN AIR", "KOREAN AIR");
+
+        assertEquals(expected, actual);
+        verify(idService, times(1)).randomId();
+        verify(airlineRepository, times(1)).save(airlineToSave);
     }
 }

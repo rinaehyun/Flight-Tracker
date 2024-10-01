@@ -6,13 +6,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -51,14 +52,14 @@ class AirlineIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(content().json("""
                     [{
-                        "id": "1", 
-                        "iataCode": "SQ", 
+                        "id": "1",
+                        "iataCode": "SQ",
                         "businessName": "SINGAPORE AIRLINES",
                         "commonName": "SINGAPORE"
                     },
                     {
-                        "id": "2", 
-                        "iataCode": "KE", 
+                        "id": "2",
+                        "iataCode": "KE",
                         "businessName": "KOREAN AIR",
                         "commonName": "KOREAN AIR"
                     }]
@@ -101,5 +102,28 @@ class AirlineIntegrationTest {
                     }
                 ]
             """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void createAirlineTest_whenPayloadIsCorrect_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(post("/api/airline")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "iataCode": "SQ",
+                        "businessName": "Singapore Airlines",
+                        "commonName": "Singapore Air"
+                    }
+                """))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.iataCode").value("SQ"))
+            .andExpect(jsonPath("$.businessName").value("Singapore Airlines"))
+            .andExpect(jsonPath("$.commonName").value("Singapore Air"));
     }
 }
