@@ -1,20 +1,21 @@
 import './AirlinePage.css';
 import axios from "axios";
 import {BasicUser} from "../../types/auth/userType.ts";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {Airline} from "../../types/model/dataType.ts";
 
 type AirlinePageProps = {
     loggedInUser: BasicUser | null | undefined,
 }
 
 export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>) {
+    const [airlinesData, setAirlinesData] = useState<Airline[]>([]);
 
     const fetchAllAirlines = () => {
         if (loggedInUser?.username) {
             axios.get("/api/airline")
                 .then(response=> {
-                    console.log(response.data);
-                    //setAirportsData(response.data)
+                    setAirlinesData(response.data)
                 })
                 .catch(error => alert(error));
         }
@@ -34,11 +35,17 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
                     fontSize: "0.7em"
                 }}>{"Add"}</button>*/}
             <section>
-                <div className={"airline-card"}>
-
-                </div>
+                {airlinesData.map(airline => {
+                    return(
+                        <div key={airline.id} className={"airline-card"}>
+                            <h6>{airline.iataCode}</h6>
+                            <h6>{airline.icaoCode}</h6>
+                            <h6>{airline.businessName}</h6>
+                            <h6>{airline.commonName}</h6>
+                        </div>
+                    )
+                })}
             </section>
-
         </div>
     )
 }
