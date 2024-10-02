@@ -4,6 +4,8 @@ import {NewAirline} from "../../../types/model/dataType.ts";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import Notification from "../../../components/Notification/Notification.tsx";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import {Box} from "@mui/material";
 
 export default function AddAirlinePage() {
     const [newAirline, setNewAirline] = useState<NewAirline>({
@@ -38,6 +40,17 @@ export default function AddAirlinePage() {
                 message={`Airline with IATA Code ${newAirline.iataCode} has been created.`}
                 messageType={"success"}
             />}
+            <Box
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'flex-start'
+                }}
+            >
+                <ArrowBackIcon
+                    sx={{cursor: "pointer"}}
+                    onClick={() => navigate(-1)}
+                />
+            </Box>
             <h3>Add A New Airline</h3>
             <AirlineForm
                 newAirline={newAirline}

@@ -31,12 +31,14 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
     return (
         <div className={"airline-page"}>
             <h3>Airport Information</h3>
-                <button onClick={() => navigate("/airline/add")} style={{
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "10px",
-                    fontSize: "0.7em"
-                }}>{"Add"}</button>
+                {loggedInUser?.role != "USER" &&
+                    <button onClick={() => navigate("/airline/add")} style={{
+                        display: "block",
+                        marginLeft: "auto",
+                        marginRight: "10px",
+                        fontSize: "0.7em"
+                    }}>{"Add"}</button>
+                }
             <section>
                 {airlinesData.map(airline => {
                     return(
