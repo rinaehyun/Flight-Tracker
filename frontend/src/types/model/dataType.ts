@@ -64,3 +64,9 @@ export type Airline = {
     businessName: string,
     commonName: string
 }
+
+export type NewAirline = {
+    iataCode: string,
+    businessName: string,
+    commonName: string
+}

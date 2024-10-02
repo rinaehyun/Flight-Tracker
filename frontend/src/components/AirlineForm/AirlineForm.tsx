@@ -1,13 +1,23 @@
 import './AirlineForm.css';
 import {TextField} from "@mui/material";
+import {NewAirline} from "../../types/model/dataType.ts";
+import {ChangeEvent, Dispatch, FormEvent, SetStateAction} from "react";
 
 type AirlineFormProps = {
+    newAirline: NewAirline,
+    setNewAirline: Dispatch<SetStateAction<NewAirline>>,
+    handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
     buttonLabel: string
 }
 
-export default function AirlineForm({ buttonLabel }: Readonly<AirlineFormProps>) {
+export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, buttonLabel }: Readonly<AirlineFormProps>) {
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        setNewAirline(({...newAirline, [event.target.name]: event.target.value.toUpperCase()}));
+    }
+
+    console.log(newAirline)
     return (
-        <form className={"airline-form"}>
+        <form className={"airline-form"} onSubmit={handleSubmit} >
             <TextField
                 required
                 id={"outlined-basic"}
@@ -17,7 +27,8 @@ export default function AirlineForm({ buttonLabel }: Readonly<AirlineFormProps>)
                 color={"primary"}
                 sx={{width: "100%"}}
                 name={"iataCode"}
-                onChange={() => {}}
+                value={newAirline.iataCode}
+                onChange={handleChange}
                 autoComplete={"off"}
             />
             <TextField
@@ -29,7 +40,8 @@ export default function AirlineForm({ buttonLabel }: Readonly<AirlineFormProps>)
                 color={"primary"}
                 sx={{width: "100%"}}
                 name={"businessName"}
-                onChange={() => {}}
+                value={newAirline.businessName}
+                onChange={handleChange}
                 autoComplete={"off"}
             />
             <TextField
@@ -41,7 +53,8 @@ export default function AirlineForm({ buttonLabel }: Readonly<AirlineFormProps>)
                 color={"primary"}
                 sx={{width: "100%"}}
                 name={"commonName"}
-                onChange={() => {}}
+                value={newAirline.commonName}
+                onChange={handleChange}
                 autoComplete={"off"}
             />
             <button
