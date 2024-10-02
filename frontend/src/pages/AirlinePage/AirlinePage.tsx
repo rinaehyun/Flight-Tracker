@@ -3,6 +3,7 @@ import axios from "axios";
 import {BasicUser} from "../../types/auth/userType.ts";
 import {useEffect, useState} from "react";
 import {Airline} from "../../types/model/dataType.ts";
+import {useNavigate} from "react-router-dom";
 
 type AirlinePageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -10,6 +11,8 @@ type AirlinePageProps = {
 
 export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>) {
     const [airlinesData, setAirlinesData] = useState<Airline[]>([]);
+
+    const navigate = useNavigate();
 
     const fetchAllAirlines = () => {
         if (loggedInUser?.username) {
@@ -28,12 +31,12 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
     return (
         <div className={"airline-page"}>
             <h3>Airport Information</h3>
-                {/*<button onClick={() => {}} style={{
+                <button onClick={() => navigate("/airline/add")} style={{
                     display: "block",
                     marginLeft: "auto",
                     marginRight: "10px",
                     fontSize: "0.7em"
-                }}>{"Add"}</button>*/}
+                }}>{"Add"}</button>
             <section>
                 {airlinesData.map(airline => {
                     return(
