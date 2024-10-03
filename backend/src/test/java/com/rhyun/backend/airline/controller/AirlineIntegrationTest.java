@@ -106,6 +106,42 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    void getAirlineByIataCodeTest_whenIataCodeExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(get("/api/airline/SQ"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    void getAirlineByIataCodeTest_whenIataCodeDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airline/SQ"))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with IATA Code SQ cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
     @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void createAirlineTest_whenPayloadIsCorrect_thenReturnAirlineEntity() throws Exception {
         // GIVEN

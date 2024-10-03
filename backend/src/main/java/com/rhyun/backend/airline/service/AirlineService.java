@@ -7,7 +7,6 @@ import com.rhyun.backend.airline.exception.AirlineNotFoundException;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.repository.AirlineRepository;
 import com.rhyun.backend.globalservice.IdService;
-import com.rhyun.backend.security.exception.UserAlreadyExistsException;
 import com.rhyun.backend.utils.StringHelper;
 import org.springframework.stereotype.Service;
 

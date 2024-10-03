@@ -2,6 +2,7 @@ package com.rhyun.backend.airline.service;
 
 import com.rhyun.backend.airline.dto.AirlineDto;
 import com.rhyun.backend.airline.dto.GetAirlineDto;
+import com.rhyun.backend.airline.exception.AirlineNotFoundException;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.repository.AirlineRepository;
 import com.rhyun.backend.globalservice.IdService;
@@ -9,9 +10,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 class AirlineServiceTest {
@@ -82,6 +85,32 @@ class AirlineServiceTest {
 
         assertEquals(expected, actual);
         verify(airlineRepository, times(1)).findAll();
+    }
+
+    @Test
+    void findAirlineByIataCodeTest_whenIataCodeExists_thenReturnAirlineEntity() {
+        // GIVEN
+        when(airlineRepository.findAirlineByIataCode("SQ")).thenReturn(Optional.of(airline1));
+
+        // WHEN
+        Airline actual = airlineService.findAirlineByIataCode("SQ");
+
+        // THEN
+        Airline expected = new Airline("1", "SQ", "SINGAPORE AIRLINES", "SINGAPORE");
+
+        assertEquals(expected, actual);
+        verify(airlineRepository, times(1)).findAirlineByIataCode("SQ");
+    }
+
+    @Test
+    void findAirlineByIataCodeTest_whenIataCodeDoesNotExist_thenThrow() {
+        // GIVEN
+        when(airlineRepository.findAirlineByIataCode("SQ")).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(AirlineNotFoundException.class, () -> airlineService.findAirlineByIataCode("SQ"));
+        verify(airlineRepository, times(1)).findAirlineByIataCode("SQ");
     }
 
     @Test
