@@ -6,6 +6,7 @@ import {useNavigate} from "react-router-dom";
 import Notification from "../../../components/Notification/Notification.tsx";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {Box} from "@mui/material";
+import {useNotificationTimer} from "../../../hooks/useNotificationTimer.ts";
 
 export default function AddAirlinePage() {
     const [newAirline, setNewAirline] = useState<NewAirline>({
@@ -14,6 +15,7 @@ export default function AddAirlinePage() {
         commonName: ""
     });
     const [showNotification, setShowNotification] = useState<boolean>(false);
+    const [showAirlineAlreadyExistsNotification, setShowAirlineAlreadyExistsNotification] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -24,14 +26,22 @@ export default function AddAirlinePage() {
             .then(() => {
                 setShowNotification(true);
                 axios.get("/api/airline");
-            })
-            .catch(error => console.log(error))
 
-        setTimeout(() => {
-            setShowNotification(false);
-            navigate("/airline");
-        }, 4000);
+                setTimeout(() => {
+                    setShowNotification(false);
+                    navigate("/airline");
+                }, 4000);
+            })
+            .catch(error => {
+                if (error.response && error.response.status === 409) {
+                    setShowAirlineAlreadyExistsNotification(true);
+                } else {
+                    console.error("An error occurred:", error);
+                }
+            })
     }
+
+    useNotificationTimer(showAirlineAlreadyExistsNotification, setShowAirlineAlreadyExistsNotification);
 
     return(
         <div className={"add-airport-form-container"}>
@@ -39,6 +49,11 @@ export default function AddAirlinePage() {
                 setShowNotification={setShowNotification}
                 message={`Airline with IATA Code ${newAirline.iataCode} has been created.`}
                 messageType={"success"}
+            />}
+            {showAirlineAlreadyExistsNotification && <Notification
+                setShowNotification={setShowAirlineAlreadyExistsNotification}
+                message={`Airline with IATA Code ${newAirline.iataCode} already exists.`}
+                messageType={"error"}
             />}
             <Box
                 sx={{
