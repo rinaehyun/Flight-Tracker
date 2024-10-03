@@ -1,5 +1,7 @@
 package com.rhyun.backend.globalexception;
 
+import com.rhyun.backend.airline.exception.AirlineAlreadyExistsException;
+import com.rhyun.backend.airline.exception.AirlineNotFoundException;
 import com.rhyun.backend.airport.exception.AirportNotFoundException;
 import com.rhyun.backend.flight.exception.FlightNotFoundException;
 import com.rhyun.backend.security.exception.UserAlreadyExistsException;
@@ -47,6 +49,26 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorMessage handleUserAlreadyExists(UserAlreadyExistsException ex) {
+        return new ErrorMessage(
+                new Date(),
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(AirlineNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ErrorMessage handleAirlineNotFoundException(AirlineNotFoundException ex) {
+        return new ErrorMessage(
+                new Date(),
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(AirlineAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorMessage handleUserAlreadyExists(AirlineAlreadyExistsException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.CONFLICT.value(),

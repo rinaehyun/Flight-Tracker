@@ -28,6 +28,11 @@ public class AirlineController {
         return airlineService.getAirlineOptions();
     }
 
+    @GetMapping("/{iataCode}")
+    public Airline getAirlineByIataCode(@PathVariable String iataCode) {
+        return airlineService.findAirlineByIataCode(iataCode);
+    }
+
     @PostMapping
     public Airline createAirline(@RequestBody AirlineDto airlineDto) {
         return airlineService.createAirline(airlineDto);
