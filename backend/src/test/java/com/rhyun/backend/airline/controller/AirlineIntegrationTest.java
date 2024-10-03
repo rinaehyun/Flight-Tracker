@@ -143,7 +143,7 @@ class AirlineIntegrationTest {
     @Test
     @DirtiesContext
     @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
-    void createAirlineTest_whenPayloadIsCorrect_thenReturnAirlineEntity() throws Exception {
+    void createAirlineTest_whenIataCodeIsNew_thenAirlineEntityIsCreated() throws Exception {
         // GIVEN
         // WHEN
         mockMvc.perform(post("/api/airline")
@@ -161,5 +161,32 @@ class AirlineIntegrationTest {
             .andExpect(jsonPath("$.iataCode").value("SQ"))
             .andExpect(jsonPath("$.businessName").value("Singapore Airlines"))
             .andExpect(jsonPath("$.commonName").value("Singapore Air"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void createAirlineTest_whenIataCodeAlreadyExists_thenThrow() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(post("/api/airline")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "Singapore Airlines",
+                    "commonName": "Singapore Air"
+                }
+            """))
+            // THEN
+            .andExpect(status().isConflict())
+            .andExpect(content().json("""
+                {
+                    "status": 409,
+                    "message": "Airline with IATA Code SQ already exists."
+                }
+            """));
     }
 }

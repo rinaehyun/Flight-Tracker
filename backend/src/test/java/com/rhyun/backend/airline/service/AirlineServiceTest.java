@@ -2,6 +2,7 @@ package com.rhyun.backend.airline.service;
 
 import com.rhyun.backend.airline.dto.AirlineDto;
 import com.rhyun.backend.airline.dto.GetAirlineDto;
+import com.rhyun.backend.airline.exception.AirlineAlreadyExistsException;
 import com.rhyun.backend.airline.exception.AirlineNotFoundException;
 import com.rhyun.backend.airline.model.Airline;
 import com.rhyun.backend.airline.repository.AirlineRepository;
@@ -114,11 +115,12 @@ class AirlineServiceTest {
     }
 
     @Test
-    void createAirlineTest_whenPayloadIsCorrect_thenReturnAirlineEntity() {
+    void createAirlineTest_whenAirlineIsNew_thenAirlineEntityIsCreated() {
         // GIVEN
         AirlineDto airlineDto = new AirlineDto("KE", "KOREAN AIR", "KOREAN AIR");
         Airline airlineToSave = new Airline("1", airlineDto.iataCode(), airlineDto.businessName(), airlineDto.commonName());
 
+        when(airlineRepository.findAirlineByIataCode(airlineDto.iataCode())).thenReturn(Optional.empty());
         when(idService.randomId()).thenReturn("1");
         when(airlineRepository.save(airlineToSave)).thenReturn(airlineToSave);
 
@@ -129,7 +131,26 @@ class AirlineServiceTest {
         Airline expected = new Airline("1", "KE", "KOREAN AIR", "KOREAN AIR");
 
         assertEquals(expected, actual);
+        verify(airlineRepository, times(1)).findAirlineByIataCode("KE");
         verify(idService, times(1)).randomId();
         verify(airlineRepository, times(1)).save(airlineToSave);
+    }
+
+    @Test
+    void createAirlineTest_whenIataCodeAlreadyExists_thenThrow() {
+        // GIVEN
+        Airline airlineInDB = new Airline("1", "KE", "KOREAN AIR", "KOREAN AIR");
+        AirlineDto airlineDto = new AirlineDto("KE", "KOREAN AIR", "KOREAN AIR");
+        Airline airlineToSave = new Airline("1", airlineDto.iataCode(), airlineDto.businessName(), airlineDto.commonName());
+
+        when(airlineRepository.findAirlineByIataCode("KE")).thenReturn(Optional.of(airlineInDB));
+
+        // WHEN
+        // THEN
+        assertThrows(AirlineAlreadyExistsException.class, () -> airlineService.createAirline(airlineDto));
+
+        verify(airlineRepository, times(1)).findAirlineByIataCode("KE");
+        verify(idService, never()).randomId();
+        verify(airlineRepository, never()).save(airlineToSave);
     }
 }
