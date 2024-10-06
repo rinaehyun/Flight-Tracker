@@ -6,6 +6,7 @@ import {Airline} from "../../types/model/dataType.ts";
 import {useNavigate} from "react-router-dom";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
+import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal.tsx";
 
 type AirlinePageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -13,6 +14,8 @@ type AirlinePageProps = {
 
 export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>) {
     const [airlinesData, setAirlinesData] = useState<Airline[]>([]);
+    const [airlineToDelete, setAirlineToDelete] = useState<Airline>();
+    const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -29,6 +32,12 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
     useEffect(() => {
         fetchAllAirlines();
     }, []);
+
+    const handleDeleteAirport = (airline: Airline): void => {
+        console.log(airline)
+        setAirlineToDelete(airline);
+        setShowDeleteModal(true);
+    }
 
     return (
         <div className={"airline-page"}>
@@ -62,7 +71,7 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
                                         />
                                         <DeleteIcon
                                             sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
-                                            onClick={() => {}}
+                                            onClick={() => handleDeleteAirport(airline)}
                                         />
                                     </div>
                                 }
@@ -71,6 +80,15 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
                     )
                 })}
             </section>
+            {showDeleteModal &&
+                <ConfirmationModal
+                    handleClose={() => setShowDeleteModal(false)}
+                    handleDeleteConfirm={() => {}}
+                    itemId={airlineToDelete?.id}
+                    itemName={''}
+                    modalName={"Airport"}
+                />
+            }
         </div>
     )
 }
