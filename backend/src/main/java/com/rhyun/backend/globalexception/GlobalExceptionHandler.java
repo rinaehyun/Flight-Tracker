@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FlightNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage handleFlightException(FlightNotFoundException ex) {
+    public ErrorMessage handleFlightNotFoundException(FlightNotFoundException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.NOT_FOUND.value(),
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AirportNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage handleAirportException(AirportNotFoundException ex) {
+    public ErrorMessage handleAirportNotFoundException(AirportNotFoundException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.NOT_FOUND.value(),
@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorMessage handleUserException(UserNotFoundException ex) {
+    public ErrorMessage handleUserNotFoundException(UserNotFoundException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.NOT_FOUND.value(),
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage handleUserAlreadyExists(UserAlreadyExistsException ex) {
+    public ErrorMessage handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.CONFLICT.value(),
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AirlineAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    public ErrorMessage handleUserAlreadyExists(AirlineAlreadyExistsException ex) {
+    public ErrorMessage handleAirlineAlreadyExistsException(AirlineAlreadyExistsException ex) {
         return new ErrorMessage(
                 new Date(),
                 HttpStatus.CONFLICT.value(),
