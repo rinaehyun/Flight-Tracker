@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.Date;
+import java.time.Instant;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleFlightNotFoundException(FlightNotFoundException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleAirportNotFoundException(AirportNotFoundException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleUserNotFoundException(UserNotFoundException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
@@ -50,7 +50,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorMessage handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.CONFLICT.value(),
                 ex.getMessage()
         );
@@ -60,7 +60,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorMessage handleAirlineNotFoundException(AirlineNotFoundException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.NOT_FOUND.value(),
                 ex.getMessage()
         );
@@ -70,7 +70,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorMessage handleAirlineAlreadyExistsException(AirlineAlreadyExistsException ex) {
         return new ErrorMessage(
-                new Date(),
+                Instant.now(),
                 HttpStatus.CONFLICT.value(),
                 ex.getMessage()
         );
