@@ -4,6 +4,8 @@ import {BasicUser} from "../../types/auth/userType.ts";
 import {useEffect, useState} from "react";
 import {Airline} from "../../types/model/dataType.ts";
 import {useNavigate} from "react-router-dom";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 type AirlinePageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -43,10 +45,28 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
                 {airlinesData.map(airline => {
                     return(
                         <div key={airline.id} className={"airline-card"}>
-                            <h6>{airline.iataCode}</h6>
-                            <h6>{airline.icaoCode}</h6>
-                            <h6>{airline.businessName}</h6>
-                            <h6>{airline.commonName}</h6>
+                            <div className={"airline-name"}>
+                                <h5 style={{
+                                    marginLeft: "15px",
+                                    textAlign: "start",
+                                    minWidth: "43px"
+                                }}>{airline.iataCode}</h5>
+                                <h6 style={{textAlign: "start"}}>{airline.businessName}</h6>
+                            </div>
+                            <div className={"airline-card-icons"}>
+                                {loggedInUser?.role != "USER" &&
+                                    <div style={{display: "flex", justifyContent: "flex-end"}}>
+                                        <EditNoteIcon
+                                            sx={{marginRight: '5px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => navigate(`/airline/${airline.id}`)}
+                                        />
+                                        <DeleteIcon
+                                            sx={{marginRight: '10px', cursor: "pointer", fontSize: "20px"}}
+                                            onClick={() => {}}
+                                        />
+                                    </div>
+                                }
+                            </div>
                         </div>
                     )
                 })}
