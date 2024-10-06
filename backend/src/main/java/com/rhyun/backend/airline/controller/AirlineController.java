@@ -18,7 +18,7 @@ public class AirlineController {
         this.airlineService = airlineService;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<Airline> getAllAirlines() {
         return airlineService.getAllAirlines();
     }
@@ -36,5 +36,10 @@ public class AirlineController {
     @PostMapping
     public Airline createAirline(@RequestBody AirlineDto airlineDto) {
         return airlineService.createAirline(airlineDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteAirline(@PathVariable String id) {
+        airlineService.deleteAirline(id);
     }
 }

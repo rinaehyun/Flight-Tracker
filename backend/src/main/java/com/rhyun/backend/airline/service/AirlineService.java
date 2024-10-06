@@ -59,4 +59,8 @@ public class AirlineService {
         );
         return airlineRepository.save(airlineToSave);
     }
+
+    public void deleteAirline(String id) {
+        airlineRepository.deleteById(id);
+    }
 }
