@@ -153,4 +153,16 @@ class AirlineServiceTest {
         verify(idService, never()).randomId();
         verify(airlineRepository, never()).save(airlineToSave);
     }
+
+    @Test
+    void deleteAirlineTest_whenIdExists_thenDeleteAirlineEntity () {
+        // GIVEN
+        String id = "1";
+        doNothing().when(airlineRepository).deleteById(id);
+
+        // WHEN
+        // THEN
+        airlineService.deleteAirline(id);
+        verify(airlineRepository, times(1)).deleteById(id);
+    }
 }

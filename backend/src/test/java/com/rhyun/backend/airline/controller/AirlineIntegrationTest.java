@@ -11,8 +11,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -188,5 +187,33 @@ class AirlineIntegrationTest {
                     "message": "Airline with IATA Code SQ already exists."
                 }
             """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void deleteAirlineTest_whenIdExists_thenDeleteAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        mockMvc.perform(get("/api/airline"))
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                [{
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }]
+            """));
+
+        // WHEN
+        mockMvc.perform(delete("/api/airline/1"))
+            // THEN
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/airline"))
+            .andExpect(status().isOk())
+            .andExpect(content().json("[]"));
     }
 }
