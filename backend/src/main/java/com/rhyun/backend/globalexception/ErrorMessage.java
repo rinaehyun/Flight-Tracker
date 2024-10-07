@@ -1,9 +1,9 @@
 package com.rhyun.backend.globalexception;
 
-import java.util.Date;
+import java.time.Instant;
 
 public record ErrorMessage(
-        Date timestamp,
+        Instant timestamp,
         int status,
         String message
 ) {
