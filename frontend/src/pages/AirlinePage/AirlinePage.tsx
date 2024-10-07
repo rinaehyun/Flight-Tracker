@@ -112,7 +112,7 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
                     handleDeleteConfirm={() => handleDeleteConfirm(airlineToDelete?.id)}
                     itemId={airlineToDelete?.id}
                     itemName={`${airlineToDelete?.businessName} (IATA: ${airlineToDelete?.iataCode})`}
-                    modalName={"Airport"}
+                    modalName={"Airline"}
                 />
             }
         </div>
