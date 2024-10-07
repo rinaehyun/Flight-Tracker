@@ -4,8 +4,23 @@
 }
 
 .airline-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     border: 1px solid;
     border-radius: 5px;
     margin: 20px 0;
     box-shadow: 0 0 8px rgba(33,33,33,.2);
+}
+
+.airline-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+}
+
+.airline-card-icons {
+    margin-top: 28px;
 }

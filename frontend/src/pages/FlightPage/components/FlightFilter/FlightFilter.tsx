@@ -42,49 +42,55 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
     return (
         <form onSubmit={handleSubmit} className={"filter-form"}>
             <div className={"dropdown-filter"}>
-                <label className={"dropdown-label"}>Airline</label>
-                <select
-                    name={"airline"}
-                    onChange={handleChange}
-                    className={"airline-dropdown"}
-                >
-                    <option>All</option>
-                    {airlines.map((airline) => (
-                        <option key={airline.code} value={airline.code}>
-                            {airline.code + ' - ' + capitalizeFirstLetter(airline.name)}
-                        </option>
-                    ))}
-                </select>
+                <label className={"dropdown-label"}>
+                    Airline{' '}
+                    <select
+                        name={"airline"}
+                        onChange={handleChange}
+                        className={"airline-dropdown"}
+                    >
+                        <option>All</option>
+                        {airlines.map((airline) => (
+                            <option key={airline.code} value={airline.code}>
+                                {airline.code + ' - ' + capitalizeFirstLetter(airline.name)}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"dropdown-filter"}>
-                <label className={"dropdown-label"}>Departure</label>
-                <select
-                    name={"origin"}
-                    onChange={handleChange}
-                    className={"origin-dropdown"}
-                >
-                    <option>All</option>
-                    {airports.map((airport) => (
-                        <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + airport.name}
-                        </option>
-                    ))}
-                </select>
+                <label className={"dropdown-label"}>
+                    Departure{' '}
+                    <select
+                        name={"origin"}
+                        onChange={handleChange}
+                        className={"origin-dropdown"}
+                    >
+                        <option>All</option>
+                        {airports.map((airport) => (
+                            <option key={airport.code} value={airport.code}>
+                                {airport.code + ' - ' + airport.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"dropdown-filter"}>
-                <label className={"dropdown-label"}>Arrival</label>
-                <select
-                    name={"destination"}
-                    onChange={handleChange}
-                    className={"destination-dropdown"}
-                >
-                    <option>All</option>
-                    {airports.map((airport) => (
-                        <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + airport.name}
-                        </option>
-                    ))}
-                </select>
+                <label className={"dropdown-label"}>
+                    Arrival{' '}
+                    <select
+                        name={"destination"}
+                        onChange={handleChange}
+                        className={"destination-dropdown"}
+                    >
+                        <option>All</option>
+                        {airports.map((airport) => (
+                            <option key={airport.code} value={airport.code}>
+                                {airport.code + ' - ' + airport.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"filter-buttons"}>
                 <button

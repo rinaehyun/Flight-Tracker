@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.GET, "/api/airline/options-for-input").hasAnyAuthority(adminRole, employeeRole, userRole)
                         .requestMatchers(HttpMethod.POST, "/api/airline").hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.DELETE, "/api/airline/**").hasAnyAuthority(adminRole, employeeRole)
                         .anyRequest().permitAll()
                 )
                .httpBasic(httpSecurityHttpBasicConfigurer ->
