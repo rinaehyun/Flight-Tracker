@@ -7,6 +7,8 @@ import {useNavigate} from "react-router-dom";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ConfirmationModal from "../../components/ConfirmationModal/ConfirmationModal.tsx";
+import {useNotificationTimer} from "../../hooks/useNotificationTimer.ts";
+import Notification from "../../components/Notification/Notification.tsx";
 
 type AirlinePageProps = {
     loggedInUser: BasicUser | null | undefined,
@@ -16,6 +18,7 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
     const [airlinesData, setAirlinesData] = useState<Airline[]>([]);
     const [airlineToDelete, setAirlineToDelete] = useState<Airline>();
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
+    const [showDeleteSuccessNotification, setShowDeleteSuccessNotification] = useState<boolean>(false);
 
     const navigate = useNavigate();
 
@@ -39,8 +42,31 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
         setShowDeleteModal(true);
     }
 
+    const handleDeleteConfirm = (id: string | undefined): void => {
+        if (id) {
+            axios.delete('/api/airline/' + id)
+                .then(response => {
+                    if (response.status === 200) {
+                        fetchAllAirlines();
+                        setShowDeleteSuccessNotification(true);
+                        console.log("Airline deleted successfully.")
+                    }
+                })
+                .catch(error => console.log(error.message));
+            navigate("/airline");
+            setShowDeleteModal(false);
+        }
+    }
+
+    useNotificationTimer(showDeleteSuccessNotification, setShowDeleteSuccessNotification);
+
     return (
         <div className={"airline-page"}>
+            {showDeleteSuccessNotification && <Notification
+                setShowNotification={setShowDeleteSuccessNotification}
+                message={`${airlineToDelete?.businessName} (IATA: ${airlineToDelete?.iataCode}) has been deleted.`}
+                messageType={"success"}
+            />}
             <h3>Airport Information</h3>
                 {loggedInUser?.role != "USER" &&
                     <button onClick={() => navigate("/airline/add")} style={{
@@ -83,9 +109,9 @@ export default function AirlinePage({ loggedInUser }: Readonly<AirlinePageProps>
             {showDeleteModal &&
                 <ConfirmationModal
                     handleClose={() => setShowDeleteModal(false)}
-                    handleDeleteConfirm={() => {}}
+                    handleDeleteConfirm={() => handleDeleteConfirm(airlineToDelete?.id)}
                     itemId={airlineToDelete?.id}
-                    itemName={''}
+                    itemName={`${airlineToDelete?.businessName} (IATA: ${airlineToDelete?.iataCode})`}
                     modalName={"Airport"}
                 />
             }
