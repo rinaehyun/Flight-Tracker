@@ -116,8 +116,8 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                 </label>
             </div>
             <div className={"airport-dropdown-filter-hidden"}>
-                Airport{' '}
                 <label className={"airport-dropdown-label"}>
+                    Airport{' '}
                     <select
                         name={"airport"}
                         onChange={handleChange}
