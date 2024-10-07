@@ -81,7 +81,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
         <form onSubmit={handleSubmit} className={"airport-filter-form"}>
             <div className={"airport-dropdown-filter"}>
                 <label className={"airport-dropdown-label"}>
-                    Region
+                    Region{' '}
                     <select
                         name={"region"}
                         onChange={handleChange}
@@ -99,7 +99,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
             </div>
             <div className={"airport-dropdown-filter"}>
                 <label className={"airport-dropdown-label"}>
-                    Country
+                    Country{' '}
                     <select
                         name={"country"}
                         onChange={handleChange}
@@ -116,7 +116,7 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
                 </label>
             </div>
             <div className={"airport-dropdown-filter-hidden"}>
-                Airport
+                Airport{' '}
                 <label className={"airport-dropdown-label"}>
                     <select
                         name={"airport"}

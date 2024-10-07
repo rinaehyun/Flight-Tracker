@@ -43,7 +43,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
         <form onSubmit={handleSubmit} className={"filter-form"}>
             <div className={"dropdown-filter"}>
                 <label className={"dropdown-label"}>
-                    Airline
+                    Airline{' '}
                     <select
                         name={"airline"}
                         onChange={handleChange}
@@ -60,7 +60,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
             </div>
             <div className={"dropdown-filter"}>
                 <label className={"dropdown-label"}>
-                    Departure
+                    Departure{' '}
                     <select
                         name={"origin"}
                         onChange={handleChange}
@@ -77,7 +77,7 @@ export default function FlightFilter({ selectedFilter, setSelectedFilter }: Read
             </div>
             <div className={"dropdown-filter"}>
                 <label className={"dropdown-label"}>
-                    Arrival
+                    Arrival{' '}
                     <select
                         name={"destination"}
                         onChange={handleChange}

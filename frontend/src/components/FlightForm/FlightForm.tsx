@@ -140,7 +140,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             />
             <div className={'time-input-container'}>
                 <label className={'time-label'}>
-                    Departure Time
+                    Departure Time{' '}
                     <input
                         type={"datetime-local"}
                         name={"departureTime"}
@@ -173,7 +173,7 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
             />
             <div className={'time-input-container'}>
                 <label className={'time-label'}>
-                    Arrival Time
+                    Arrival Time{' '}
                     <input
                         type={"datetime-local"}
                         name={"arrivalTime"}
