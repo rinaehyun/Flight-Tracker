@@ -80,52 +80,58 @@ export default function AirportFilter({ selectedFilter, setSelectedFilter }: Rea
     return (
         <form onSubmit={handleSubmit} className={"airport-filter-form"}>
             <div className={"airport-dropdown-filter"}>
-                <label className={"airport-dropdown-label"}>Region</label>
-                <select
-                    name={"region"}
-                    onChange={handleChange}
-                    className={"region-dropdown"}
-                    value={filter.region || ""}
-                >
-                    <option>All</option>
-                    {distinctRegions.map((region) => (
-                        <option key={region} value={region}>
-                            {region}
-                        </option>
-                    ))}
-                </select>
+                <label className={"airport-dropdown-label"}>
+                    Region
+                    <select
+                        name={"region"}
+                        onChange={handleChange}
+                        className={"region-dropdown"}
+                        value={filter.region || ""}
+                    >
+                        <option>All</option>
+                        {distinctRegions.map((region) => (
+                            <option key={region} value={region}>
+                                {region}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"airport-dropdown-filter"}>
-                <label className={"airport-dropdown-label"}>Country</label>
-                <select
-                    name={"country"}
-                    onChange={handleChange}
-                    className={"country-dropdown"}
-                    value={filter.country || ""}
-                >
-                    <option>All</option>
-                    {distinctCountries.map((country) => (
-                        <option key={country} value={country}>
-                            {country}
-                        </option>
-                    ))}
-                </select>
+                <label className={"airport-dropdown-label"}>
+                    Country
+                    <select
+                        name={"country"}
+                        onChange={handleChange}
+                        className={"country-dropdown"}
+                        value={filter.country || ""}
+                    >
+                        <option>All</option>
+                        {distinctCountries.map((country) => (
+                            <option key={country} value={country}>
+                                {country}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"airport-dropdown-filter-hidden"}>
-                <label className={"airport-dropdown-label"}>Airport</label>
-                <select
-                    name={"airport"}
-                    onChange={handleChange}
-                    className={"airport-dropdown"}
-                    value={filter.airport || ""}
-                >
-                    <option>All</option>
-                    {airports.map((airport) => (
-                        <option key={airport.code} value={airport.code}>
-                            {airport.code + ' - ' + airport.name}
-                        </option>
-                    ))}
-                </select>
+                Airport
+                <label className={"airport-dropdown-label"}>
+                    <select
+                        name={"airport"}
+                        onChange={handleChange}
+                        className={"airport-dropdown"}
+                        value={filter.airport || ""}
+                    >
+                        <option>All</option>
+                        {airports.map((airport) => (
+                            <option key={airport.code} value={airport.code}>
+                                {airport.code + ' - ' + airport.name}
+                            </option>
+                        ))}
+                    </select>
+                </label>
             </div>
             <div className={"filter-buttons"}>
                 <button

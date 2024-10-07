@@ -139,16 +139,18 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                 }
             />
             <div className={'time-input-container'}>
-                <label className={'time-label'}>Departure Time</label>
-                <input
-                    type={"datetime-local"}
-                    name={"departureTime"}
-                    value={newFlight.departureTime}
-                    onChange={handleChange}
-                    required={true}
-                    disabled={!editable}
-                    max={getMaxDepartureTime()}
-                />
+                <label className={'time-label'}>
+                    Departure Time
+                    <input
+                        type={"datetime-local"}
+                        name={"departureTime"}
+                        value={newFlight.departureTime}
+                        onChange={handleChange}
+                        required={true}
+                        disabled={!editable}
+                        max={getMaxDepartureTime()}
+                    />
+                </label>
             </div>
             <Autocomplete
                 disablePortal
@@ -170,16 +172,18 @@ export default function FlightForm({newFlight, setNewFlight, handleSubmit, butto
                 }
             />
             <div className={'time-input-container'}>
-                <label className={'time-label'}>Arrival Time</label>
-                <input
-                    type={"datetime-local"}
-                    name={"arrivalTime"}
-                    value={newFlight.arrivalTime}
-                    onChange={handleChange}
-                    required={true}
-                    disabled={!editable}
-                    min={getMinArrivalTime()}
-                />
+                <label className={'time-label'}>
+                    Arrival Time
+                    <input
+                        type={"datetime-local"}
+                        name={"arrivalTime"}
+                        value={newFlight.arrivalTime}
+                        onChange={handleChange}
+                        required={true}
+                        disabled={!editable}
+                        min={getMinArrivalTime()}
+                    />
+                </label>
             </div>
             <TextField
                 required

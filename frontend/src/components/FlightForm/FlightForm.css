@@ -3,12 +3,6 @@
     margin: auto;
 }
 
-.time-input-container {
-    margin-top: 18px;
-    display: flex;
-    justify-content: space-between;
-}
-
 .time-label {
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: #555555;
@@ -17,6 +11,9 @@
     font-size: 1rem;
     line-height: 1.4375em;
     letter-spacing: 0.00938em;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 18px;
 }
 
 div > input {

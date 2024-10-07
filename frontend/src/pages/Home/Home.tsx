@@ -25,12 +25,14 @@ export default function Home({ user }: Readonly<HomeProps>) {
                     <section className={"home-info-section"}>
                         <div className={"image-flight-container"}>
                             <img src={flightImage}
+                                 alt={"flight-page-screenshot"}
                                  style={{height: "auto", width: "40%", border: "1px solid #003580"}}></img>
                             <h6 style={{textAlign: "end", alignSelf: "center"}}> You can explore <br/> the flight
                                 information. </h6>
                         </div>
                         <div className={"image-airport-container"}>
                             <img src={airportImage}
+                                 alt={"airport-page-screenshot"}
                                  style={{height: "auto", width: "40%", border: "1px solid #003580"}}></img>
                             <h6 style={{textAlign: "start", alignSelf: "center"}}> You can find
                                 information <br/> regarding
