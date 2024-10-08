@@ -42,4 +42,9 @@ public class AirlineController {
     public void deleteAirline(@PathVariable String id) {
         airlineService.deleteAirline(id);
     }
+
+    @PutMapping("/{id}")
+    public Airline updateAirline(@PathVariable String id, @RequestBody AirlineDto airlineDto) {
+        return airlineService.updateAirline(id, airlineDto);
+    }
 }

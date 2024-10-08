@@ -63,4 +63,14 @@ public class AirlineService {
     public void deleteAirline(String id) {
         airlineRepository.deleteById(id);
     }
+
+    public Airline updateAirline(String id, AirlineDto airlineDto) {
+        Airline airlineToUpdate = airlineRepository.findById(id)
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."))
+                .withIataCode(airlineDto.iataCode())
+                .withBusinessName(airlineDto.businessName())
+                .withCommonName(airlineDto.commonName());
+
+        return airlineRepository.save(airlineToUpdate);
+    }
 }
