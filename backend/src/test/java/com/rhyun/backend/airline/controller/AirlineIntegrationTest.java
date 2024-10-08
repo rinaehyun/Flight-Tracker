@@ -216,4 +216,58 @@ class AirlineIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(content().json("[]"));
     }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void updateAirlineTest_whenIdExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(put("/api/airline/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """))
+            // WHEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void updateAirlineTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/airline/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """))
+            // WHEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with id 1 cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
 }

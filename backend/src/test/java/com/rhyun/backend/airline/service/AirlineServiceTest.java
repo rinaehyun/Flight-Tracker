@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class AirlineServiceTest {
@@ -164,5 +163,41 @@ class AirlineServiceTest {
         // THEN
         airlineService.deleteAirline(id);
         verify(airlineRepository, times(1)).deleteById(id);
+    }
+
+    @Test
+    void updateAirlineTest_whenIdExists_thenReturnAirlineEntity() {
+        // GIVEN
+        Airline original = new Airline("1", "KE", "Korean Air", "Korea Air");
+        AirlineDto updateDto = new AirlineDto("KE", "KOREAN AIRLINES", "KOREAN AIRLINES");
+        Airline updated = new Airline("1", updateDto.iataCode(), updateDto.businessName(), updateDto.commonName());
+
+        when(airlineRepository.findById("1")).thenReturn(Optional.of(original));
+        when(airlineRepository.save(updated)).thenReturn(updated);
+
+        // WHEN
+        Airline actual = airlineService.updateAirline("1", updateDto);
+
+        // THEN
+        assertNotNull(actual);
+        assertEquals(updated, actual);
+
+        verify(airlineRepository, times(1)).findById("1");
+        verify(airlineRepository, times(1)).save(updated);
+    }
+
+    @Test
+    void updateAirlineTest_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        AirlineDto updateDto = new AirlineDto("KE", "KOREAN AIRLINES", "KOREAN AIRLINES");
+        Airline updated = new Airline("1", updateDto.iataCode(), updateDto.businessName(), updateDto.commonName());
+
+        when(airlineRepository.findById("1")).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(AirlineNotFoundException.class, () -> airlineService.updateAirline("1", updateDto));
+        verify(airlineRepository, times(1)).findById("1");
+        verify(airlineRepository, never()).save(updated);
     }
 }
