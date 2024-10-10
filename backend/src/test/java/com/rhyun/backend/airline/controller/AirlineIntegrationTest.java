@@ -116,6 +116,7 @@ class AirlineIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(content().json("""
                 {
+                    "id": "1",
                     "iataCode": "SQ",
                     "businessName": "SINGAPORE AIRLINES",
                     "commonName": "SINGAPORE"
@@ -136,6 +137,45 @@ class AirlineIntegrationTest {
                 {
                     "status": 404,
                     "message": "Airline with IATA Code SQ cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineById_whenIdExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(get("/api/airline/1"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineById_whenIdDoesNotExist_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airline/1"))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with id 1 cannot be found."
                 }
             """))
             .andExpect(jsonPath("$.timestamp").exists());
@@ -188,7 +228,8 @@ class AirlineIntegrationTest {
                     "status": 409,
                     "message": "Airline with IATA Code SQ already exists."
                 }
-            """));
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
     }
 
     @Test
@@ -240,6 +281,7 @@ class AirlineIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(content().json("""
                 {
+                    "id": "1",
                     "iataCode": "SQ",
                     "businessName": "SINGAPORE AIRWAYS",
                     "commonName": "SINGAPORE AIRWAYS"

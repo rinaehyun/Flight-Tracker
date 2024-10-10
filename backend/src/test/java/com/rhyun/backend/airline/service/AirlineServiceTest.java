@@ -114,6 +114,32 @@ class AirlineServiceTest {
     }
 
     @Test
+    void findAirlineById_whenIdExists_thenReturnAirlineEntity() {
+        // GIVEN
+        when(airlineRepository.findById("1")).thenReturn(Optional.of(airline1));
+
+        // WHEN
+        Airline actual = airlineService.findAirlineById("1");
+
+        // THEN
+        Airline expected = new Airline("1", "SQ", "SINGAPORE AIRLINES", "SINGAPORE");
+
+        assertEquals(expected, actual);
+        verify(airlineRepository, times(1)).findById("1");
+    }
+
+    @Test
+    void findAirlineById_whenIdDoesNotExist_thenThrow() {
+        // GIVEN
+        when(airlineRepository.findById("1")).thenReturn(Optional.empty());
+
+        // WHEN
+        // THEN
+        assertThrows(AirlineNotFoundException.class, () -> airlineService.findAirlineById("1"));
+        verify(airlineRepository, times(1)).findById("1");
+    }
+
+    @Test
     void createAirlineTest_whenAirlineIsNew_thenAirlineEntityIsCreated() {
         // GIVEN
         AirlineDto airlineDto = new AirlineDto("KE", "KOREAN AIR", "KOREAN AIR");
