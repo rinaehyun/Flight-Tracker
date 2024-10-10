@@ -28,9 +28,14 @@ public class AirlineController {
         return airlineService.getAirlineOptions();
     }
 
-    @GetMapping("/{iataCode}")
+    @GetMapping("/iata/{iataCode}")
     public Airline getAirlineByIataCode(@PathVariable String iataCode) {
         return airlineService.findAirlineByIataCode(iataCode);
+    }
+
+    @GetMapping("/{id}")
+    public Airline getAirlineById(@PathVariable String id) {
+        return airlineService.findAirlineById(id);
     }
 
     @PostMapping
@@ -41,5 +46,10 @@ public class AirlineController {
     @DeleteMapping("/{id}")
     public void deleteAirline(@PathVariable String id) {
         airlineService.deleteAirline(id);
+    }
+
+    @PutMapping("/{id}")
+    public Airline updateAirline(@PathVariable String id, @RequestBody AirlineDto airlineDto) {
+        return airlineService.updateAirline(id, airlineDto);
     }
 }

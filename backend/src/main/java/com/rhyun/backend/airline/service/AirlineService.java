@@ -45,6 +45,11 @@ public class AirlineService {
         return airlineRepository.findAirlineByIataCode(iataCode)
                 .orElseThrow(() -> new AirlineNotFoundException("Airline with IATA Code " + iataCode + " cannot be found."));
     }
+    
+    public Airline findAirlineById(String id) {
+        return airlineRepository.findById(id)
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."));
+    }
 
     public Airline createAirline(AirlineDto airlineDto) {
         if (airlineRepository.findAirlineByIataCode(airlineDto.iataCode()).isPresent()) {
@@ -62,5 +67,15 @@ public class AirlineService {
 
     public void deleteAirline(String id) {
         airlineRepository.deleteById(id);
+    }
+
+    public Airline updateAirline(String id, AirlineDto airlineDto) {
+        Airline airlineToUpdate = airlineRepository.findById(id)
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."))
+                .withIataCode(airlineDto.iataCode())
+                .withBusinessName(airlineDto.businessName())
+                .withCommonName(airlineDto.commonName());
+
+        return airlineRepository.save(airlineToUpdate);
     }
 }
