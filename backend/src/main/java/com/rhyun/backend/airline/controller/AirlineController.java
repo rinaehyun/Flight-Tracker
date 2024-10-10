@@ -28,9 +28,14 @@ public class AirlineController {
         return airlineService.getAirlineOptions();
     }
 
-    @GetMapping("/{iataCode}")
+    @GetMapping("/iata/{iataCode}")
     public Airline getAirlineByIataCode(@PathVariable String iataCode) {
         return airlineService.findAirlineByIataCode(iataCode);
+    }
+
+    @GetMapping("/{id}")
+    public Airline getAirlineById(@PathVariable String id) {
+        return airlineService.findAirlineById(id);
     }
 
     @PostMapping

@@ -105,12 +105,13 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirlineByIataCodeTest_whenIataCodeExists_thenReturnAirlineEntity() throws Exception {
         // GIVEN
         airlineRepository.save(airline1);
 
         // WHEN
-        mockMvc.perform(get("/api/airline/SQ"))
+        mockMvc.perform(get("/api/airline/iata/SQ"))
             // THEN
             .andExpect(status().isOk())
             .andExpect(content().json("""
@@ -124,10 +125,11 @@ class AirlineIntegrationTest {
 
     @Test
     @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
     void getAirlineByIataCodeTest_whenIataCodeDoesNotExist_thenThrow() throws Exception {
         // GIVEN
         // WHEN
-        mockMvc.perform(get("/api/airline/SQ"))
+        mockMvc.perform(get("/api/airline/iata/SQ"))
             // THEN
             .andExpect(status().isNotFound())
             .andExpect(content().json("""

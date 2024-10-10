@@ -45,6 +45,11 @@ public class AirlineService {
         return airlineRepository.findAirlineByIataCode(iataCode)
                 .orElseThrow(() -> new AirlineNotFoundException("Airline with IATA Code " + iataCode + " cannot be found."));
     }
+    
+    public Airline findAirlineById(String id) {
+        return airlineRepository.findById(id)
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."));
+    }
 
     public Airline createAirline(AirlineDto airlineDto) {
         if (airlineRepository.findAirlineByIataCode(airlineDto.iataCode()).isPresent()) {
