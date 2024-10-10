@@ -72,6 +72,7 @@ export default function AddAirlinePage() {
                 setNewAirline={setNewAirline}
                 handleSubmit={handleSubmit}
                 buttonLabel={"Add a new airline"}
+                editable={true}
             />
         </div>
     )
