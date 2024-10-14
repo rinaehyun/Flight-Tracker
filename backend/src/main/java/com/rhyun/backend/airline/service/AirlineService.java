@@ -24,6 +24,8 @@ public class AirlineService {
         this.idService = idService;
     }
 
+    String errorMessage = " cannot be found.";
+
     public List<Airline> getAllAirlines() {
         return airlineRepository.findAll();
     }
@@ -43,12 +45,12 @@ public class AirlineService {
 
     public Airline findAirlineByIataCode(String iataCode) {
         return airlineRepository.findAirlineByIataCode(iataCode)
-                .orElseThrow(() -> new AirlineNotFoundException("Airline with IATA Code " + iataCode + " cannot be found."));
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with IATA Code " + iataCode + errorMessage));
     }
     
     public Airline findAirlineById(String id) {
         return airlineRepository.findById(id)
-                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."));
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + errorMessage));
     }
 
     public Airline createAirline(AirlineDto airlineDto) {
@@ -71,7 +73,7 @@ public class AirlineService {
 
     public Airline updateAirline(String id, AirlineDto airlineDto) {
         Airline airlineToUpdate = airlineRepository.findById(id)
-                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + " cannot be found."))
+                .orElseThrow(() -> new AirlineNotFoundException("Airline with id " + id + errorMessage))
                 .withIataCode(airlineDto.iataCode())
                 .withBusinessName(airlineDto.businessName())
                 .withCommonName(airlineDto.commonName());

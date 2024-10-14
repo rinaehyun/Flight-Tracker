@@ -32,7 +32,7 @@ public class SecurityConfig {
         String userRole = ROLE_PREFIX + AppUserRole.USER.name();
 
         String airportEndpoint = "/api/airport/**";
-
+        String airlineEndpoint = "/api/airline/**";
 
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
@@ -52,10 +52,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.PUT, airportEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.GET, "/api/airline").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/airline/**").hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.GET, airlineEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .requestMatchers(HttpMethod.POST, "/api/airline").hasAnyAuthority(adminRole, employeeRole)
-                        .requestMatchers(HttpMethod.DELETE, "/api/airline/**").hasAnyAuthority(adminRole, employeeRole)
-                        .requestMatchers(HttpMethod.PUT, "/api/airline/**").hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.DELETE, airlineEndpoint).hasAnyAuthority(adminRole, employeeRole)
+                        .requestMatchers(HttpMethod.PUT, airlineEndpoint).hasAnyAuthority(adminRole, employeeRole)
                         .anyRequest().permitAll()
                 )
                .httpBasic(httpSecurityHttpBasicConfigurer ->
