@@ -7,7 +7,7 @@ import AirlinesIcon from '@mui/icons-material/Airlines';
 type ConfirmationModalProps = {
     handleClose: () => void,
     handleDeleteConfirm: (id: string | undefined) => void,
-    itemId: string | undefined,
+    itemId?: string | undefined,
     itemName: string | undefined,
     modalName: "Flight" | "Airport" | "User" | "Airline",
 }
