@@ -6,13 +6,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,10 +23,8 @@ class AirlineIntegrationTest {
     @Autowired
     private AirlineRepository airlineRepository;
 
-    Airline airline1 = new Airline("1", "airline", "SQ", "SIA",
-            "SINGAPORE AIRLINES", "SINGAPORE");
-    Airline airline2 = new Airline("2", "airline", "KE", "KAL",
-            "KOREAN AIR", "KOREAN AIR");
+    Airline airline1 = new Airline("1", "SQ", "SINGAPORE AIRLINES", "SINGAPORE");
+    Airline airline2 = new Airline("2", "KE", "KOREAN AIR", "KOREAN AIR");
 
     @Test
     @DirtiesContext
@@ -54,17 +52,13 @@ class AirlineIntegrationTest {
             .andExpect(content().json("""
                     [{
                         "id": "1",
-                        "type": "airline",
                         "iataCode": "SQ",
-                        "icaoCode": "SIA",
                         "businessName": "SINGAPORE AIRLINES",
                         "commonName": "SINGAPORE"
                     },
                     {
                         "id": "2",
-                        "type": "airline",
                         "iataCode": "KE",
-                        "icaoCode": "KAL",
                         "businessName": "KOREAN AIR",
                         "commonName": "KOREAN AIR"
                     }]
@@ -107,5 +101,217 @@ class AirlineIntegrationTest {
                     }
                 ]
             """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineByIataCodeTest_whenIataCodeExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(get("/api/airline/iata/SQ"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineByIataCodeTest_whenIataCodeDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airline/iata/SQ"))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with IATA Code SQ cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineById_whenIdExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(get("/api/airline/1"))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void getAirlineById_whenIdDoesNotExist_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(get("/api/airline/1"))
+            // THEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with id 1 cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void createAirlineTest_whenIataCodeIsNew_thenAirlineEntityIsCreated() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(post("/api/airline")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                    {
+                        "iataCode": "SQ",
+                        "businessName": "Singapore Airlines",
+                        "commonName": "Singapore Air"
+                    }
+                """))
+            // THEN
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.iataCode").value("SQ"))
+            .andExpect(jsonPath("$.businessName").value("Singapore Airlines"))
+            .andExpect(jsonPath("$.commonName").value("Singapore Air"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void createAirlineTest_whenIataCodeAlreadyExists_thenThrow() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(post("/api/airline")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "Singapore Airlines",
+                    "commonName": "Singapore Air"
+                }
+            """))
+            // THEN
+            .andExpect(status().isConflict())
+            .andExpect(content().json("""
+                {
+                    "status": 409,
+                    "message": "Airline with IATA Code SQ already exists."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void deleteAirlineTest_whenIdExists_thenDeleteAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        mockMvc.perform(get("/api/airline"))
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                [{
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRLINES",
+                    "commonName": "SINGAPORE"
+                }]
+            """));
+
+        // WHEN
+        mockMvc.perform(delete("/api/airline/1"))
+            // THEN
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/airline"))
+            .andExpect(status().isOk())
+            .andExpect(content().json("[]"));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void updateAirlineTest_whenIdExists_thenReturnAirlineEntity() throws Exception {
+        // GIVEN
+        airlineRepository.save(airline1);
+
+        // WHEN
+        mockMvc.perform(put("/api/airline/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """))
+            // WHEN
+            .andExpect(status().isOk())
+            .andExpect(content().json("""
+                {
+                    "id": "1",
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """));
+    }
+
+    @Test
+    @DirtiesContext
+    @WithMockUser(authorities = {"ROLE_ADMIN", "ROLE_EMPLOYEE"})
+    void updateAirlineTest_whenIdDoesNotExist_thenThrow() throws Exception {
+        // GIVEN
+        // WHEN
+        mockMvc.perform(put("/api/airline/1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("""
+                {
+                    "iataCode": "SQ",
+                    "businessName": "SINGAPORE AIRWAYS",
+                    "commonName": "SINGAPORE AIRWAYS"
+                }
+            """))
+            // WHEN
+            .andExpect(status().isNotFound())
+            .andExpect(content().json("""
+                {
+                    "status": 404,
+                    "message": "Airline with id 1 cannot be found."
+                }
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
     }
 }

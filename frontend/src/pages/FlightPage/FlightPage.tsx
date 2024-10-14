@@ -14,7 +14,7 @@ type FlightPageProps = {
     loggedInUser: BasicUser | null | undefined
 }
 
-export default function FlightPage({ data, loggedInUser }: FlightPageProps ) {
+export default function FlightPage({ data, loggedInUser }: Readonly<FlightPageProps> ) {
     const [flightData, setFlightData] = useState<Flight[]>(data);
     const [showFilter, setShowFilter] = useState<boolean>(false);
     const [selectedFilter, setSelectedFilter] = useState<Filter>({

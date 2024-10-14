@@ -1,13 +1,13 @@
 package com.rhyun.backend.airline.model;
 
+import lombok.With;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "airlines")
+@With
 public record Airline(
     String id,
-    String type,
     String iataCode,
-    String icaoCode,
     String businessName,
     String commonName
 ) {

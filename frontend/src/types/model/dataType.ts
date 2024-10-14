@@ -56,3 +56,17 @@ export type NewAirport = {
     timeZone: {
         offSet: string
     }}
+
+export type Airline = {
+    id: string,
+    iataCode: string,
+    icaoCode: string,
+    businessName: string,
+    commonName: string
+}
+
+export type NewAirline = {
+    iataCode: string,
+    businessName: string,
+    commonName: string
+}
