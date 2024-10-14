@@ -7,15 +7,15 @@ type AirlineFormProps = {
     newAirline: NewAirline,
     setNewAirline: Dispatch<SetStateAction<NewAirline>>,
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void,
-    buttonLabel: string
+    buttonLabel: string,
+    editable: boolean
 }
 
-export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, buttonLabel }: Readonly<AirlineFormProps>) {
+export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, buttonLabel, editable }: Readonly<AirlineFormProps>) {
     const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setNewAirline(({...newAirline, [event.target.name]: event.target.value.toUpperCase()}));
     }
 
-    console.log(newAirline)
     return (
         <form className={"airline-form"} onSubmit={handleSubmit} >
             <TextField
@@ -30,6 +30,7 @@ export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, b
                 value={newAirline.iataCode}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <TextField
                 required
@@ -43,6 +44,7 @@ export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, b
                 value={newAirline.businessName}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <TextField
                 required
@@ -56,10 +58,12 @@ export default function AirlineForm({ newAirline, setNewAirline, handleSubmit, b
                 value={newAirline.commonName}
                 onChange={handleChange}
                 autoComplete={"off"}
+                disabled={!editable}
             />
             <button
                 type={"submit"}
                 className={"airline-form-submit"}
+                disabled={!editable}
             >{buttonLabel}</button>
         </form>
     )

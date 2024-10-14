@@ -19,6 +19,7 @@ import AddAirportPage from "./pages/AirportPage/AddAirportPage/AddAirportPage.ts
 import EditAirportPage from "./pages/AirportPage/EditAirportPage/EditAirportPage.tsx";
 import EditUserPage from "./pages/LoginPage/EditUserPage/EditUserPage.tsx";
 import AddAirlinePage from "./pages/AirlinePage/AddAirlinePage/AddAirlinePage.tsx";
+import EditAirlinePage from "./pages/AirlinePage/EditAirlinePage/EditAirlinePage.tsx";
 
 function App() {
     const [flightData, setFlightData] = useState<Flight[]>([]);
@@ -84,6 +85,7 @@ function App() {
                         <Route path={"/airport/:id"} element={<EditAirportPage />}/>
                         <Route path={"/airline"} element={<AirlinePage loggedInUser={loggedInUser} />} />
                         <Route path={"/airline/add"} element={<AddAirlinePage />}/>
+                        <Route path={"/airline/:id"} element={<EditAirlinePage />}/>
                     </Route>
                 </Routes>
             </main>

@@ -431,6 +431,7 @@ class AirportIntegrationTest {
                     "status": 404,
                     "message": "The airport with id 123 cannot be found."
                 }
-            """));
+            """))
+            .andExpect(jsonPath("$.timestamp").exists());
     }
 }
